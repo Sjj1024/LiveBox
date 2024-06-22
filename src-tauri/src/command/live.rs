@@ -13,6 +13,14 @@ pub async fn get_live_html(url: &str) -> Result<String, String> {
     println!("调用了get_live_html");
     let mut live_req = DouYinReq::new(url);
     // 获取直播间room_id
-    live_req.get_room_id().await.unwrap();
+    let result = live_req.get_room_id().await;
+    match result {
+        Ok(_) => {
+            println!("good");
+        }
+        Err(_) => {
+            println!("error");
+        }
+    }
     Ok(format!("Hello, {}! You've been greeted from Rust!", url))
 }
