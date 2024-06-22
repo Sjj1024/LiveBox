@@ -1,148 +1,96 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import Greet from "./components/Greet.vue";
+import { creatSignature } from '@/assets/static/vFun'
+import { Setting } from '@element-plus/icons-vue'
+import { ref } from 'vue'
+
+// 直播间地址
+const input = ref('')
+
+// 开始监听
+const startListen = () => {
+    // const url = input.value
+    const signature = creatSignature('069bd6275204dd05fcf936917710f656')
+    console.log(signature)
+}
+
+const dialogVisible = ref(false)
 </script>
 
 <template>
-  <div class="container">
-    <h1>Welcome to Tauri!</h1>
-
-    <div class="row">
-      <a href="https://vitejs.dev" target="_blank">
-        <img src="/vite.svg" class="logo vite" alt="Vite logo" />
-      </a>
-      <a href="https://tauri.app" target="_blank">
-        <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
-      </a>
-      <a href="https://vuejs.org/" target="_blank">
-        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-      </a>
+    <div class="container">
+        <h1>欢迎使用网络直播盒子</h1>
+        <div class="liveUrl">
+            <el-input
+                v-model="input"
+                style="width: 360px"
+                placeholder="请输入直播地址"
+            />
+            <el-button type="primary" class="startListen" @click="startListen"
+                >开始采集</el-button
+            >
+        </div>
+        <!-- 设置推流地址 -->
+        <el-icon :size="20" class="pushUrl" @click="dialogVisible = true">
+            <Setting />
+        </el-icon>
+        <el-dialog
+            v-model="dialogVisible"
+            title="设置推送地址"
+            center
+            :show-close="false"
+            width="500"
+        >
+            <div class="setBox">
+                <el-input v-model="input" placeholder="请输入推送地址" />
+                <div class="tips">
+                    *推送的消息会以POST请求的形式发送到该地址，请确保该地址能够接收POST请求
+                </div>
+            </div>
+            <template #footer>
+                <div class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="dialogVisible = false">
+                        确定
+                    </el-button>
+                </div>
+            </template>
+        </el-dialog>
     </div>
-
-    <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
-
-    <Greet />
-  </div>
 </template>
 
-<style scoped>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #249b73);
-}
-
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-
-  color: #0f0f0f;
-  background-color: #f6f6f6;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
+<style scoped lang="scss">
 .container {
-  margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+    padding: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+    .liveUrl {
+        display: flex;
+        margin-top: 6vh;
+
+        .startListen {
+            margin-left: 2vw;
+        }
+    }
+
+    .pushUrl {
+        position: fixed;
+        top: 3vh;
+        right: 3vh;
+    }
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
+.setBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2vh 5vw;
+
+    .tips {
+        font-size: small;
+        color: #999;
+    }
 }
-
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
-h1 {
-  text-align: center;
-}
-
-input,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
-}
-
-input,
-button {
-  outline: none;
-}
-
-#greet-input {
-  margin-right: 5px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
-  }
-
-  a:hover {
-    color: #24c8db;
-  }
-
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-  button:active {
-    background-color: #0f0f0f69;
-  }
-}
-
 </style>

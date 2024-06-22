@@ -1,23 +1,30 @@
 {
-  "name": "livebox",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview",
-    "tauri": "tauri"
-  },
-  "dependencies": {
-    "vue": "^3.3.4",
-    "@tauri-apps/api": "^1"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.4",
-    "typescript": "^5.0.2",
-    "vite": "^5.0.0",
-    "vue-tsc": "^1.8.5",
-    "@tauri-apps/cli": "^1"
-  }
+    "name": "livebox",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc --noEmit && vite build",
+        "preview": "vite preview",
+        "tauri": "tauri",
+        "tauri dev": "tauri dev",
+        "tauri build": "tauri build"
+    },
+    "dependencies": {
+        "@element-plus/icons-vue": "^2.3.1",
+        "@tauri-apps/api": "^1",
+        "@types/node": "^20.14.7",
+        "element-plus": "^2.7.6",
+        "vue": "^3.3.4"
+    },
+    "devDependencies": {
+        "@tauri-apps/cli": "^1",
+        "@vitejs/plugin-vue": "^5.0.4",
+        "sass": "^1.77.6",
+        "sass-loader": "^14.2.1",
+        "typescript": "^5.0.2",
+        "vite": "^5.0.0",
+        "vue-tsc": "^1.8.5"
+    }
 }
