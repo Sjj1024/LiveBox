@@ -1,5 +1,5 @@
 /** 1.0.0.53 */
-if (!(window as any).byted_acrawler) {
+if (!window.byted_acrawler) {
     function w_0x25f3(_0x545d0a, _0xb73ac6) {
         var _0x4173a9 = w_0x42f5()
         return (
