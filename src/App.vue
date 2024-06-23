@@ -7,7 +7,7 @@ import LiveApi from '@/apis/live'
 import pako from 'pako'
 import WebSocket from 'tauri-plugin-websocket-api'
 import { ConnectionConfig } from 'tauri-plugin-websocket-api'
-import protoRoot from '@/proto/dy.js'
+import { douyin } from '@/proto/dy.js'
 // 必须使用Uint8Array解析数据，不然解析不出来
 
 // 直播间地址
@@ -32,7 +32,7 @@ const startListen = async () => {
     console.log('result ', result)
     // input.value = result
     creatSokcet()
-    gzipTest()
+    // gzipTest()
 }
 
 // 测试gzip解压缩
@@ -54,23 +54,89 @@ const creatSokcet = async () => {
         },
     }
     const url =
-        'wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/?room_id=7383589903612775220&compress=gzip&version_code=180800&webcast_sdk_version=1.0.14-beta.0&live_id=1&did_rule=3&user_unique_id=7915760211825286069&identity=audience&signature=fBoflHwAPnanF3w6&aid=6383&device_platform=web&browser_language=zh-CN&browser_platform=Win32&browser_name=Mozilla&browser_version=5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F126.0.0.0+Safari%2F537.36+Edg%2F126.0.0.0'
+        'wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/?room_id=7383621334690990858&compress=gzip&version_code=180800&webcast_sdk_version=1.0.14-beta.0&live_id=1&did_rule=3&user_unique_id=7662886354510577534&identity=audience&signature=68NbnYeUF6LJhejw&aid=6383&device_platform=web&browser_language=zh-CN&browser_platform=Win32&browser_name=Mozilla&browser_version=5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F126.0.0.0+Safari%2F537.36+Edg%2F126.0.0.0'
     const ws = await WebSocket.connect(url, config)
 
     ws.addListener((msg) => {
-        console.log('msg---', msg)
-        // 解码PushFrame消息
-        const decodeMsg = protoRoot.douyin.PushFrame.decode(msg.data)
+        console.log('msg---', msg.data)
+        // 解码PushFrame消息, msg.data是数组类型
+        const decodeMsg = douyin.PushFrame.decode(msg.data)
         // gzip解压缩
         console.log('decodeMsg--', decodeMsg)
         console.log('logId--', decodeMsg.logId)
-        const gzipData = pako.ungzip(decodeMsg.payload)
-        // Response解码
-        // const decodeRes = protoRoot.douyin.Response.decode(gzipData)
+        // 解压缩应该是没问题，
+        const gzipData = pako.inflate(decodeMsg.payload)
+        console.log('gzipData--', gzipData)
+        // Response解码，有问题, 所以要用Response.decode解码也应该是数字类型
+        const decodeRes = douyin.Response.decode(gzipData)
         // 遍历 payloadPackage.messagesList
-        console.log('decodeRes---', gzipData)
-        // logTxt.value = JSON.stringify(msg)
+        console.log('decodeRes---', decodeRes)
+        // 遍历messagesList
+        handleMessage(decodeRes.messagesList)
     })
+}
+
+// 遍历消息数组，拿到具体的消息
+const handleMessage = (messageList: douyin.Message[]) => {
+    messageList.forEach((msg) => {
+        // 判断消息类型
+        switch (msg.method) {
+            // 反对分数
+            case 'WebcastMatchAgainstScoreMessage':
+                console.log('反对分数')
+                break
+            // 点赞数
+            case 'WebcastLikeMessage':
+                console.log('点赞数')
+                break
+            // 成员进入直播间消息
+            case 'WebcastMemberMessage':
+                console.log('成员进入直播间消息')
+                break
+            // 礼物消息
+            case 'WebcastGiftMessage':
+                console.log('礼物消息')
+                break
+            // 聊天弹幕消息
+            case 'WebcastChatMessage':
+                console.log('聊天弹幕消息')
+                decodeChat(msg.payload)
+                break
+            // 联谊会消息
+            case 'WebcastSocialMessage':
+                console.log('联谊会消息')
+                break
+            // 更新粉丝票
+            case 'WebcastUpdateFanTicketMessage':
+                console.log('更新粉丝票')
+                break
+            // 公共文本消息
+            case 'WebcastCommonTextMessage':
+                console.log('公共文本消息')
+                break
+            // 商品改变消息
+            case 'WebcastProductChangeMessage':
+                console.log('商品改变消息')
+                break
+            // 待解析方法
+            default:
+                console.log('待解析方法' + msg.method)
+                break
+        }
+    })
+}
+
+// 解析弹幕消息
+const decodeChat = (data) => {
+    const chatMsg = douyin.ChatMessage.decode(data)
+    console.log('chatMsg---', chatMsg)
+    // json_format
+}
+
+// 解析礼物消息
+const decodeGift = (data) => {
+    const giftMsg = douyin.GiftMessage.decode(data)
+    console.log('giftMsg---', giftMsg)
 }
 </script>
 
