@@ -54,7 +54,7 @@ const creatSokcet = async () => {
         },
     }
     const url =
-        'wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/?room_id=7383621334690990858&compress=gzip&version_code=180800&webcast_sdk_version=1.0.14-beta.0&live_id=1&did_rule=3&user_unique_id=7662886354510577534&identity=audience&signature=68NbnYeUF6LJhejw&aid=6383&device_platform=web&browser_language=zh-CN&browser_platform=Win32&browser_name=Mozilla&browser_version=5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F126.0.0.0+Safari%2F537.36+Edg%2F126.0.0.0'
+        'wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/?room_id=7383652707992701722&compress=gzip&version_code=180800&webcast_sdk_version=1.0.14-beta.0&live_id=1&did_rule=3&user_unique_id=7988748593295730394&identity=audience&signature=f8p15z9f37JppAI+&aid=6383&device_platform=web&browser_language=zh-CN&browser_platform=Win32&browser_name=Mozilla&browser_version=5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F126.0.0.0+Safari%2F537.36+Edg%2F126.0.0.0'
     const ws = await WebSocket.connect(url, config)
 
     ws.addListener((msg) => {
@@ -64,6 +64,7 @@ const creatSokcet = async () => {
         // gzip解压缩
         console.log('decodeMsg--', decodeMsg)
         console.log('logId--', decodeMsg.logId)
+        logTxt.value = decodeMsg.logId
         // 解压缩应该是没问题，
         const gzipData = pako.inflate(decodeMsg.payload)
         console.log('gzipData--', gzipData)
@@ -201,14 +202,14 @@ const decodeGift = (data) => {
     }
 
     .logBox {
-        padding: 10vh;
-        white-space: pre-wrap;
+        padding: 2vh;
+        white-space: wrap;
         background-color: #fff;
         border-radius: 10px;
         margin-top: 6vh;
         width: 60vw;
         height: 30vh;
-        overflow-y: scroll;
+        overflow: scroll;
     }
 
     .pushUrl {
