@@ -11,9 +11,7 @@ import { douyin } from '@/proto/dy.js'
 // 直播间地址
 const input = ref('')
 const dialogVisible = ref(false)
-const logTxt = ref(
-    'wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/?room_id=7383537257166261018&compress=gzip&version_code=180800&webcast_sdk_version=1.0.14-beta.0&live_id=1&did_rule=3&user_unique_id=7744929113639289632&identity=audience&signature=fZal%2Fy9Hj4RsrEXn&aid=6383&device_platform=web&browser_language=zh-CN&browser_platform=Win32&browser_name=Mozilla&browser_version=5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F126.0.0.0+Safari%2F537.36+Edg%2F126.0.0.0'
-)
+const logTxt = ref('')
 
 // 开始监听
 const startListen = async () => {
@@ -158,12 +156,12 @@ const decodeGift = (data) => {
 
 <template>
     <div class="container">
-        <h1>欢迎使用网络直播盒子</h1>
+        <h1>欢迎使用LiveBox</h1>
         <div class="liveUrl">
             <el-input
                 v-model="input"
                 style="width: 360px"
-                placeholder="请输入直播地址"
+                placeholder="请输入直播间地址"
             />
             <el-button type="primary" class="startListen" @click="startListen"
                 >开始采集</el-button
