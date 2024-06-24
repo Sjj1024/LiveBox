@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { creatSignature } from '@/assets/static/vFun'
 import { Setting } from '@element-plus/icons-vue'
 import { invoke } from '@tauri-apps/api/tauri'
 import { ref } from 'vue'
-import LiveApi from '@/apis/live'
 import pako from 'pako'
 import WebSocket from 'tauri-plugin-websocket-api'
 import { ConnectionConfig } from 'tauri-plugin-websocket-api'
@@ -32,6 +30,7 @@ const startListen = async () => {
     console.log('result ', result)
     // input.value = result
     creatSokcet()
+    // testWebSocket()
     // gzipTest()
 }
 
@@ -44,6 +43,15 @@ const gzipTest = () => {
     console.log('ungzip数据是:', ungzip)
 }
 
+// 测试本地websocket连接
+const testWebSocket = async () => {
+    const ws = await WebSocket.connect('ws://192.168.1.52:8765')
+    ws.addListener((msg: any) => {
+        console.log('msg---', msg)
+        logTxt.value = msg.data
+    })
+}
+
 // 创建websokcet
 const creatSokcet = async () => {
     const config: ConnectionConfig = {
@@ -54,9 +62,16 @@ const creatSokcet = async () => {
         },
     }
     const url =
-        'wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/?room_id=7383652707992701722&compress=gzip&version_code=180800&webcast_sdk_version=1.0.14-beta.0&live_id=1&did_rule=3&user_unique_id=7988748593295730394&identity=audience&signature=f8p15z9f37JppAI+&aid=6383&device_platform=web&browser_language=zh-CN&browser_platform=Win32&browser_name=Mozilla&browser_version=5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F126.0.0.0+Safari%2F537.36+Edg%2F126.0.0.0'
+        'wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/?room_id=7383932772924050185&compress=gzip&version_code=180800&webcast_sdk_version=1.0.14-beta.0&live_id=1&did_rule=3&user_unique_id=7614038015523297366&identity=audience&signature=fKnJeNoE8Jl1NdTb&aid=6383&device_platform=web&browser_language=zh-CN&browser_platform=Win32&browser_name=Mozilla&browser_version=5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F126.0.0.0+Safari%2F537.36+Edg%2F126.0.0.0'
     const ws = await WebSocket.connect(url, config)
 
+    // 开始ping....
+    const pingInterval = setInterval(() => {
+        // ws.ping()
+        console.log('111')
+    }, 10000)
+
+    // 监听消息
     ws.addListener((msg) => {
         console.log('msg---', msg.data)
         // 解码PushFrame消息, msg.data是数组类型
