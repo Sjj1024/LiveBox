@@ -69,7 +69,11 @@ const startListen = async () => {
                 signature: 'roomInfo.signature',
             }
             // 加载直播视频
-            loadLive(roomInfo.stream_url.hls_pull_url_map.HD1)
+            let videoUrl = roomInfo.stream_url.hls_pull_url_map.HD1.replace(
+                'http://',
+                'https://'
+            )
+            loadLive(videoUrl)
         } else {
             console.log('没有获取到')
             ElMessage.error('open live error')
@@ -87,6 +91,7 @@ let dplayer: DPlayerImp | null = null
 // 加载直播视频
 const loadLive = (videoUrl: string) => {
     // 根据不同的视频加载不同的播放器
+    console.log('加载的videlurl', videoUrl)
     if (videoUrl.includes('m3u8')) {
         dplayer = new DPlayer({
             container: document.getElementById(`dplayer`),
