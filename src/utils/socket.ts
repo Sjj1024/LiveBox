@@ -1,103 +1,93 @@
+import WebSocket from 'tauri-plugin-websocket-api'
+import { ConnectionConfig } from 'tauri-plugin-websocket-api'
+
 // WebSocket类对象
 class WebSocketCli {
-    // 构造函数
-    constructor(url: string, opts = {}) {
-        this.url = url
-        this.ws = null
-        this.opts = {
-            heartbeatInterval: 30000, // 默认30秒
-            reconnectInterval: 5000, // 默认5秒
-            maxReconnectAttempts: 5, // 默认尝试重连5次
-            ...opts,
-        }
-        this.heartbeatInterval = 30000
-        this.reconnectAttempts = 0
-        this.listeners = {}
-        this.init()
-    }
-
     // 链接地址
     url: string
     // websocket实例
     ws: WebSocket | null
     // websocket配置：配置心跳和重连等信息
-    opts: any
-    // 重新连接次数：默认5次
-    reconnectAttempts: number
+    opts: ConnectionConfig
     // 时间监听对象数组：可以为一个事件绑定多个监听事件
     listeners: any
-    // 心跳链接间隔
+    // 是否开启心跳连接
+    ping: boolean
+    // 心跳链接间隔，默认10秒
     heartbeatInterval: any
+    // 心跳定时器
+    heartbeatTimer: any
+    // 心跳消息：可以自定义
+    pingMsg: any
+
+    // 构造函数
+    constructor(
+        url: string,
+        opts: ConnectionConfig = {},
+        ping: boolean = false,
+        pingMsg = 'ping'
+    ) {
+        this.url = url
+        this.ws = null
+        this.opts = opts
+        this.heartbeatInterval = 10000
+        this.listeners = {}
+        this.ping = ping
+        this.pingMsg = pingMsg
+        this.init()
+    }
 
     // 初始化ws对象
-    init() {
-        this.ws = new WebSocket(this.url)
-        this.ws.onopen = this.onOpen.bind(this)
-        this.ws.onmessage = this.onMessage.bind(this)
-        this.ws.onerror = this.onError.bind(this)
-        this.ws.onclose = this.onClose.bind(this)
+    async init() {
+        try {
+            this.ws = await WebSocket.connect(this.url).then((w) => {
+                // 成功建立连接
+                this.onOpen()
+                return w
+            })
+            // 是否开启心跳
+            this.ping && this.startHeartbeat()
+            // 监听接收消息
+            this.ws?.addListener(this.onMessage)
+        } catch (e) {
+            // 发送错误信息
+            this.onMessage(e)
+        }
     }
 
     // websocket链接建立
-    onOpen(event) {
-        console.log('WebSocket opened:', event)
-        this.reconnectAttempts = 0 // 重置重连次数
-        // 发送心跳链接
-        // this.startHeartbeat()
-        this.emit('open', event)
+    onOpen() {
+        console.log('WebSocket opened:')
+        this.emit('open', 'open')
     }
 
     // websocket收到消息
-    onMessage(event) {
+    onMessage(event: any) {
         console.log('WebSocket message received:', event.data)
         this.emit('message', event.data)
-    }
-
-    // websocket错误
-    onError(event) {
-        console.error('WebSocket error:', event)
-        this.emit('error', event)
     }
 
     // websocket关闭
     onClose(event) {
         console.log('WebSocket closed:', event)
-        // 停止心跳链接
-        // this.stopHeartbeat()
+        // 停止心跳
+        this.ping && clearInterval(this.heartbeatTimer)
+        // 断开连接
+        this.ws?.disconnect()
         this.emit('close', event)
-        // 最大5次重连
-        if (this.reconnectAttempts < this.opts.maxReconnectAttempts) {
-            setTimeout(() => {
-                this.reconnectAttempts++
-                this.init()
-            }, this.opts.reconnectInterval)
-        }
     }
 
     // 发送心跳
     startHeartbeat() {
-        this.heartbeatInterval = setInterval(() => {
-            if (this.ws?.readyState === WebSocket.OPEN) {
-                this.ws.send('ping') // 可以修改为你的心跳消息格式
-            }
-        }, this.opts.heartbeatInterval)
-    }
-
-    // 停止心跳
-    stopHeartbeat() {
-        if (this.heartbeatInterval) {
-            clearInterval(this.heartbeatInterval)
-            this.heartbeatInterval = null
-        }
+        this.heartbeatTimer = setInterval(() => {
+            // 其实心跳主要是发送的消息内容是啥，所以传递一个心跳消息内容即可
+            this.ws?.send(this.pingMsg)
+        }, this.heartbeatInterval)
     }
 
     // 发送消息
     send(data) {
-        if (this.ws?.readyState === WebSocket.OPEN) {
-            this.ws.send(data)
-        } else {
-            console.error('WebSocket is not open. Cannot send:', data)
-        }
+        console.error('WebSocket is not open. Cannot send:', data)
     }
 
     // 注册某个消息事件，并添加回调函数
