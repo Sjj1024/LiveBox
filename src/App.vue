@@ -148,7 +148,7 @@ const loadLive = (videoUrl: string) => {
     <div class="container">
         <!-- 顶部输入直播间地址 -->
         <div class="liveUrl">
-            <el-input
+            <input
                 class="urlInput"
                 v-model="inputUrl"
                 placeholder="请输入直播间地址"
@@ -236,15 +236,33 @@ const loadLive = (videoUrl: string) => {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        height: 32px;
+        height: 36px;
         width: 100%;
 
         .urlInput {
             width: 50%;
+            height: 36px;
+            border-radius: 10px;
+            padding-left: 16px;
+            font-size: 15px;
+            letter-spacing: 0.15px;
+            border: none;
+            outline: none;
+            color: black;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #ecf0f3;
+            transition: 0.25s ease;
+            box-shadow: inset 2px 2px 4px #d1d9e6, inset -2px -2px 4px #d1d9e6;
+
+            &:focus {
+                box-shadow: inset 4px 4px 4px #d1d9e6,
+                    inset -4px -4px 4px #e1e5ec;
+            }
         }
 
         .startListen {
-            margin-left: 2vw;
+            margin-left: 16px;
+            box-shadow: 0 0 6px 2px #bfc7d4;
         }
     }
 
