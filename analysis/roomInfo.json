@@ -1,30 +1,30 @@
 {
-    "id_str": "7384208531546770213",
+    "id_str": "7384358792399489802",
     "status": 2,
     "status_str": "2",
-    "title": "至尊爆款，1泵洁净，好礼送不停",
-    "user_count_str": "1w+",
+    "title": "聊城麻辣小龙虾【顺航海鲜】正在直播",
+    "user_count_str": "5000+",
     "cover": {
         "url_list": [
-            "https://p9-webcast-sign.douyinpic.com/image-cut-tos-priv/c41f81ce27362c8f96e9fcfccd0e1fbc~tplv-qz53dukwul-common-resize:0:0.image?biz_tag=app_6383_webcast\u0026from=webcast.room.pack\u0026l=202406251419209327EEE6C2360B1C1950\u0026lk3s=39e7556e\u0026s=enter_room\u0026sc=webcast_cover\u0026x-expires=1721888361\u0026x-signature=j9bq0Mlewiq3FmdwPh0CTQAT9j8%3D",
-            "https://p3-webcast-sign.douyinpic.com/image-cut-tos-priv/c41f81ce27362c8f96e9fcfccd0e1fbc~tplv-qz53dukwul-common-resize:0:0.image?biz_tag=app_6383_webcast\u0026from=webcast.room.pack\u0026l=202406251419209327EEE6C2360B1C1950\u0026lk3s=39e7556e\u0026s=enter_room\u0026sc=webcast_cover\u0026x-expires=1721888361\u0026x-signature=RL5LKVDluY5Zuk106CkJ0vHAx%2Fo%3D"
+            "https://p9-webcast-sign.douyinpic.com/image-cut-tos-priv/11f04fa005903216779a16acf66c57c3~tplv-qz53dukwul-common-resize:0:0.image?biz_tag=app_6383_webcast\u0026from=webcast.room.pack\u0026l=202406251910347CC7D82AA1DDC5167083\u0026lk3s=39e7556e\u0026s=enter_room\u0026sc=webcast_cover\u0026x-expires=1721905834\u0026x-signature=XnFcMZ5DQEq5X%2B8weXQ6tdcg9QU%3D",
+            "https://p3-webcast-sign.douyinpic.com/image-cut-tos-priv/11f04fa005903216779a16acf66c57c3~tplv-qz53dukwul-common-resize:0:0.image?biz_tag=app_6383_webcast\u0026from=webcast.room.pack\u0026l=202406251910347CC7D82AA1DDC5167083\u0026lk3s=39e7556e\u0026s=enter_room\u0026sc=webcast_cover\u0026x-expires=1721905834\u0026x-signature=wlkJ1wAV25Px%2FYiOYcSv7wgaYww%3D"
         ]
     },
     "stream_url": {
         "flv_pull_url": {
-            "FULL_HD1": "http://pull-l3.douyincdn.com/stage/stream-115378259430473810_or4.flv?auth_key=1719899361-0-0-2c1576709dd2e0884fb65ad551f8edbd",
-            "HD1": "http://pull-l3.douyincdn.com/stage/stream-115378259430473810_hd.flv?auth_key=1719899361-0-0-234e2fc147f35bb24d1362a975e5a9f5",
-            "SD1": "http://pull-l3.douyincdn.com/stage/stream-115378259430473810_ld.flv?auth_key=1719899361-0-0-6d3ff34268b7a17f887fd4d91967fc02",
-            "SD2": "http://pull-l3.douyincdn.com/stage/stream-115378259430473810_sd.flv?auth_key=1719899361-0-0-e64da227b48d652fd9cf06880b94bc02"
+            "FULL_HD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_or4.flv?auth_key=1719916834-0-0-92a786719ce67d4c4a95ef7a5c955e1f",
+            "HD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_hd.flv?auth_key=1719916834-0-0-34a410343924c6f33495dd1207a10ee8",
+            "SD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_ld.flv?auth_key=1719916834-0-0-1b2d096597a5770c077ff414f847b1ec",
+            "SD2": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_sd.flv?auth_key=1719916834-0-0-df2d43718fb7a5c20aeaa15035b15cb9"
         },
         "default_resolution": "HD1",
         "hls_pull_url_map": {
-            "FULL_HD1": "http://pull-l3.douyincdn.com/stage/stream-115378259430473810_or4.m3u8?auth_key=1719899361-0-0-e6c374e32341a4dfb6f01a03d5661056",
-            "HD1": "http://pull-l3.douyincdn.com/stage/stream-115378259430473810_hd.m3u8?auth_key=1719899361-0-0-ff386ac575f4c469428c91b4295bd2a0",
-            "SD1": "http://pull-l3.douyincdn.com/stage/stream-115378259430473810_ld.m3u8?auth_key=1719899361-0-0-4ce07f2007d2fa469e10f1c76e6d8e29",
-            "SD2": "http://pull-l3.douyincdn.com/stage/stream-115378259430473810_sd.m3u8?auth_key=1719899361-0-0-32406ef659689bb2d951f0df136c9bef"
+            "FULL_HD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_or4.m3u8?auth_key=1719916834-0-0-c8a52e3f232208186df3ae2154985a76",
+            "HD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_hd.m3u8?auth_key=1719916834-0-0-75e58eeffd63c404912e0304356db564",
+            "SD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_ld.m3u8?auth_key=1719916834-0-0-dc96439c2b5375cfaf04373a442a2547",
+            "SD2": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_sd.m3u8?auth_key=1719916834-0-0-474f72b70f4d7e15e043985d99da2163"
         },
-        "hls_pull_url": "http://pull-l3.douyincdn.com/stage/stream-115378259430473810_or4.m3u8?auth_key=1719899361-0-0-e6c374e32341a4dfb6f01a03d5661056",
+        "hls_pull_url": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_or4.m3u8?auth_key=1719916834-0-0-c8a52e3f232208186df3ae2154985a76",
         "stream_orientation": 1,
         "live_core_sdk_data": {
             "pull_data": {
@@ -80,7 +80,7 @@
                             "v_codec": "264",
                             "resolution": "1088x1920",
                             "level": 4,
-                            "v_bit_rate": 3838000,
+                            "v_bit_rate": 2344000,
                             "additional_content": "",
                             "fps": 0,
                             "disable": 0
@@ -113,23 +113,20 @@
     },
     "mosaic_status": 0,
     "mosaic_status_str": "0",
-    "admin_user_ids": [],
-    "admin_user_ids_str": [],
+    "admin_user_ids": [106015964533],
+    "admin_user_ids_str": ["106015964533"],
     "owner": {
-        "id_str": "1163761899014871",
-        "sec_uid": "MS4wLjABAAAAhl9z_XpzLiXFe5nJkwVGHJf0WGfesZOJJPUdjj_eAo5qBor-JqqCW0tDxUY9syUF",
-        "nickname": "至尊洁净之旅",
+        "id_str": "59067043422",
+        "sec_uid": "MS4wLjABAAAAmFfcFbwIWqc42iq4epfHHVo4mF7vT3idjaXfLIBCETs",
+        "nickname": "聊城麻辣小龙虾【顺航海鲜】",
         "avatar_thumb": {
             "url_list": [
-                "https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_oI4j3ATE4DACOhIkDefNACgFBHbA8pEM9AzNAY.jpeg?from=3067671334",
-                "https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_oI4j3ATE4DACOhIkDefNACgFBHbA8pEM9AzNAY.jpeg?from=3067671334",
-                "https://p26.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-i-0813c001_oI4j3ATE4DACOhIkDefNACgFBHbA8pEM9AzNAY.jpeg?from=3067671334"
+                "https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_af67471ce990c9470ec0f609cb01fe8f.jpeg?from=3067671334",
+                "https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_af67471ce990c9470ec0f609cb01fe8f.jpeg?from=3067671334",
+                "https://p26.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_af67471ce990c9470ec0f609cb01fe8f.jpeg?from=3067671334"
             ]
         },
-        "follow_info": {
-            "follow_status": 0,
-            "follow_status_str": "0"
-        },
+        "follow_info": { "follow_status": 0, "follow_status_str": "0" },
         "subscribe": {
             "is_member": false,
             "level": 0,
@@ -147,7 +144,7 @@
         "Digg": true,
         "RoomContributor": true,
         "Props": true,
-        "UserCard": false,
+        "UserCard": true,
         "POI": true,
         "MoreAnchor": 1,
         "Banner": 1,
@@ -161,7 +158,7 @@
         "DonationSticker": 0,
         "HourRank": 0,
         "CommerceCard": 1,
-        "AudioChat": 2,
+        "AudioChat": 1,
         "DanmakuDefault": 0,
         "KtvOrderSong": 2,
         "SelectionAlbum": 2,
@@ -233,14 +230,14 @@
         "total_user_desp": "",
         "like_count": 0,
         "total_user_str": "10万+",
-        "user_count_str": "1万+"
+        "user_count_str": "5722"
     },
     "has_commerce_goods": true,
     "linker_map": {},
     "linker_detail": {
         "linker_play_modes": [],
         "big_party_layout_config_version": 0,
-        "accept_audience_pre_apply": true,
+        "accept_audience_pre_apply": false,
         "linker_ui_layout": 0,
         "enable_audience_linkmic": 0,
         "function_type": "",
@@ -256,22 +253,22 @@
     },
     "room_view_stats": {
         "is_hidden": false,
-        "display_short": "1万",
-        "display_middle": "1万",
-        "display_long": "1万在线观众",
-        "display_value": 12891,
+        "display_short": "5722",
+        "display_middle": "5722",
+        "display_long": "5722在线观众",
+        "display_value": 5722,
         "display_version": 1663849727,
         "incremental": false,
         "display_type": 1,
-        "display_short_anchor": "1.3万",
-        "display_middle_anchor": "1.3万",
-        "display_long_anchor": "1.3万在线观众"
+        "display_short_anchor": "5722",
+        "display_middle_anchor": "5722",
+        "display_long_anchor": "5722在线观众"
     },
     "scene_type_info": {
         "is_union_live_room": false,
-        "is_life": false,
+        "is_life": true,
         "is_protected_room": 0,
-        "is_lasted_goods_room": 1,
+        "is_lasted_goods_room": 2,
         "is_desire_room": 2,
         "commentary_type": false,
         "is_sub_orientation_vertical_room": 2
