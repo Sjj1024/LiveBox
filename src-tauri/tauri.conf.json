@@ -7,7 +7,7 @@
     },
     "package": {
         "productName": "livebox",
-        "version": "0.0.0"
+        "version": "0.0.1"
     },
     "tauri": {
         "allowlist": {
@@ -23,8 +23,8 @@
         },
         "windows": [
             {
-                "title": "livebox",
-                "width": 800,
+                "title": "Livebox",
+                "width": 900,
                 "height": 600
             }
         ],
