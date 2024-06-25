@@ -2,7 +2,7 @@
 import { Setting } from '@element-plus/icons-vue'
 import { invoke } from '@tauri-apps/api/tauri'
 import { ref } from 'vue'
-import { LiveInfo } from '@/types'
+import { DPlayerImp, LiveInfo } from '@/types'
 import Logo from '@/assets/logo.png'
 import pako from 'pako'
 import WebSocket from 'tauri-plugin-websocket-api'
@@ -83,7 +83,7 @@ const creatSokcet = async () => {
 }
 
 // 直播播放器
-let dplayer: { seek: (t: number) => void; destroy: () => void } | null = null
+let dplayer: DPlayerImp | null = null
 // 加载直播视频
 const loadLive = (videoUrl: string) => {
     // 根据不同的视频加载不同的播放器
@@ -134,6 +134,8 @@ const loadLive = (videoUrl: string) => {
             },
         })
     }
+    // 立即播放视频
+    dplayer?.play()
 }
 
 // 页面初始化
@@ -158,7 +160,7 @@ const loadLive = (videoUrl: string) => {
         <!-- 下面直播间:左侧直播，右侧评论 -->
         <div class="liveBox">
             <!-- 视频播放容器 -->
-            <div class="liveVideo" id="dplayer">
+            <div class="liveVideo">
                 <!-- 主播头像信息：固定位置 -->
                 <div class="ownerBox">
                     <!-- 头像 -->
@@ -174,6 +176,8 @@ const loadLive = (videoUrl: string) => {
                 <div class="likeInfo">
                     <div class="title"></div>
                 </div>
+                <!-- 视频播放器 -->
+                <div id="dplayer" class="dplayer"></div>
             </div>
             <div class="liveMeg">
                 <div
@@ -281,6 +285,7 @@ const loadLive = (videoUrl: string) => {
                     height: 32px;
                     border-radius: 50%;
                     margin-right: 5px;
+                    z-index: 999;
                 }
 
                 .nickBox {
@@ -289,6 +294,7 @@ const loadLive = (videoUrl: string) => {
                     justify-content: center;
                     align-items: flex-start;
                     margin-right: 10px;
+                    z-index: 999;
 
                     .nickName {
                         font-size: 14px;
@@ -300,6 +306,12 @@ const loadLive = (videoUrl: string) => {
                         color: #ccc;
                     }
                 }
+            }
+
+            .dplayer {
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
             }
         }
 
