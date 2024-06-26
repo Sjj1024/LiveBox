@@ -227,9 +227,9 @@ const destroyPlayer = () => {
             </div>
         </div>
         <!-- 设置推流地址 -->
-        <el-icon :size="20" class="pushUrl" @click="dialogVisible = true">
+        <!-- <el-icon :size="20" class="pushUrl" @click="dialogVisible = true">
             <Setting />
-        </el-icon>
+        </el-icon> -->
     </div>
     <!-- 设置推流地址 -->
     <el-dialog
@@ -336,6 +336,7 @@ const destroyPlayer = () => {
                 padding: 10px 4px;
                 border-radius: 20px;
                 z-index: 999;
+                user-select: none;
 
                 .avatar {
                     width: 32px;
@@ -354,11 +355,13 @@ const destroyPlayer = () => {
                     .nickName {
                         font-size: 14px;
                         color: white;
+                        user-select: none;
                     }
 
                     .fans {
                         font-size: 11px;
                         color: #ccc;
+                        user-select: none;
                     }
                 }
             }
@@ -379,6 +382,11 @@ const destroyPlayer = () => {
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
+                color: white;
+                font-size: 25px;
+                font-weight: bold;
+                user-select: none;
+                text-shadow: 0 0 6px 2px black;
             }
         }
 

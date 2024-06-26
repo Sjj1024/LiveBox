@@ -1,9 +1,16 @@
 # 直播盒子
 
-解析直播间直播地址和消息地址的盒子
+安安静静看直播，不要被礼物和各种诱导消费迷惑，冷静冷静冷静，商品和礼物也不一定非买不可，静静地看人生百态不也是一种享受。
+
+# 功能介绍
+
+可以获取直播视频和主播头像和昵称，直播聊天弹幕内容，但是屏蔽刷礼物功能，禁止刷礼物禁止消费，理性看播，看紧口袋。
+
+windows 下载地址：  
+macbook 下载地址：
 
 # 界面介绍
 
 主界面：
-![alt text](./analysis/image.png)
-![alt text](./analysis/image-1.png)
+![alt text](./analysis/image-2.png)
+![alt text](./analysis/image-3.png)
