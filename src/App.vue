@@ -54,26 +54,45 @@ const startListen = async () => {
         const roomInfo = JSON.parse(roomJson.room_info)
         console.log('roomInfo----', roomInfo)
         // 获取主播的头像昵称粉丝数等信息
-        if (roomInfo.owner) {
-            ElMessage.success('open live success!')
-            liveInfo.value = {
-                uid: roomInfo.owner.id_str,
-                status: roomInfo.status,
-                title: roomInfo.title,
-                name: roomInfo.owner.nickname,
-                roomId: roomInfo.id_str,
-                avatar: roomInfo.owner.avatar_thumb.url_list[0],
-                fans: 0,
-                customer: roomInfo.user_count_str,
-                totalCustomer: roomInfo.stats.total_user_str,
-                signature: 'roomInfo.signature',
+        if (roomInfo.id_str) {
+            // 如果状态是4就是停播，只有直播的信息
+            if (roomInfo.status) {
+                ElMessage.success('open live success!')
+                liveInfo.value = {
+                    uid: roomInfo.owner.id_str,
+                    status: roomInfo.status,
+                    title: roomInfo.title,
+                    name: roomInfo.owner.nickname,
+                    roomId: roomInfo.id_str,
+                    avatar: roomInfo.owner.avatar_thumb.url_list[0],
+                    fans: 0,
+                    customer: roomInfo.user_count_str,
+                    totalCustomer: roomInfo.stats.total_user_str,
+                    signature: 'roomInfo.signature',
+                }
+                // 加载直播视频
+                let videoUrl = roomInfo.stream_url.hls_pull_url_map.HD1.replace(
+                    'http://',
+                    'https://'
+                )
+                loadLive(videoUrl)
+            } else {
+                ElMessage.success('live is over!')
+                liveInfo.value = {
+                    uid: roomInfo.id_str,
+                    status: 4,
+                    title: '已停播',
+                    name: roomInfo.nickname,
+                    roomId: roomInfo.id_str,
+                    avatar: roomInfo.avatar_thumb.url_list[0],
+                    fans: 0,
+                    customer: 0,
+                    totalCustomer: 0,
+                    signature: 'roomInfo.signature',
+                }
+                // 清空播放器
+                destroyPlayer()
             }
-            // 加载直播视频
-            let videoUrl = roomInfo.stream_url.hls_pull_url_map.HD1.replace(
-                'http://',
-                'https://'
-            )
-            loadLive(videoUrl)
         } else {
             console.log('没有获取到')
             ElMessage.error('open live error')
@@ -143,6 +162,14 @@ const loadLive = (videoUrl: string) => {
     dplayer?.play()
 }
 
+// 销毁播放器
+const destroyPlayer = () => {
+    if (dplayer) {
+        dplayer.destroy()
+        dplayer = null
+    }
+}
+
 // 页面初始化
 // onMounted(() => {
 
@@ -183,6 +210,8 @@ const loadLive = (videoUrl: string) => {
                 </div>
                 <!-- 视频播放器 -->
                 <div id="dplayer" class="dplayer"></div>
+                <!-- 直播结束 -->
+                <div v-if="liveInfo.status === 4" class="over">直播已结束</div>
             </div>
             <div class="liveMeg">
                 <div
@@ -290,6 +319,10 @@ const loadLive = (videoUrl: string) => {
             background-repeat: no-repeat;
             background-color: rgba(0, 0, 0, 0.5);
             box-shadow: 0 0 10px 2px gray;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
 
             .ownerBox {
                 position: absolute;
@@ -302,13 +335,13 @@ const loadLive = (videoUrl: string) => {
                 background-color: #0000008b;
                 padding: 10px 4px;
                 border-radius: 20px;
+                z-index: 999;
 
                 .avatar {
                     width: 32px;
                     height: 32px;
                     border-radius: 50%;
                     margin-right: 5px;
-                    z-index: 999;
                 }
 
                 .nickBox {
@@ -317,7 +350,6 @@ const loadLive = (videoUrl: string) => {
                     justify-content: center;
                     align-items: flex-start;
                     margin-right: 10px;
-                    z-index: 999;
 
                     .nickName {
                         font-size: 14px;
@@ -335,6 +367,18 @@ const loadLive = (videoUrl: string) => {
                 width: 100%;
                 height: 100%;
                 border-radius: 10px;
+            }
+
+            .over {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
             }
         }
 

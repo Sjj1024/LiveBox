@@ -56,8 +56,17 @@ impl DouYinReq {
         // 获取cookie里面的ttwid
         let body = response.text().await?;
         // println!("获取的直播间HTML内容是：{}", body);
+        // 判断是不是已经停播了，是的话仅获取主播头像
         // 使用正则表达式匹配直播间信息
-        let re = Regex::new(r#"roomInfo\\":\{\\"room\\":(.*?),\\"toolbar_data"#).unwrap();
+        let re;
+        if body.contains(r#"status\":4"#) {
+            println!("主播已停播了");
+            // 使用正则表达式匹配直播间信息
+            re = Regex::new(r#"anchor\\":(.*?),\\"open_id_str"#).unwrap();
+        } else {
+            // 使用正则表达式匹配直播间信息
+            re = Regex::new(r#"roomInfo\\":\{\\"room\\":(.*?),\\"toolbar_data"#).unwrap();
+        }
         let main_info = re.captures(&body).unwrap().get(1).unwrap().as_str();
         // 替换里面的双引号,方便json解析
         let room_info = String::from(main_info) + "}";
