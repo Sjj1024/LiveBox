@@ -4,7 +4,6 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { ref } from 'vue'
 import { DPlayerImp, LiveInfoImp } from '@/types'
 import Logo from '@/assets/logo.png'
-import WebSocket, { Message } from 'tauri-plugin-websocket-api'
 import { ConnectionConfig } from 'tauri-plugin-websocket-api'
 import { douyin } from '@/proto/dy.js'
 import { ElMessage } from 'element-plus'
@@ -12,11 +11,12 @@ import DPlayer from 'dplayer'
 import Hls from 'hls.js'
 import Flv from 'flv.js'
 import pako from 'pako'
-import WebSocketCli from '@/utils/RustSocket'
+// import SocketCli from '@/utils/RustSocket'
+import SocketCli from '@/utils/WebSocket'
 // 必须使用Uint8Array解析数据，不然解析不出来
 
 // 直播间地址
-const inputUrl = ref('')
+const inputUrl = ref(localStorage.getItem('url') || '')
 const dialogVisible = ref(false)
 const messageList = ref([
     {
@@ -26,7 +26,7 @@ const messageList = ref([
     },
 ])
 // websocket client
-let socketClient: WebSocketCli
+let socketClient: SocketCli
 
 // 主播信息
 const liveInfo = ref({
@@ -52,6 +52,7 @@ const liveMsg = ref()
 const startListen = async () => {
     const url = inputUrl.value.trim()
     console.log('直播间地址:', url)
+    localStorage.setItem('url', url)
     if (url) {
         // 根据直播间地址获取roomid等字段
         const roomJson: LiveInfoImp = await invoke('get_live_html', { url })
@@ -133,7 +134,9 @@ const creatSokcet = async (roomId: string, uniqueId: string, ttwid: string) => {
     // ping消息
     const pingMsg = douyin.PushFrame.encode({ payloadType: 'hb' }).finish()
     console.log('pingMsg---', pingMsg)
-    socketClient = new WebSocketCli(socketUrl, options, onMessage, pingMsg)
+    // socketClient = new SocketCli(socketUrl, options, onMessage, pingMsg)
+    socketClient = new SocketCli(socketUrl)
+    socketClient.onMessage = onMessage
 }
 
 // 直播播放器
@@ -215,13 +218,17 @@ const onMessage = (msg: any) => {
     // 解析消息
     const decodeMsg = douyin.PushFrame.decode(msg.data)
     // console.log('decodeMsg--', decodeMsg)
-    // console.log('logId--', decodeMsg.logId)
+    console.log('logId--', decodeMsg.logId)
     // logTxt.value = decodeMsg.logId
     messageList.value.push({
         id: decodeMsg.logId,
         name: decodeMsg.logId,
         msg: decodeMsg.logId,
     })
+    // 滚动盒子到底部
+    if (liveMsg.value) {
+        liveMsg.value.scrollTop = liveMsg.value.scrollHeight + 500
+    }
     // 解压缩应该是没问题，
     const gzipData = pako.inflate(decodeMsg.payload)
     // console.log('gzipData--', gzipData)
@@ -229,21 +236,17 @@ const onMessage = (msg: any) => {
     const decodeRes = douyin.Response.decode(gzipData)
     // 遍历 payloadPackage.messagesList
     // 判断是否需要回复，自动回复
-    if (decodeRes.needAck) {
-        const ack = douyin.PushFrame.encode({
-            payloadType: 'ack',
-            logId: decodeMsg.logId,
-        }).finish()
-        console.log('ack-------', ack)
-        socketClient?.send(ack)
-    }
+    // if (decodeRes.needAck) {
+    //     const ack = douyin.PushFrame.encode({
+    //         payloadType: 'ack',
+    //         logId: decodeMsg.logId,
+    //     }).finish()
+    //     console.log('ack-------', ack)
+    //     socketClient?.send(ack)
+    // }
     // 解析直播消息
-    handleMessage(decodeRes.messagesList)
+    // handleMessage(decodeRes.messagesList)
     // console.log('decodeRes---', liveMsg.value)
-    // 滚动盒子到底部
-    if (liveMsg.value) {
-        liveMsg.value.scrollTop = liveMsg.value.scrollHeight
-    }
 }
 
 // 遍历消息数组，拿到具体的消息

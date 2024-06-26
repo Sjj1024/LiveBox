@@ -2,7 +2,7 @@ import WebSocket from 'tauri-plugin-websocket-api'
 import { ConnectionConfig } from 'tauri-plugin-websocket-api'
 
 // WebSocket类对象
-class WebSocketCli {
+class SocketCli {
     // 链接地址
     url: string
     // websocket实例
@@ -86,4 +86,4 @@ class WebSocketCli {
 }
 
 // 导出对象
-export default WebSocketCli
+export default SocketCli
