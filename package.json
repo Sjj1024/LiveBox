@@ -8,6 +8,7 @@
         "build": "vue-tsc --noEmit && vite build",
         "preview": "vite preview",
         "build proto": "pnpm pbjs -t static-module -w es6 -o src/proto/dy.js src/proto/dy.proto",
+        "trans proto": "browserify src/proto/dy.js src/assets/static/model.js",
         "tauri": "tauri",
         "tauri dev": "tauri dev",
         "tauri build": "tauri build"

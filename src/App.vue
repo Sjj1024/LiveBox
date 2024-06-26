@@ -2,17 +2,17 @@
 import { Setting } from '@element-plus/icons-vue'
 import { invoke } from '@tauri-apps/api/tauri'
 import { ref } from 'vue'
-import { DPlayerImp, LiveInfo } from '@/types'
+import { DPlayerImp, LiveInfoImp } from '@/types'
 import Logo from '@/assets/logo.png'
-import pako from 'pako'
-import WebSocket from 'tauri-plugin-websocket-api'
+import WebSocket, { Message } from 'tauri-plugin-websocket-api'
 import { ConnectionConfig } from 'tauri-plugin-websocket-api'
 import { douyin } from '@/proto/dy.js'
 import { ElMessage } from 'element-plus'
 import DPlayer from 'dplayer'
 import Hls from 'hls.js'
 import Flv from 'flv.js'
-import WebSocketCli from './utils/socket'
+import pako from 'pako'
+import WebSocketCli from '@/utils/RustSocket'
 // 必须使用Uint8Array解析数据，不然解析不出来
 
 // 直播间地址
@@ -22,11 +22,11 @@ const messageList = ref([
     {
         id: '1',
         name: '1024小神',
-        msg: '欢迎使用直播盒子，输入直播地址开始安静看直播，没有刷礼物功能，所以理性看播，禁止消费',
+        msg: '欢迎使用直播盒子，输入直播地址开始安静看直播，没有刷礼物功能，所以理性看播，不要乱消费',
     },
 ])
 // websocket client
-let socketClient
+let socketClient: WebSocketCli
 
 // 主播信息
 const liveInfo = ref({
@@ -45,13 +45,16 @@ const liveInfo = ref({
 // 推送流地址
 const pushUrl = ref('')
 
+// 聊天消息盒子
+const liveMsg = ref()
+
 // 开始监听
 const startListen = async () => {
     const url = inputUrl.value.trim()
     console.log('直播间地址:', url)
     if (url) {
         // 根据直播间地址获取roomid等字段
-        const roomJson: LiveInfo = await invoke('get_live_html', { url })
+        const roomJson: LiveInfoImp = await invoke('get_live_html', { url })
         console.log('获取到的直播房间信息:', roomJson)
         // roomInfo
         const roomInfo = JSON.parse(roomJson.room_info)
@@ -73,12 +76,13 @@ const startListen = async () => {
                     totalCustomer: roomInfo.stats.total_user_str,
                     signature: 'roomInfo.signature',
                 }
-                // 加载直播视频
-                let videoUrl = roomInfo.stream_url.hls_pull_url_map.HD1.replace(
-                    'http://',
-                    'https://'
-                )
+                // 加载直播视频:可能没有HD1
+                let videoUrl = roomInfo.stream_url.flv_pull_url[
+                    roomInfo.stream_url.default_resolution
+                ].replace('http://', 'https://')
                 loadLive(videoUrl)
+                // 加载websocket
+                creatSokcet(roomInfo.id_str, roomJson.unique_id, roomJson.ttwid)
             } else {
                 ElMessage.success('live is over!')
                 liveInfo.value = {
@@ -104,21 +108,47 @@ const startListen = async () => {
 }
 
 // 创建websokcet
-const creatSokcet = async (socketUrl: string) => {
-    console.log('创建连接')
-    socketClient = new WebSocketCli(socketUrl)
+const creatSokcet = async (roomId: string, uniqueId: string, ttwid: string) => {
+    console.log('创建连接', roomId, uniqueId)
+    let sign = window.creatSignature(roomId, uniqueId)
+    console.log('sign----', sign)
+    // 组装参数
+    let socketUrl = `wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/?room_id=${roomId}&compress=gzip&version_code=180800&webcast_sdk_version=1.0.14-beta.0&live_id=1&did_rule=3&user_unique_id=${uniqueId}&identity=audience&signature=${sign}&aid=6383&device_platform=web&browser_language=zh-CN&browser_platform=Win32&browser_name=Mozilla&browser_version=5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F126.0.0.0+Safari%2F537.36+Edg%2F126.0.0.0`
+    // header
+    const options: ConnectionConfig = {
+        writeBufferSize: 20000,
+        // maxWriteBufferSize会导致不出消息
+        // maxWriteBufferSize: 20000,
+        // maxMessageSize: 20000,
+        // 下面会导致很多错误
+        // maxFrameSize: 20000,
+        // acceptUnmaskedFrames: true,
+        headers: {
+            cookie: 'ttwid=' + ttwid,
+            'user-agent':
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
+        },
+    }
+    console.log('socketUrl---', socketUrl)
+    // ping消息
+    const pingMsg = douyin.PushFrame.encode({ payloadType: 'hb' }).finish()
+    console.log('pingMsg---', pingMsg)
+    socketClient = new WebSocketCli(socketUrl, options, onMessage, pingMsg)
 }
 
 // 直播播放器
 let dplayer: DPlayerImp | null = null
 // 加载直播视频
-const loadLive = (videoUrl: string) => {
+const loadLive = (videoUrl: string, live: boolean = true) => {
     // 根据不同的视频加载不同的播放器
     console.log('加载的videlurl', videoUrl)
     if (videoUrl.includes('m3u8')) {
         dplayer = new DPlayer({
             container: document.getElementById(`dplayer`),
             screenshot: false,
+            autoplay: true,
+            live: live,
+            lang: 'zh-cn', // zh-cn // en
             video: {
                 url: '',
                 type: 'customHls',
@@ -134,6 +164,8 @@ const loadLive = (videoUrl: string) => {
     } else if (videoUrl.includes('mp4')) {
         dplayer = new DPlayer({
             container: document.getElementById(`dplayer`),
+            live: live,
+            autoplay: true,
             screenshot: false,
             fullScreen: false,
             lang: 'zh-cn', // zh-cn // en
@@ -146,6 +178,9 @@ const loadLive = (videoUrl: string) => {
         dplayer = new DPlayer({
             container: document.getElementById(`dplayer`),
             screenshot: false,
+            live: live,
+            autoplay: true,
+            lang: 'zh-cn', // zh-cn // en
             video: {
                 url: videoUrl,
                 type: 'customFlv',
@@ -163,7 +198,7 @@ const loadLive = (videoUrl: string) => {
         })
     }
     // 立即播放视频
-    dplayer?.play()
+    // dplayer?.play()
 }
 
 // 销毁播放器
@@ -172,6 +207,109 @@ const destroyPlayer = () => {
         dplayer.destroy()
         dplayer = null
     }
+}
+
+// 收到websocket消息回调
+const onMessage = (msg: any) => {
+    console.log('收到消息', msg)
+    // 解析消息
+    const decodeMsg = douyin.PushFrame.decode(msg.data)
+    // console.log('decodeMsg--', decodeMsg)
+    // console.log('logId--', decodeMsg.logId)
+    // logTxt.value = decodeMsg.logId
+    messageList.value.push({
+        id: decodeMsg.logId,
+        name: decodeMsg.logId,
+        msg: decodeMsg.logId,
+    })
+    // 解压缩应该是没问题，
+    const gzipData = pako.inflate(decodeMsg.payload)
+    // console.log('gzipData--', gzipData)
+    // Response解码，有问题, 所以要用Response.decode解码也应该是数字类型
+    const decodeRes = douyin.Response.decode(gzipData)
+    // 遍历 payloadPackage.messagesList
+    // 判断是否需要回复，自动回复
+    if (decodeRes.needAck) {
+        const ack = douyin.PushFrame.encode({
+            payloadType: 'ack',
+            logId: decodeMsg.logId,
+        }).finish()
+        console.log('ack-------', ack)
+        socketClient?.send(ack)
+    }
+    // 解析直播消息
+    handleMessage(decodeRes.messagesList)
+    // console.log('decodeRes---', liveMsg.value)
+    // 滚动盒子到底部
+    if (liveMsg.value) {
+        liveMsg.value.scrollTop = liveMsg.value.scrollHeight
+    }
+}
+
+// 遍历消息数组，拿到具体的消息
+const handleMessage = (messageList: douyin.Message) => {
+    messageList.forEach((msg) => {
+        // 判断消息类型
+        switch (msg.method) {
+            // 反对分数
+            case 'WebcastMatchAgainstScoreMessage':
+                console.log('反对分数')
+                break
+            // 点赞数
+            case 'WebcastLikeMessage':
+                console.log('点赞数')
+                break
+            // 成员进入直播间消息
+            case 'WebcastMemberMessage':
+                console.log('成员进入直播间消息')
+                break
+            // 礼物消息
+            case 'WebcastGiftMessage':
+                console.log('礼物消息')
+                break
+            // 聊天弹幕消息
+            case 'WebcastChatMessage':
+                console.log('聊天弹幕消息')
+                decodeChat(msg.payload)
+                break
+            // 联谊会消息
+            case 'WebcastSocialMessage':
+                console.log('联谊会消息')
+                break
+            // 更新粉丝票
+            case 'WebcastUpdateFanTicketMessage':
+                console.log('更新粉丝票')
+                break
+            // 公共文本消息
+            case 'WebcastCommonTextMessage':
+                console.log('公共文本消息')
+                break
+            // 商品改变消息
+            case 'WebcastProductChangeMessage':
+                console.log('商品改变消息')
+                break
+            // 直播间统计消息
+            case 'WebcastRoomUserSeqMessage':
+                console.log('商品改变消息')
+                break
+            // 待解析方法
+            default:
+                console.log('待解析方法' + msg.method)
+                break
+        }
+    })
+}
+// 解析弹幕消息
+const decodeChat = (data) => {
+    const chatMsg = douyin.ChatMessage.decode(data)
+    console.log('chatMsg---', chatMsg)
+    // json_format
+}
+// 解析礼物消息
+const decodeGift = (data) => {
+    const giftMsg = douyin.GiftMessage.decode(data)
+    console.log('giftMsg---', giftMsg)
+    console.log('创建连接')
 }
 </script>
 
@@ -212,7 +350,7 @@ const destroyPlayer = () => {
                 <!-- 直播结束 -->
                 <div v-if="liveInfo.status === 4" class="over">直播已结束</div>
             </div>
-            <div class="liveMeg">
+            <div class="liveMeg" ref="liveMsg">
                 <div
                     v-for="u in messageList"
                     :key="u.id + u.msg"
@@ -439,3 +577,4 @@ const destroyPlayer = () => {
     }
 }
 </style>
+./utils/RustSocket

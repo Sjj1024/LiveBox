@@ -59,6 +59,7 @@ impl DouYinReq {
         // 判断是不是已经停播了，是的话仅获取主播头像
         // 使用正则表达式匹配直播间信息
         let re;
+        let mut unique_id = "";
         if body.contains(r#"status\":4"#) {
             println!("主播已停播了");
             // 使用正则表达式匹配直播间信息
@@ -66,6 +67,8 @@ impl DouYinReq {
         } else {
             // 使用正则表达式匹配直播间信息
             re = Regex::new(r#"roomInfo\\":\{\\"room\\":(.*?),\\"toolbar_data"#).unwrap();
+            let unique_re = Regex::new(r#"user_unique_id\\":\\"(.*?)\\"}"#).unwrap();
+            unique_id = unique_re.captures(&body).unwrap().get(1).unwrap().as_str();
         }
         let main_info = re.captures(&body).unwrap().get(1).unwrap().as_str();
         // 替换里面的双引号,方便json解析
@@ -75,6 +78,7 @@ impl DouYinReq {
         Ok(LiveInfo {
             room_info: self.room_info.clone(),
             ttwid,
+            unique_id: String::from(unique_id),
         })
     }
 

@@ -1,40 +1,40 @@
 {
-    "id_str": "7384358792399489802",
+    "id_str": "7384780141332876032",
     "status": 2,
     "status_str": "2",
-    "title": "聊城麻辣小龙虾【顺航海鲜】正在直播",
-    "user_count_str": "5000+",
+    "title": "路人局稳健打法",
+    "user_count_str": "1w+",
     "cover": {
         "url_list": [
-            "https://p9-webcast-sign.douyinpic.com/image-cut-tos-priv/11f04fa005903216779a16acf66c57c3~tplv-qz53dukwul-common-resize:0:0.image?biz_tag=app_6383_webcast\u0026from=webcast.room.pack\u0026l=202406251910347CC7D82AA1DDC5167083\u0026lk3s=39e7556e\u0026s=enter_room\u0026sc=webcast_cover\u0026x-expires=1721905834\u0026x-signature=XnFcMZ5DQEq5X%2B8weXQ6tdcg9QU%3D",
-            "https://p3-webcast-sign.douyinpic.com/image-cut-tos-priv/11f04fa005903216779a16acf66c57c3~tplv-qz53dukwul-common-resize:0:0.image?biz_tag=app_6383_webcast\u0026from=webcast.room.pack\u0026l=202406251910347CC7D82AA1DDC5167083\u0026lk3s=39e7556e\u0026s=enter_room\u0026sc=webcast_cover\u0026x-expires=1721905834\u0026x-signature=wlkJ1wAV25Px%2FYiOYcSv7wgaYww%3D"
+            "https://p9-webcast-sign.douyinpic.com/image-cut-tos-priv/3ebd1e1f8dc620a7362bbcd553576d6b~tplv-qz53dukwul-common-resize:0:0.image?biz_tag=app_6383_webcast\u0026from=webcast.room.pack\u0026l=202406262108052A1A1956E3610242ACE5\u0026lk3s=39e7556e\u0026s=enter_room\u0026sc=webcast_cover\u0026x-expires=1721999285\u0026x-signature=2D7m4CS%2FnPhNVXkW0iUUaCSFWpU%3D",
+            "https://p3-webcast-sign.douyinpic.com/image-cut-tos-priv/3ebd1e1f8dc620a7362bbcd553576d6b~tplv-qz53dukwul-common-resize:0:0.image?biz_tag=app_6383_webcast\u0026from=webcast.room.pack\u0026l=202406262108052A1A1956E3610242ACE5\u0026lk3s=39e7556e\u0026s=enter_room\u0026sc=webcast_cover\u0026x-expires=1721999285\u0026x-signature=%2FeY1xS6NTapUMKdhndG9hCtcIrU%3D"
         ]
     },
     "stream_url": {
         "flv_pull_url": {
-            "FULL_HD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_or4.flv?auth_key=1719916834-0-0-92a786719ce67d4c4a95ef7a5c955e1f",
-            "HD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_hd.flv?auth_key=1719916834-0-0-34a410343924c6f33495dd1207a10ee8",
-            "SD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_ld.flv?auth_key=1719916834-0-0-1b2d096597a5770c077ff414f847b1ec",
-            "SD2": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_sd.flv?auth_key=1719916834-0-0-df2d43718fb7a5c20aeaa15035b15cb9"
+            "FULL_HD1": "http://pull-hs-f5.flive.douyincdn.com/thirdgame/stream-691847943252345610_expuhd.flv",
+            "HD1": "http://pull-hs-f5.flive.douyincdn.com/thirdgame/stream-691847943252345610_exphd.flv",
+            "SD1": "http://pull-hs-f5.flive.douyincdn.com/thirdgame/stream-691847943252345610_expld.flv",
+            "SD2": "http://pull-hs-f5.flive.douyincdn.com/thirdgame/stream-691847943252345610_expsd.flv"
         },
         "default_resolution": "HD1",
         "hls_pull_url_map": {
-            "FULL_HD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_or4.m3u8?auth_key=1719916834-0-0-c8a52e3f232208186df3ae2154985a76",
-            "HD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_hd.m3u8?auth_key=1719916834-0-0-75e58eeffd63c404912e0304356db564",
-            "SD1": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_ld.m3u8?auth_key=1719916834-0-0-dc96439c2b5375cfaf04373a442a2547",
-            "SD2": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_sd.m3u8?auth_key=1719916834-0-0-474f72b70f4d7e15e043985d99da2163"
+            "FULL_HD1": "http://pull-hs-f5.flive.douyincdn.com/thirdgame/stream-691847943252345610_expuhd/index.m3u8",
+            "HD1": "http://pull-hs-f5.flive.douyincdn.com/thirdgame/stream-691847943252345610_exphd/index.m3u8",
+            "SD1": "http://pull-hs-f5.flive.douyincdn.com/thirdgame/stream-691847943252345610_expld/index.m3u8",
+            "SD2": "http://pull-hs-f5.flive.douyincdn.com/thirdgame/stream-691847943252345610_expsd/index.m3u8"
         },
-        "hls_pull_url": "http://pull-l3.douyincdn.com/stage/stream-115380607033016402_or4.m3u8?auth_key=1719916834-0-0-c8a52e3f232208186df3ae2154985a76",
-        "stream_orientation": 1,
+        "hls_pull_url": "http://pull-hs-f5.flive.douyincdn.com/thirdgame/stream-691847943252345610_exphd/index.m3u8",
+        "stream_orientation": 2,
         "live_core_sdk_data": {
             "pull_data": {
                 "options": {
                     "default_quality": {
-                        "name": "蓝光",
-                        "sdk_key": "origin",
+                        "name": "超清",
+                        "sdk_key": "hd",
                         "v_codec": "264",
-                        "resolution": "1088x1920",
-                        "level": 4,
+                        "resolution": "960x720",
+                        "level": 3,
                         "v_bit_rate": 0,
                         "additional_content": "",
                         "fps": 0,
@@ -45,42 +45,53 @@
                             "name": "标清",
                             "sdk_key": "ld",
                             "v_codec": "264",
-                            "resolution": "480x847",
+                            "resolution": "720x540",
                             "level": 1,
                             "v_bit_rate": 1000000,
                             "additional_content": "",
-                            "fps": 15,
+                            "fps": 25,
                             "disable": 0
                         },
                         {
                             "name": "高清",
                             "sdk_key": "sd",
                             "v_codec": "264",
-                            "resolution": "540x952",
+                            "resolution": "960x720",
                             "level": 2,
-                            "v_bit_rate": 1600000,
+                            "v_bit_rate": 2000000,
                             "additional_content": "",
-                            "fps": 15,
+                            "fps": 30,
                             "disable": 0
                         },
                         {
                             "name": "超清",
                             "sdk_key": "hd",
                             "v_codec": "264",
-                            "resolution": "720x1270",
+                            "resolution": "960x720",
                             "level": 3,
-                            "v_bit_rate": 2000000,
+                            "v_bit_rate": 4000000,
                             "additional_content": "",
-                            "fps": 15,
+                            "fps": 30,
                             "disable": 0
                         },
                         {
                             "name": "蓝光",
+                            "sdk_key": "uhd",
+                            "v_codec": "264",
+                            "resolution": "1440x1080",
+                            "level": 4,
+                            "v_bit_rate": 9086976,
+                            "additional_content": "",
+                            "fps": 45,
+                            "disable": 0
+                        },
+                        {
+                            "name": "原画",
                             "sdk_key": "origin",
                             "v_codec": "264",
-                            "resolution": "1088x1920",
-                            "level": 4,
-                            "v_bit_rate": 2344000,
+                            "resolution": "",
+                            "level": 5,
+                            "v_bit_rate": 9086976,
                             "additional_content": "",
                             "fps": 0,
                             "disable": 0
@@ -91,8 +102,8 @@
             }
         },
         "extra": {
-            "height": 1920,
-            "width": 1088,
+            "height": 1080,
+            "width": 1440,
             "fps": 0,
             "max_bitrate": 0,
             "min_bitrate": 0,
@@ -113,17 +124,26 @@
     },
     "mosaic_status": 0,
     "mosaic_status_str": "0",
-    "admin_user_ids": [106015964533],
-    "admin_user_ids_str": ["106015964533"],
+    "admin_user_ids": [
+        74983764656, 84710645004, 4224770834444811, 1922366243352615,
+        57352010161
+    ],
+    "admin_user_ids_str": [
+        "74983764656",
+        "84710645004",
+        "4224770834444811",
+        "1922366243352615",
+        "57352010161"
+    ],
     "owner": {
-        "id_str": "59067043422",
-        "sec_uid": "MS4wLjABAAAAmFfcFbwIWqc42iq4epfHHVo4mF7vT3idjaXfLIBCETs",
-        "nickname": "聊城麻辣小龙虾【顺航海鲜】",
+        "id_str": "3412508281668360",
+        "sec_uid": "MS4wLjABAAAAhmVDSBVzrPuW7Km2_wXx1CSFC4kUk17JGLd6F7exYCJtf5vPYXBY0NdaIVjU_Ftu",
+        "nickname": "冷宴华",
         "avatar_thumb": {
             "url_list": [
-                "https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_af67471ce990c9470ec0f609cb01fe8f.jpeg?from=3067671334",
-                "https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_af67471ce990c9470ec0f609cb01fe8f.jpeg?from=3067671334",
-                "https://p26.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_af67471ce990c9470ec0f609cb01fe8f.jpeg?from=3067671334"
+                "https://p3.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_d44b7bdd8458331942f445fe12d3d07e.jpeg?from=3067671334",
+                "https://p11.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_d44b7bdd8458331942f445fe12d3d07e.jpeg?from=3067671334",
+                "https://p26.douyinpic.com/aweme/100x100/aweme-avatar/tos-cn-avt-0015_d44b7bdd8458331942f445fe12d3d07e.jpeg?from=3067671334"
             ]
         },
         "follow_info": { "follow_status": 0, "follow_status_str": "0" },
@@ -132,7 +152,7 @@
             "level": 0,
             "identity_type": 0,
             "buy_type": 0,
-            "open": 0
+            "open": 1
         },
         "open_id_str": ""
     },
@@ -158,7 +178,7 @@
         "DonationSticker": 0,
         "HourRank": 0,
         "CommerceCard": 1,
-        "AudioChat": 1,
+        "AudioChat": 2,
         "DanmakuDefault": 0,
         "KtvOrderSong": 2,
         "SelectionAlbum": 2,
@@ -179,15 +199,15 @@
         "VSTopic": 0,
         "VSRank": 0,
         "AdminCommentWall": 0,
-        "CommerceComponent": 1,
+        "CommerceComponent": 2,
         "DouPlus": 1,
-        "GamePointsPlaying": 2,
+        "GamePointsPlaying": 1,
         "Poster": 2,
         "Highlights": 2,
         "TypingCommentState": 1,
         "StrokeUpDownGuide": 1,
         "UpRightStatsFloatingLayer": 1,
-        "CastScreenExplicit": 2,
+        "CastScreenExplicit": 1,
         "Selection": 2,
         "IndustryService": 0,
         "VerticalRank": 1,
@@ -223,14 +243,14 @@
             }
         },
         "FixedChat": 2,
-        "QuizGamePointsPlaying": 2
+        "QuizGamePointsPlaying": 1
     },
-    "live_room_mode": 0,
+    "live_room_mode": 1,
     "stats": {
         "total_user_desp": "",
         "like_count": 0,
         "total_user_str": "10万+",
-        "user_count_str": "5722"
+        "user_count_str": "1万+"
     },
     "has_commerce_goods": true,
     "linker_map": {},
@@ -253,20 +273,20 @@
     },
     "room_view_stats": {
         "is_hidden": false,
-        "display_short": "5722",
-        "display_middle": "5722",
-        "display_long": "5722在线观众",
-        "display_value": 5722,
+        "display_short": "1万",
+        "display_middle": "1万",
+        "display_long": "1万在线观众",
+        "display_value": 15245,
         "display_version": 1663849727,
         "incremental": false,
         "display_type": 1,
-        "display_short_anchor": "5722",
-        "display_middle_anchor": "5722",
-        "display_long_anchor": "5722在线观众"
+        "display_short_anchor": "1.5万",
+        "display_middle_anchor": "1.5万",
+        "display_long_anchor": "1.5万在线观众"
     },
     "scene_type_info": {
         "is_union_live_room": false,
-        "is_life": true,
+        "is_life": false,
         "is_protected_room": 0,
         "is_lasted_goods_room": 2,
         "is_desire_room": 2,

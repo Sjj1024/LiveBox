@@ -1,6 +1,7 @@
-export interface LiveInfo {
+export interface LiveInfoImp {
     room_info: string
     ttwid: string
+    unique_id: string
 }
 
 export interface DPlayerImp {
