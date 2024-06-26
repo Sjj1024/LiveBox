@@ -55,19 +55,19 @@ class WebSocketCli {
         }
     }
 
-    // websocket链接建立
+    // websocket链接建立:可注册多个回调函数
     onOpen() {
         console.log('WebSocket opened:')
         this.emit('open', 'open')
     }
 
-    // websocket收到消息
+    // websocket收到消息:可注册多个回调函数
     onMessage(event: any) {
         console.log('WebSocket message received:', event.data)
         this.emit('message', event.data)
     }
 
-    // websocket关闭
+    // websocket关闭:可注册多个回调函数
     onClose(event) {
         console.log('WebSocket closed:', event)
         // 停止心跳

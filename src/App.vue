@@ -12,6 +12,7 @@ import { ElMessage } from 'element-plus'
 import DPlayer from 'dplayer'
 import Hls from 'hls.js'
 import Flv from 'flv.js'
+import WebSocketCli from './utils/socket'
 // 必须使用Uint8Array解析数据，不然解析不出来
 
 // 直播间地址
@@ -21,9 +22,11 @@ const messageList = ref([
     {
         id: '1',
         name: '1024小神',
-        msg: '欢迎使用直播盒子，输入直播地址开始安静看直播。',
+        msg: '欢迎使用直播盒子，输入直播地址开始安静看直播，没有刷礼物功能，所以理性看播，禁止消费',
     },
 ])
+// websocket client
+let socketClient
 
 // 主播信息
 const liveInfo = ref({
@@ -101,8 +104,9 @@ const startListen = async () => {
 }
 
 // 创建websokcet
-const creatSokcet = async () => {
+const creatSokcet = async (socketUrl: string) => {
     console.log('创建连接')
+    socketClient = new WebSocketCli(socketUrl)
 }
 
 // 直播播放器
@@ -169,11 +173,6 @@ const destroyPlayer = () => {
         dplayer = null
     }
 }
-
-// 页面初始化
-// onMounted(() => {
-
-// })
 </script>
 
 <template>
