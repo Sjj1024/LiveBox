@@ -51,7 +51,7 @@ const liveMsg = ref()
 // 开始监听
 const startListen = async () => {
     const url = inputUrl.value.trim()
-    console.log('直播间地址:', url)
+    console.log('直播间地址:', proto)
     localStorage.setItem('url', url)
     if (url) {
         // 根据直播间地址获取roomid等字段
@@ -223,11 +223,6 @@ const onMessage = (msg: any) => {
     // console.log('decodeMsg--', decodeMsg)
     // console.log('logId--', decodeMsg.logId)
     // logTxt.value = decodeMsg.logId
-    messageList.value.push({
-        id: decodeMsg.logId,
-        name: decodeMsg.logId,
-        msg: decodeMsg.logId,
-    })
     // 滚动盒子到底部
     if (liveMsg.value) {
         liveMsg.value.scrollTop = liveMsg.value.scrollHeight + 500
@@ -236,7 +231,7 @@ const onMessage = (msg: any) => {
     const gzipData = pako.inflate(decodeMsg.payload)
     // console.log('gzipData--', gzipData)
     // Response解码，有问题, 所以要用Response.decode解码也应该是数字类型
-    const decodeRes = douyin.Response.decode(gzipData)
+    const response = douyin.Response.decode(gzipData)
     // 遍历 payloadPackage.messagesList
     // 判断是否需要回复，自动回复
     // if (decodeRes.needAck) {
@@ -248,7 +243,7 @@ const onMessage = (msg: any) => {
     //     socketClient?.send(ack)
     // }
     // 解析直播消息
-    handleMessage(decodeRes.messagesList)
+    handleMessage(response.messagesList)
     // console.log('decodeRes---', liveMsg.value)
 }
 
@@ -307,15 +302,17 @@ const handleMessage = (messageList: douyin.Message) => {
 }
 // 解析弹幕消息
 const decodeChat = (data) => {
-    // console.log('decodeChat', data)
     // 校验消息
-    if (douyin.ChatMessage.verify(data)) {
-        const chatMsg = douyin.ChatMessage.decode(data)
-        console.log('chatMsg---', chatMsg.content)
-    } else {
-        throw Error('ChatMessage 校验失败')
+    const chatMsg = douyin.ChatMessage.decode(data)
+    console.log('chatMsg-----', chatMsg)
+    const { common, user, content } = chatMsg
+    const message = {
+        id: common.userId,
+        name: user.nickName,
+        msg: content,
     }
-    // json_format
+    messageList.value.push(message)
+    console.log('chatMsg---', user.nickName, content)
 }
 // 解析礼物消息
 const decodeGift = (data) => {
