@@ -11,8 +11,8 @@ import DPlayer from 'dplayer'
 import Hls from 'hls.js'
 import Flv from 'flv.js'
 import pako from 'pako'
-// import SocketCli from '@/utils/RustSocket'
-import SocketCli from '@/utils/WebSocket'
+import SocketCli from '@/utils/RustSocket'
+// import SocketCli from '@/utils/WebSocket'
 // 必须使用Uint8Array解析数据，不然解析不出来
 
 // 直播间地址
@@ -134,9 +134,12 @@ const creatSokcet = async (roomId: string, uniqueId: string, ttwid: string) => {
     // ping消息
     const pingMsg = douyin.PushFrame.encode({ payloadType: 'hb' }).finish()
     console.log('pingMsg---', pingMsg)
-    // socketClient = new SocketCli(socketUrl, options, onMessage, pingMsg)
-    socketClient = new SocketCli(socketUrl)
-    socketClient.onMessage = onMessage
+    // 使用rust webscoket
+    socketClient = new SocketCli(socketUrl, options, onMessage, pingMsg)
+
+    // 使用js的websocket
+    // socketClient = new SocketCli(socketUrl)
+    // socketClient.onMessage = onMessage
 }
 
 // 直播播放器
@@ -245,7 +248,7 @@ const onMessage = (msg: any) => {
     //     socketClient?.send(ack)
     // }
     // 解析直播消息
-    // handleMessage(decodeRes.messagesList)
+    handleMessage(decodeRes.messagesList)
     // console.log('decodeRes---', liveMsg.value)
 }
 
@@ -304,8 +307,14 @@ const handleMessage = (messageList: douyin.Message) => {
 }
 // 解析弹幕消息
 const decodeChat = (data) => {
-    const chatMsg = douyin.ChatMessage.decode(data)
-    console.log('chatMsg---', chatMsg)
+    console.log('decodeChat', data)
+    // 校验消息
+    if (douyin.ChatMessage.verify(data)) {
+        const chatMsg = douyin.ChatMessage.decode(new Uint32Array(data))
+        console.log('chatMsg---', chatMsg)
+    } else {
+        throw Error('ChatMessage 校验失败')
+    }
     // json_format
 }
 // 解析礼物消息

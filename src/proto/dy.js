@@ -1004,10 +1004,10 @@ export const douyin = $root.douyin = (() => {
          * @property {douyin.IImage|null} [backgroundImageV2] ChatMessage backgroundImageV2
          * @property {douyin.IPublicAreaCommon|null} [publicAreaCommon] ChatMessage publicAreaCommon
          * @property {douyin.IImage|null} [giftImage] ChatMessage giftImage
-         * @property {number|Long|null} [agreeMsgId] ChatMessage agreeMsgId
+         * @property {number|null} [agreeMsgId] ChatMessage agreeMsgId
          * @property {number|null} [priorityLevel] ChatMessage priorityLevel
          * @property {douyin.ILandscapeAreaCommon|null} [landscapeAreaCommon] ChatMessage landscapeAreaCommon
-         * @property {number|Long|null} [eventTime] ChatMessage eventTime
+         * @property {number|null} [eventTime] ChatMessage eventTime
          * @property {boolean|null} [sendReview] ChatMessage sendReview
          * @property {boolean|null} [fromIntercom] ChatMessage fromIntercom
          * @property {boolean|null} [intercomHideUserCard] ChatMessage intercomHideUserCard
@@ -1105,11 +1105,11 @@ export const douyin = $root.douyin = (() => {
 
         /**
          * ChatMessage agreeMsgId.
-         * @member {number|Long} agreeMsgId
+         * @member {number} agreeMsgId
          * @memberof douyin.ChatMessage
          * @instance
          */
-        ChatMessage.prototype.agreeMsgId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+        ChatMessage.prototype.agreeMsgId = 0;
 
         /**
          * ChatMessage priorityLevel.
@@ -1129,11 +1129,11 @@ export const douyin = $root.douyin = (() => {
 
         /**
          * ChatMessage eventTime.
-         * @member {number|Long} eventTime
+         * @member {number} eventTime
          * @memberof douyin.ChatMessage
          * @instance
          */
-        ChatMessage.prototype.eventTime = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+        ChatMessage.prototype.eventTime = 0;
 
         /**
          * ChatMessage sendReview.
@@ -1226,13 +1226,13 @@ export const douyin = $root.douyin = (() => {
             if (message.giftImage != null && Object.hasOwnProperty.call(message, "giftImage"))
                 $root.douyin.Image.encode(message.giftImage, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
             if (message.agreeMsgId != null && Object.hasOwnProperty.call(message, "agreeMsgId"))
-                writer.uint32(/* id 11, wireType 0 =*/88).uint64(message.agreeMsgId);
+                writer.uint32(/* id 11, wireType 0 =*/88).uint32(message.agreeMsgId);
             if (message.priorityLevel != null && Object.hasOwnProperty.call(message, "priorityLevel"))
                 writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.priorityLevel);
             if (message.landscapeAreaCommon != null && Object.hasOwnProperty.call(message, "landscapeAreaCommon"))
                 $root.douyin.LandscapeAreaCommon.encode(message.landscapeAreaCommon, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
             if (message.eventTime != null && Object.hasOwnProperty.call(message, "eventTime"))
-                writer.uint32(/* id 15, wireType 0 =*/120).uint64(message.eventTime);
+                writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.eventTime);
             if (message.sendReview != null && Object.hasOwnProperty.call(message, "sendReview"))
                 writer.uint32(/* id 16, wireType 0 =*/128).bool(message.sendReview);
             if (message.fromIntercom != null && Object.hasOwnProperty.call(message, "fromIntercom"))
@@ -1316,7 +1316,7 @@ export const douyin = $root.douyin = (() => {
                         break;
                     }
                 case 11: {
-                        message.agreeMsgId = reader.uint64();
+                        message.agreeMsgId = reader.uint32();
                         break;
                     }
                 case 12: {
@@ -1328,7 +1328,7 @@ export const douyin = $root.douyin = (() => {
                         break;
                     }
                 case 15: {
-                        message.eventTime = reader.uint64();
+                        message.eventTime = reader.uint32();
                         break;
                     }
                 case 16: {
@@ -1430,8 +1430,8 @@ export const douyin = $root.douyin = (() => {
                     return "giftImage." + error;
             }
             if (message.agreeMsgId != null && message.hasOwnProperty("agreeMsgId"))
-                if (!$util.isInteger(message.agreeMsgId) && !(message.agreeMsgId && $util.isInteger(message.agreeMsgId.low) && $util.isInteger(message.agreeMsgId.high)))
-                    return "agreeMsgId: integer|Long expected";
+                if (!$util.isInteger(message.agreeMsgId))
+                    return "agreeMsgId: integer expected";
             if (message.priorityLevel != null && message.hasOwnProperty("priorityLevel"))
                 if (!$util.isInteger(message.priorityLevel))
                     return "priorityLevel: integer expected";
@@ -1441,8 +1441,8 @@ export const douyin = $root.douyin = (() => {
                     return "landscapeAreaCommon." + error;
             }
             if (message.eventTime != null && message.hasOwnProperty("eventTime"))
-                if (!$util.isInteger(message.eventTime) && !(message.eventTime && $util.isInteger(message.eventTime.low) && $util.isInteger(message.eventTime.high)))
-                    return "eventTime: integer|Long expected";
+                if (!$util.isInteger(message.eventTime))
+                    return "eventTime: integer expected";
             if (message.sendReview != null && message.hasOwnProperty("sendReview"))
                 if (typeof message.sendReview !== "boolean")
                     return "sendReview: boolean expected";
@@ -1515,14 +1515,7 @@ export const douyin = $root.douyin = (() => {
                 message.giftImage = $root.douyin.Image.fromObject(object.giftImage);
             }
             if (object.agreeMsgId != null)
-                if ($util.Long)
-                    (message.agreeMsgId = $util.Long.fromValue(object.agreeMsgId)).unsigned = true;
-                else if (typeof object.agreeMsgId === "string")
-                    message.agreeMsgId = parseInt(object.agreeMsgId, 10);
-                else if (typeof object.agreeMsgId === "number")
-                    message.agreeMsgId = object.agreeMsgId;
-                else if (typeof object.agreeMsgId === "object")
-                    message.agreeMsgId = new $util.LongBits(object.agreeMsgId.low >>> 0, object.agreeMsgId.high >>> 0).toNumber(true);
+                message.agreeMsgId = object.agreeMsgId >>> 0;
             if (object.priorityLevel != null)
                 message.priorityLevel = object.priorityLevel >>> 0;
             if (object.landscapeAreaCommon != null) {
@@ -1531,14 +1524,7 @@ export const douyin = $root.douyin = (() => {
                 message.landscapeAreaCommon = $root.douyin.LandscapeAreaCommon.fromObject(object.landscapeAreaCommon);
             }
             if (object.eventTime != null)
-                if ($util.Long)
-                    (message.eventTime = $util.Long.fromValue(object.eventTime)).unsigned = true;
-                else if (typeof object.eventTime === "string")
-                    message.eventTime = parseInt(object.eventTime, 10);
-                else if (typeof object.eventTime === "number")
-                    message.eventTime = object.eventTime;
-                else if (typeof object.eventTime === "object")
-                    message.eventTime = new $util.LongBits(object.eventTime.low >>> 0, object.eventTime.high >>> 0).toNumber(true);
+                message.eventTime = object.eventTime >>> 0;
             if (object.sendReview != null)
                 message.sendReview = Boolean(object.sendReview);
             if (object.fromIntercom != null)
@@ -1580,18 +1566,10 @@ export const douyin = $root.douyin = (() => {
                 object.backgroundImageV2 = null;
                 object.publicAreaCommon = null;
                 object.giftImage = null;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, true);
-                    object.agreeMsgId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.agreeMsgId = options.longs === String ? "0" : 0;
+                object.agreeMsgId = 0;
                 object.priorityLevel = 0;
                 object.landscapeAreaCommon = null;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, true);
-                    object.eventTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.eventTime = options.longs === String ? "0" : 0;
+                object.eventTime = 0;
                 object.sendReview = false;
                 object.fromIntercom = false;
                 object.intercomHideUserCard = false;
@@ -1618,19 +1596,13 @@ export const douyin = $root.douyin = (() => {
             if (message.giftImage != null && message.hasOwnProperty("giftImage"))
                 object.giftImage = $root.douyin.Image.toObject(message.giftImage, options);
             if (message.agreeMsgId != null && message.hasOwnProperty("agreeMsgId"))
-                if (typeof message.agreeMsgId === "number")
-                    object.agreeMsgId = options.longs === String ? String(message.agreeMsgId) : message.agreeMsgId;
-                else
-                    object.agreeMsgId = options.longs === String ? $util.Long.prototype.toString.call(message.agreeMsgId) : options.longs === Number ? new $util.LongBits(message.agreeMsgId.low >>> 0, message.agreeMsgId.high >>> 0).toNumber(true) : message.agreeMsgId;
+                object.agreeMsgId = message.agreeMsgId;
             if (message.priorityLevel != null && message.hasOwnProperty("priorityLevel"))
                 object.priorityLevel = message.priorityLevel;
             if (message.landscapeAreaCommon != null && message.hasOwnProperty("landscapeAreaCommon"))
                 object.landscapeAreaCommon = $root.douyin.LandscapeAreaCommon.toObject(message.landscapeAreaCommon, options);
             if (message.eventTime != null && message.hasOwnProperty("eventTime"))
-                if (typeof message.eventTime === "number")
-                    object.eventTime = options.longs === String ? String(message.eventTime) : message.eventTime;
-                else
-                    object.eventTime = options.longs === String ? $util.Long.prototype.toString.call(message.eventTime) : options.longs === Number ? new $util.LongBits(message.eventTime.low >>> 0, message.eventTime.high >>> 0).toNumber(true) : message.eventTime;
+                object.eventTime = message.eventTime;
             if (message.sendReview != null && message.hasOwnProperty("sendReview"))
                 object.sendReview = message.sendReview;
             if (message.fromIntercom != null && message.hasOwnProperty("fromIntercom"))
