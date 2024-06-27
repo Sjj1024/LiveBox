@@ -1,0 +1,60 @@
+name: Build Tauri App
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build-macos:
+        runs-on: macos-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Setup Rust
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+                  override: true
+            - name: Install Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '16'
+            - name: Install Tauri Bundler
+              run: cargo install tauri-bundler
+            - name: Install Dependencies
+              run: pnpm install
+            - name: Build Tauri Application
+              run: pnpm run tauri build
+            - name: Upload macOS Artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: tauri-macos
+                  path: src-tauri/target/release/bundle/macos/*.app
+
+    build-windows:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Setup Rust
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+                  override: true
+            - name: Install Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '16'
+            - name: Install Tauri Bundler
+              run: cargo install tauri-bundler
+            - name: Install Dependencies
+              run: pnpm install
+            - name: Build Tauri Application
+              run: pnpm run tauri build
+            - name: Upload Windows Artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: tauri-windows
+                  path: src-tauri/target/release/bundle/msi/*.msi
