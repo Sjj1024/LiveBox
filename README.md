@@ -14,6 +14,6 @@ macbook 下载地址：
 
 # 界面介绍
 
-主界面：
 ![alt text](./analysis/image-2.png)
 ![alt text](./analysis/image-3.png)
+![alt text](./analysis/image-4.png)
