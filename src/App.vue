@@ -217,11 +217,11 @@ const destroyPlayer = () => {
 
 // 收到websocket消息回调
 const onMessage = (msg: any) => {
-    console.log('收到消息', msg)
+    // console.log('收到消息', msg)
     // 解析消息
     const decodeMsg = douyin.PushFrame.decode(msg.data)
     // console.log('decodeMsg--', decodeMsg)
-    console.log('logId--', decodeMsg.logId)
+    // console.log('logId--', decodeMsg.logId)
     // logTxt.value = decodeMsg.logId
     messageList.value.push({
         id: decodeMsg.logId,
@@ -259,59 +259,59 @@ const handleMessage = (messageList: douyin.Message) => {
         switch (msg.method) {
             // 反对分数
             case 'WebcastMatchAgainstScoreMessage':
-                console.log('反对分数')
+                // console.log('反对分数')
                 break
             // 点赞数
             case 'WebcastLikeMessage':
-                console.log('点赞数')
+                // console.log('点赞数')
                 break
             // 成员进入直播间消息
             case 'WebcastMemberMessage':
-                console.log('成员进入直播间消息')
+                // console.log('成员进入直播间消息')
                 break
             // 礼物消息
             case 'WebcastGiftMessage':
-                console.log('礼物消息')
+                // console.log('礼物消息')
                 break
             // 聊天弹幕消息
             case 'WebcastChatMessage':
-                console.log('聊天弹幕消息')
+                // console.log('聊天弹幕消息')
                 decodeChat(msg.payload)
                 break
             // 联谊会消息
             case 'WebcastSocialMessage':
-                console.log('联谊会消息')
+                // console.log('联谊会消息')
                 break
             // 更新粉丝票
             case 'WebcastUpdateFanTicketMessage':
-                console.log('更新粉丝票')
+                // console.log('更新粉丝票')
                 break
             // 公共文本消息
             case 'WebcastCommonTextMessage':
-                console.log('公共文本消息')
+                // console.log('公共文本消息')
                 break
             // 商品改变消息
             case 'WebcastProductChangeMessage':
-                console.log('商品改变消息')
+                // console.log('商品改变消息')
                 break
             // 直播间统计消息
             case 'WebcastRoomUserSeqMessage':
-                console.log('商品改变消息')
+                // console.log('商品改变消息')
                 break
             // 待解析方法
             default:
-                console.log('待解析方法' + msg.method)
+                // console.log('待解析方法' + msg.method)
                 break
         }
     })
 }
 // 解析弹幕消息
 const decodeChat = (data) => {
-    console.log('decodeChat', data)
+    // console.log('decodeChat', data)
     // 校验消息
     if (douyin.ChatMessage.verify(data)) {
-        const chatMsg = douyin.ChatMessage.decode(new Uint32Array(data))
-        console.log('chatMsg---', chatMsg)
+        const chatMsg = douyin.ChatMessage.decode(data)
+        console.log('chatMsg---', chatMsg.content)
     } else {
         throw Error('ChatMessage 校验失败')
     }
