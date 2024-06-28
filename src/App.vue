@@ -304,7 +304,7 @@ const handleMessage = (messageList: douyin.Message) => {
 const decodeChat = (data) => {
     // 校验消息
     const chatMsg = douyin.ChatMessage.decode(data)
-    console.log('chatMsg-----', chatMsg)
+    // console.log('chatMsg-----', chatMsg)
     const { common, user, content } = chatMsg
     const message = {
         id: common.userId,
