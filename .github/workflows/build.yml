@@ -35,9 +35,9 @@ jobs:
                   workspaces: './src-tauri -> target'
 
             - name: Sync node version and setup cache
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v2
               with:
-                  node-version: 'lts/*'
+                  node-version: '18'
                   cache: 'npm' # Set this to npm, yarn or pnpm.
 
             - name: For act to work (local testing)
