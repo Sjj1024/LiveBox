@@ -8,9 +8,7 @@
 ## 功能介绍
 
 可以获取直播视频和主播头像和昵称，直播聊天弹幕内容，但是屏蔽刷礼物功能，禁止刷礼物禁止消费，理性看播，看紧口袋。
-
-windows 下载地址：  
-macbook 下载地址：
+windows/mac/linux 下载地址：https://github.com/Sjj1024/LiveBox/releases
 
 ## 界面介绍
 
