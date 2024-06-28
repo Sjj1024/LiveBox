@@ -23,7 +23,7 @@
         "pako": "^2.1.0",
         "protobufjs": "^7.3.2",
         "protobufjs-cli": "^1.1.2",
-        "tauri-plugin-websocket-api": "github:tauri-apps/tauri-plugin-websocket",
+        "tauri-plugin-websocket-api": "github:tauri-apps/tauri-plugin-websocket#v1",
         "vue": "^3.3.4"
     },
     "devDependencies": {

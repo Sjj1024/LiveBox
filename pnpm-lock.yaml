@@ -36,8 +36,8 @@ dependencies:
     specifier: ^1.1.2
     version: 1.1.2(protobufjs@7.3.2)
   tauri-plugin-websocket-api:
-    specifier: github:tauri-apps/tauri-plugin-websocket
-    version: git/github.com+tauri-apps/tauri-plugin-websocket/b8e7d6180d6aa6d262c91616b07f464e42fa88ea
+    specifier: github:tauri-apps/tauri-plugin-websocket#v1
+    version: github.com/tauri-apps/tauri-plugin-websocket/b8e7d6180d6aa6d262c91616b07f464e42fa88ea
   vue:
     specifier: ^3.3.4
     version: 3.4.29(typescript@4.9.5)
@@ -1746,8 +1746,8 @@ packages:
     resolution: {integrity: sha512-nquOebG4sngPmGPICTS5EnxqhKbCmz5Ox5hsszI2T6U5qdrJizBc+0ilYSEjTSzU0yZcmvppztXe/5Al5fUwdg==}
     dev: false
 
-  git/github.com+tauri-apps/tauri-plugin-websocket/b8e7d6180d6aa6d262c91616b07f464e42fa88ea:
-    resolution: {commit: b8e7d6180d6aa6d262c91616b07f464e42fa88ea, repo: git@github.com:tauri-apps/tauri-plugin-websocket.git, type: git}
+  github.com/tauri-apps/tauri-plugin-websocket/b8e7d6180d6aa6d262c91616b07f464e42fa88ea:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/b8e7d6180d6aa6d262c91616b07f464e42fa88ea}
     name: tauri-plugin-websocket-api
     version: 0.0.0
     dependencies:
