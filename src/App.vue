@@ -51,7 +51,7 @@ const liveMsg = ref()
 // 开始监听
 const startListen = async () => {
     const url = inputUrl.value.trim()
-    console.log('直播间地址:', proto)
+    // console.log('直播间地址:', proto)
     localStorage.setItem('url', url)
     if (url) {
         // 根据直播间地址获取roomid等字段
