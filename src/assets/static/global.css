@@ -45,3 +45,8 @@ img {
 }
 
 /* 滚动条颜色#363741 */
+
+/* 播放器菜单隐藏 */
+.dplayer-menu {
+    display: none !important;
+}
