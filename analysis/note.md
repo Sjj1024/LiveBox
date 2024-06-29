@@ -17,5 +17,8 @@ https://36-99-64-171.bytefcdnrd.com/thirdgame/stream-691847943252345610_expsd.fl
 
 4.会出现丢消息的情况，解析 chat 消息的时候出错
 
-5.支付宝和微信赞助二维码
+6.从 message.js 里面搜索 e.消息
+就可以找到对应的 proto 消息定义
+
+支付宝和微信赞助二维码
 ![alt text](pay.png)

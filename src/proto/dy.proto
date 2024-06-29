@@ -3,18 +3,19 @@ syntax = "proto3";
 package douyin;
 
 message Response {
-  repeated Message messagesList = 1;
+  repeated Message messages = 1;
   string cursor = 2;
-  uint64 fetchInterval = 3;
-  uint64 now = 4;
+  int64 fetchInterval = 3;
+  int64 now = 4;
   string internalExt = 5;
-  uint32 fetchType = 6;
-  map<string, string> routeParams = 7;
-  uint64 heartbeatDuration = 8;
+  int32 fetchType = 6;
+//   map<string, string> routeParams = 7;
+  int64 heartbeatDuration = 8;
   bool needAck = 9;
   string pushServer = 10;
   string liveCursor = 11;
   bool historyNoMore = 12;
+  string proxy_server = 13;
 }
 
 message Message {
@@ -33,23 +34,24 @@ message ChatMessage {
   Common common = 1;
   User user = 2;
   string content = 3;
-  bool visibleToSender = 4;
-  Image backgroundImage = 5;
-  string fullScreenTextColor = 6;
-  Image backgroundImageV2 = 7;
-  PublicAreaCommon publicAreaCommon = 8;
-  Image giftImage = 9;
-  uint64 agreeMsgId = 11;
-  uint32 priorityLevel = 12;
-  LandscapeAreaCommon landscapeAreaCommon = 13;
-  uint64 eventTime = 15;
-  bool sendReview = 16;
-  bool fromIntercom = 17;
-  bool intercomHideUserCard = 18;
-  //  repeated chatTagsList = 19;
-  string chatBy = 20;
-  uint32 individualChatPriority = 21;
-  Text rtfContent = 22;
+//   uint64 priority = 5;
+//   bool visibleToSender = 4;
+//   Image backgroundImage = 5;
+//   string fullScreenTextColor = 6;
+//   Image backgroundImageV2 = 7;
+//   PublicAreaCommon publicAreaCommon = 8;
+//   Image giftImage = 9;
+//   uint64 agreeMsgId = 11;
+//   uint32 priorityLevel = 12;
+//   LandscapeAreaCommon landscapeAreaCommon = 13;
+//   uint64 eventTime = 15;
+//   bool sendReview = 16;
+//   bool fromIntercom = 17;
+//   bool intercomHideUserCard = 18;
+//   //  repeated chatTagsList = 19;
+//   string chatBy = 20;
+//   uint32 individualChatPriority = 21;
+//   Text rtfContent = 22;
 }
 
 message LandscapeAreaCommon {
@@ -487,14 +489,15 @@ message ImageContent {
 }
 
 message PushFrame {
-  uint64 seqId = 1;
-  uint64 logId = 2;
-  uint64 service = 3;
-  uint64 method = 4;
-  repeated HeadersList headersList = 5;
+  uint64 SeqID = 1;
+  uint64 LogID = 2;
+  uint32 service = 3;
+  uint32 method = 4;
+  repeated Headers headers = 5;
   string payloadEncoding = 6;
   string payloadType = 7;
   bytes payload = 8;
+  string LodIDNew = 9;
 }
 
 message kk { uint32 k = 14; }
@@ -546,13 +549,13 @@ message PreMessage {
   // 字段名待定
   string aa = 9;
   string devicePlatform = 11;
-  repeated HeadersList headers = 15;
+  repeated Headers headers = 15;
   uint32 authType = 18;
   string biz = 21;
   string access = 22;
 }
 
-message HeadersList {
+message Headers {
   string key = 1;
   string value = 2;
 }

@@ -22,18 +22,18 @@ export const douyin = $root.douyin = (() => {
          * Properties of a Response.
          * @memberof douyin
          * @interface IResponse
-         * @property {Array.<douyin.IMessage>|null} [messagesList] Response messagesList
+         * @property {Array.<douyin.IMessage>|null} [messages] Response messages
          * @property {string|null} [cursor] Response cursor
          * @property {number|Long|null} [fetchInterval] Response fetchInterval
          * @property {number|Long|null} [now] Response now
          * @property {string|null} [internalExt] Response internalExt
          * @property {number|null} [fetchType] Response fetchType
-         * @property {Object.<string,string>|null} [routeParams] Response routeParams
          * @property {number|Long|null} [heartbeatDuration] Response heartbeatDuration
          * @property {boolean|null} [needAck] Response needAck
          * @property {string|null} [pushServer] Response pushServer
          * @property {string|null} [liveCursor] Response liveCursor
          * @property {boolean|null} [historyNoMore] Response historyNoMore
+         * @property {string|null} [proxyServer] Response proxyServer
          */
 
         /**
@@ -45,8 +45,7 @@ export const douyin = $root.douyin = (() => {
          * @param {douyin.IResponse=} [properties] Properties to set
          */
         function Response(properties) {
-            this.messagesList = [];
-            this.routeParams = {};
+            this.messages = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -54,12 +53,12 @@ export const douyin = $root.douyin = (() => {
         }
 
         /**
-         * Response messagesList.
-         * @member {Array.<douyin.IMessage>} messagesList
+         * Response messages.
+         * @member {Array.<douyin.IMessage>} messages
          * @memberof douyin.Response
          * @instance
          */
-        Response.prototype.messagesList = $util.emptyArray;
+        Response.prototype.messages = $util.emptyArray;
 
         /**
          * Response cursor.
@@ -75,7 +74,7 @@ export const douyin = $root.douyin = (() => {
          * @memberof douyin.Response
          * @instance
          */
-        Response.prototype.fetchInterval = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+        Response.prototype.fetchInterval = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
          * Response now.
@@ -83,7 +82,7 @@ export const douyin = $root.douyin = (() => {
          * @memberof douyin.Response
          * @instance
          */
-        Response.prototype.now = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+        Response.prototype.now = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
          * Response internalExt.
@@ -102,20 +101,12 @@ export const douyin = $root.douyin = (() => {
         Response.prototype.fetchType = 0;
 
         /**
-         * Response routeParams.
-         * @member {Object.<string,string>} routeParams
-         * @memberof douyin.Response
-         * @instance
-         */
-        Response.prototype.routeParams = $util.emptyObject;
-
-        /**
          * Response heartbeatDuration.
          * @member {number|Long} heartbeatDuration
          * @memberof douyin.Response
          * @instance
          */
-        Response.prototype.heartbeatDuration = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+        Response.prototype.heartbeatDuration = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
          * Response needAck.
@@ -150,6 +141,14 @@ export const douyin = $root.douyin = (() => {
         Response.prototype.historyNoMore = false;
 
         /**
+         * Response proxyServer.
+         * @member {string} proxyServer
+         * @memberof douyin.Response
+         * @instance
+         */
+        Response.prototype.proxyServer = "";
+
+        /**
          * Creates a new Response instance using the specified properties.
          * @function create
          * @memberof douyin.Response
@@ -173,24 +172,21 @@ export const douyin = $root.douyin = (() => {
         Response.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.messagesList != null && message.messagesList.length)
-                for (let i = 0; i < message.messagesList.length; ++i)
-                    $root.douyin.Message.encode(message.messagesList[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.messages != null && message.messages.length)
+                for (let i = 0; i < message.messages.length; ++i)
+                    $root.douyin.Message.encode(message.messages[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             if (message.cursor != null && Object.hasOwnProperty.call(message, "cursor"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.cursor);
             if (message.fetchInterval != null && Object.hasOwnProperty.call(message, "fetchInterval"))
-                writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.fetchInterval);
+                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.fetchInterval);
             if (message.now != null && Object.hasOwnProperty.call(message, "now"))
-                writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.now);
+                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.now);
             if (message.internalExt != null && Object.hasOwnProperty.call(message, "internalExt"))
                 writer.uint32(/* id 5, wireType 2 =*/42).string(message.internalExt);
             if (message.fetchType != null && Object.hasOwnProperty.call(message, "fetchType"))
-                writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.fetchType);
-            if (message.routeParams != null && Object.hasOwnProperty.call(message, "routeParams"))
-                for (let keys = Object.keys(message.routeParams), i = 0; i < keys.length; ++i)
-                    writer.uint32(/* id 7, wireType 2 =*/58).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]).uint32(/* id 2, wireType 2 =*/18).string(message.routeParams[keys[i]]).ldelim();
+                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.fetchType);
             if (message.heartbeatDuration != null && Object.hasOwnProperty.call(message, "heartbeatDuration"))
-                writer.uint32(/* id 8, wireType 0 =*/64).uint64(message.heartbeatDuration);
+                writer.uint32(/* id 8, wireType 0 =*/64).int64(message.heartbeatDuration);
             if (message.needAck != null && Object.hasOwnProperty.call(message, "needAck"))
                 writer.uint32(/* id 9, wireType 0 =*/72).bool(message.needAck);
             if (message.pushServer != null && Object.hasOwnProperty.call(message, "pushServer"))
@@ -199,6 +195,8 @@ export const douyin = $root.douyin = (() => {
                 writer.uint32(/* id 11, wireType 2 =*/90).string(message.liveCursor);
             if (message.historyNoMore != null && Object.hasOwnProperty.call(message, "historyNoMore"))
                 writer.uint32(/* id 12, wireType 0 =*/96).bool(message.historyNoMore);
+            if (message.proxyServer != null && Object.hasOwnProperty.call(message, "proxyServer"))
+                writer.uint32(/* id 13, wireType 2 =*/106).string(message.proxyServer);
             return writer;
         };
 
@@ -229,14 +227,14 @@ export const douyin = $root.douyin = (() => {
         Response.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.douyin.Response(), key, value;
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.douyin.Response();
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1: {
-                        if (!(message.messagesList && message.messagesList.length))
-                            message.messagesList = [];
-                        message.messagesList.push($root.douyin.Message.decode(reader, reader.uint32()));
+                        if (!(message.messages && message.messages.length))
+                            message.messages = [];
+                        message.messages.push($root.douyin.Message.decode(reader, reader.uint32()));
                         break;
                     }
                 case 2: {
@@ -244,11 +242,11 @@ export const douyin = $root.douyin = (() => {
                         break;
                     }
                 case 3: {
-                        message.fetchInterval = reader.uint64();
+                        message.fetchInterval = reader.int64();
                         break;
                     }
                 case 4: {
-                        message.now = reader.uint64();
+                        message.now = reader.int64();
                         break;
                     }
                 case 5: {
@@ -256,34 +254,11 @@ export const douyin = $root.douyin = (() => {
                         break;
                     }
                 case 6: {
-                        message.fetchType = reader.uint32();
-                        break;
-                    }
-                case 7: {
-                        if (message.routeParams === $util.emptyObject)
-                            message.routeParams = {};
-                        let end2 = reader.uint32() + reader.pos;
-                        key = "";
-                        value = "";
-                        while (reader.pos < end2) {
-                            let tag2 = reader.uint32();
-                            switch (tag2 >>> 3) {
-                            case 1:
-                                key = reader.string();
-                                break;
-                            case 2:
-                                value = reader.string();
-                                break;
-                            default:
-                                reader.skipType(tag2 & 7);
-                                break;
-                            }
-                        }
-                        message.routeParams[key] = value;
+                        message.fetchType = reader.int32();
                         break;
                     }
                 case 8: {
-                        message.heartbeatDuration = reader.uint64();
+                        message.heartbeatDuration = reader.int64();
                         break;
                     }
                 case 9: {
@@ -300,6 +275,10 @@ export const douyin = $root.douyin = (() => {
                     }
                 case 12: {
                         message.historyNoMore = reader.bool();
+                        break;
+                    }
+                case 13: {
+                        message.proxyServer = reader.string();
                         break;
                     }
                 default:
@@ -337,13 +316,13 @@ export const douyin = $root.douyin = (() => {
         Response.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.messagesList != null && message.hasOwnProperty("messagesList")) {
-                if (!Array.isArray(message.messagesList))
-                    return "messagesList: array expected";
-                for (let i = 0; i < message.messagesList.length; ++i) {
-                    let error = $root.douyin.Message.verify(message.messagesList[i]);
+            if (message.messages != null && message.hasOwnProperty("messages")) {
+                if (!Array.isArray(message.messages))
+                    return "messages: array expected";
+                for (let i = 0; i < message.messages.length; ++i) {
+                    let error = $root.douyin.Message.verify(message.messages[i]);
                     if (error)
-                        return "messagesList." + error;
+                        return "messages." + error;
                 }
             }
             if (message.cursor != null && message.hasOwnProperty("cursor"))
@@ -361,14 +340,6 @@ export const douyin = $root.douyin = (() => {
             if (message.fetchType != null && message.hasOwnProperty("fetchType"))
                 if (!$util.isInteger(message.fetchType))
                     return "fetchType: integer expected";
-            if (message.routeParams != null && message.hasOwnProperty("routeParams")) {
-                if (!$util.isObject(message.routeParams))
-                    return "routeParams: object expected";
-                let key = Object.keys(message.routeParams);
-                for (let i = 0; i < key.length; ++i)
-                    if (!$util.isString(message.routeParams[key[i]]))
-                        return "routeParams: string{k:string} expected";
-            }
             if (message.heartbeatDuration != null && message.hasOwnProperty("heartbeatDuration"))
                 if (!$util.isInteger(message.heartbeatDuration) && !(message.heartbeatDuration && $util.isInteger(message.heartbeatDuration.low) && $util.isInteger(message.heartbeatDuration.high)))
                     return "heartbeatDuration: integer|Long expected";
@@ -384,6 +355,9 @@ export const douyin = $root.douyin = (() => {
             if (message.historyNoMore != null && message.hasOwnProperty("historyNoMore"))
                 if (typeof message.historyNoMore !== "boolean")
                     return "historyNoMore: boolean expected";
+            if (message.proxyServer != null && message.hasOwnProperty("proxyServer"))
+                if (!$util.isString(message.proxyServer))
+                    return "proxyServer: string expected";
             return null;
         };
 
@@ -399,56 +373,49 @@ export const douyin = $root.douyin = (() => {
             if (object instanceof $root.douyin.Response)
                 return object;
             let message = new $root.douyin.Response();
-            if (object.messagesList) {
-                if (!Array.isArray(object.messagesList))
-                    throw TypeError(".douyin.Response.messagesList: array expected");
-                message.messagesList = [];
-                for (let i = 0; i < object.messagesList.length; ++i) {
-                    if (typeof object.messagesList[i] !== "object")
-                        throw TypeError(".douyin.Response.messagesList: object expected");
-                    message.messagesList[i] = $root.douyin.Message.fromObject(object.messagesList[i]);
+            if (object.messages) {
+                if (!Array.isArray(object.messages))
+                    throw TypeError(".douyin.Response.messages: array expected");
+                message.messages = [];
+                for (let i = 0; i < object.messages.length; ++i) {
+                    if (typeof object.messages[i] !== "object")
+                        throw TypeError(".douyin.Response.messages: object expected");
+                    message.messages[i] = $root.douyin.Message.fromObject(object.messages[i]);
                 }
             }
             if (object.cursor != null)
                 message.cursor = String(object.cursor);
             if (object.fetchInterval != null)
                 if ($util.Long)
-                    (message.fetchInterval = $util.Long.fromValue(object.fetchInterval)).unsigned = true;
+                    (message.fetchInterval = $util.Long.fromValue(object.fetchInterval)).unsigned = false;
                 else if (typeof object.fetchInterval === "string")
                     message.fetchInterval = parseInt(object.fetchInterval, 10);
                 else if (typeof object.fetchInterval === "number")
                     message.fetchInterval = object.fetchInterval;
                 else if (typeof object.fetchInterval === "object")
-                    message.fetchInterval = new $util.LongBits(object.fetchInterval.low >>> 0, object.fetchInterval.high >>> 0).toNumber(true);
+                    message.fetchInterval = new $util.LongBits(object.fetchInterval.low >>> 0, object.fetchInterval.high >>> 0).toNumber();
             if (object.now != null)
                 if ($util.Long)
-                    (message.now = $util.Long.fromValue(object.now)).unsigned = true;
+                    (message.now = $util.Long.fromValue(object.now)).unsigned = false;
                 else if (typeof object.now === "string")
                     message.now = parseInt(object.now, 10);
                 else if (typeof object.now === "number")
                     message.now = object.now;
                 else if (typeof object.now === "object")
-                    message.now = new $util.LongBits(object.now.low >>> 0, object.now.high >>> 0).toNumber(true);
+                    message.now = new $util.LongBits(object.now.low >>> 0, object.now.high >>> 0).toNumber();
             if (object.internalExt != null)
                 message.internalExt = String(object.internalExt);
             if (object.fetchType != null)
-                message.fetchType = object.fetchType >>> 0;
-            if (object.routeParams) {
-                if (typeof object.routeParams !== "object")
-                    throw TypeError(".douyin.Response.routeParams: object expected");
-                message.routeParams = {};
-                for (let keys = Object.keys(object.routeParams), i = 0; i < keys.length; ++i)
-                    message.routeParams[keys[i]] = String(object.routeParams[keys[i]]);
-            }
+                message.fetchType = object.fetchType | 0;
             if (object.heartbeatDuration != null)
                 if ($util.Long)
-                    (message.heartbeatDuration = $util.Long.fromValue(object.heartbeatDuration)).unsigned = true;
+                    (message.heartbeatDuration = $util.Long.fromValue(object.heartbeatDuration)).unsigned = false;
                 else if (typeof object.heartbeatDuration === "string")
                     message.heartbeatDuration = parseInt(object.heartbeatDuration, 10);
                 else if (typeof object.heartbeatDuration === "number")
                     message.heartbeatDuration = object.heartbeatDuration;
                 else if (typeof object.heartbeatDuration === "object")
-                    message.heartbeatDuration = new $util.LongBits(object.heartbeatDuration.low >>> 0, object.heartbeatDuration.high >>> 0).toNumber(true);
+                    message.heartbeatDuration = new $util.LongBits(object.heartbeatDuration.low >>> 0, object.heartbeatDuration.high >>> 0).toNumber();
             if (object.needAck != null)
                 message.needAck = Boolean(object.needAck);
             if (object.pushServer != null)
@@ -457,6 +424,8 @@ export const douyin = $root.douyin = (() => {
                 message.liveCursor = String(object.liveCursor);
             if (object.historyNoMore != null)
                 message.historyNoMore = Boolean(object.historyNoMore);
+            if (object.proxyServer != null)
+                message.proxyServer = String(object.proxyServer);
             return message;
         };
 
@@ -474,25 +443,23 @@ export const douyin = $root.douyin = (() => {
                 options = {};
             let object = {};
             if (options.arrays || options.defaults)
-                object.messagesList = [];
-            if (options.objects || options.defaults)
-                object.routeParams = {};
+                object.messages = [];
             if (options.defaults) {
                 object.cursor = "";
                 if ($util.Long) {
-                    let long = new $util.Long(0, 0, true);
+                    let long = new $util.Long(0, 0, false);
                     object.fetchInterval = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.fetchInterval = options.longs === String ? "0" : 0;
                 if ($util.Long) {
-                    let long = new $util.Long(0, 0, true);
+                    let long = new $util.Long(0, 0, false);
                     object.now = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.now = options.longs === String ? "0" : 0;
                 object.internalExt = "";
                 object.fetchType = 0;
                 if ($util.Long) {
-                    let long = new $util.Long(0, 0, true);
+                    let long = new $util.Long(0, 0, false);
                     object.heartbeatDuration = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.heartbeatDuration = options.longs === String ? "0" : 0;
@@ -500,11 +467,12 @@ export const douyin = $root.douyin = (() => {
                 object.pushServer = "";
                 object.liveCursor = "";
                 object.historyNoMore = false;
+                object.proxyServer = "";
             }
-            if (message.messagesList && message.messagesList.length) {
-                object.messagesList = [];
-                for (let j = 0; j < message.messagesList.length; ++j)
-                    object.messagesList[j] = $root.douyin.Message.toObject(message.messagesList[j], options);
+            if (message.messages && message.messages.length) {
+                object.messages = [];
+                for (let j = 0; j < message.messages.length; ++j)
+                    object.messages[j] = $root.douyin.Message.toObject(message.messages[j], options);
             }
             if (message.cursor != null && message.hasOwnProperty("cursor"))
                 object.cursor = message.cursor;
@@ -512,27 +480,21 @@ export const douyin = $root.douyin = (() => {
                 if (typeof message.fetchInterval === "number")
                     object.fetchInterval = options.longs === String ? String(message.fetchInterval) : message.fetchInterval;
                 else
-                    object.fetchInterval = options.longs === String ? $util.Long.prototype.toString.call(message.fetchInterval) : options.longs === Number ? new $util.LongBits(message.fetchInterval.low >>> 0, message.fetchInterval.high >>> 0).toNumber(true) : message.fetchInterval;
+                    object.fetchInterval = options.longs === String ? $util.Long.prototype.toString.call(message.fetchInterval) : options.longs === Number ? new $util.LongBits(message.fetchInterval.low >>> 0, message.fetchInterval.high >>> 0).toNumber() : message.fetchInterval;
             if (message.now != null && message.hasOwnProperty("now"))
                 if (typeof message.now === "number")
                     object.now = options.longs === String ? String(message.now) : message.now;
                 else
-                    object.now = options.longs === String ? $util.Long.prototype.toString.call(message.now) : options.longs === Number ? new $util.LongBits(message.now.low >>> 0, message.now.high >>> 0).toNumber(true) : message.now;
+                    object.now = options.longs === String ? $util.Long.prototype.toString.call(message.now) : options.longs === Number ? new $util.LongBits(message.now.low >>> 0, message.now.high >>> 0).toNumber() : message.now;
             if (message.internalExt != null && message.hasOwnProperty("internalExt"))
                 object.internalExt = message.internalExt;
             if (message.fetchType != null && message.hasOwnProperty("fetchType"))
                 object.fetchType = message.fetchType;
-            let keys2;
-            if (message.routeParams && (keys2 = Object.keys(message.routeParams)).length) {
-                object.routeParams = {};
-                for (let j = 0; j < keys2.length; ++j)
-                    object.routeParams[keys2[j]] = message.routeParams[keys2[j]];
-            }
             if (message.heartbeatDuration != null && message.hasOwnProperty("heartbeatDuration"))
                 if (typeof message.heartbeatDuration === "number")
                     object.heartbeatDuration = options.longs === String ? String(message.heartbeatDuration) : message.heartbeatDuration;
                 else
-                    object.heartbeatDuration = options.longs === String ? $util.Long.prototype.toString.call(message.heartbeatDuration) : options.longs === Number ? new $util.LongBits(message.heartbeatDuration.low >>> 0, message.heartbeatDuration.high >>> 0).toNumber(true) : message.heartbeatDuration;
+                    object.heartbeatDuration = options.longs === String ? $util.Long.prototype.toString.call(message.heartbeatDuration) : options.longs === Number ? new $util.LongBits(message.heartbeatDuration.low >>> 0, message.heartbeatDuration.high >>> 0).toNumber() : message.heartbeatDuration;
             if (message.needAck != null && message.hasOwnProperty("needAck"))
                 object.needAck = message.needAck;
             if (message.pushServer != null && message.hasOwnProperty("pushServer"))
@@ -541,6 +503,8 @@ export const douyin = $root.douyin = (() => {
                 object.liveCursor = message.liveCursor;
             if (message.historyNoMore != null && message.hasOwnProperty("historyNoMore"))
                 object.historyNoMore = message.historyNoMore;
+            if (message.proxyServer != null && message.hasOwnProperty("proxyServer"))
+                object.proxyServer = message.proxyServer;
             return object;
         };
 
@@ -998,22 +962,6 @@ export const douyin = $root.douyin = (() => {
          * @property {douyin.ICommon|null} [common] ChatMessage common
          * @property {douyin.IUser|null} [user] ChatMessage user
          * @property {string|null} [content] ChatMessage content
-         * @property {boolean|null} [visibleToSender] ChatMessage visibleToSender
-         * @property {douyin.IImage|null} [backgroundImage] ChatMessage backgroundImage
-         * @property {string|null} [fullScreenTextColor] ChatMessage fullScreenTextColor
-         * @property {douyin.IImage|null} [backgroundImageV2] ChatMessage backgroundImageV2
-         * @property {douyin.IPublicAreaCommon|null} [publicAreaCommon] ChatMessage publicAreaCommon
-         * @property {douyin.IImage|null} [giftImage] ChatMessage giftImage
-         * @property {number|null} [agreeMsgId] ChatMessage agreeMsgId
-         * @property {number|null} [priorityLevel] ChatMessage priorityLevel
-         * @property {douyin.ILandscapeAreaCommon|null} [landscapeAreaCommon] ChatMessage landscapeAreaCommon
-         * @property {number|null} [eventTime] ChatMessage eventTime
-         * @property {boolean|null} [sendReview] ChatMessage sendReview
-         * @property {boolean|null} [fromIntercom] ChatMessage fromIntercom
-         * @property {boolean|null} [intercomHideUserCard] ChatMessage intercomHideUserCard
-         * @property {string|null} [chatBy] ChatMessage chatBy
-         * @property {number|null} [individualChatPriority] ChatMessage individualChatPriority
-         * @property {douyin.IText|null} [rtfContent] ChatMessage rtfContent
          */
 
         /**
@@ -1056,134 +1004,6 @@ export const douyin = $root.douyin = (() => {
         ChatMessage.prototype.content = "";
 
         /**
-         * ChatMessage visibleToSender.
-         * @member {boolean} visibleToSender
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.visibleToSender = false;
-
-        /**
-         * ChatMessage backgroundImage.
-         * @member {douyin.IImage|null|undefined} backgroundImage
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.backgroundImage = null;
-
-        /**
-         * ChatMessage fullScreenTextColor.
-         * @member {string} fullScreenTextColor
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.fullScreenTextColor = "";
-
-        /**
-         * ChatMessage backgroundImageV2.
-         * @member {douyin.IImage|null|undefined} backgroundImageV2
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.backgroundImageV2 = null;
-
-        /**
-         * ChatMessage publicAreaCommon.
-         * @member {douyin.IPublicAreaCommon|null|undefined} publicAreaCommon
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.publicAreaCommon = null;
-
-        /**
-         * ChatMessage giftImage.
-         * @member {douyin.IImage|null|undefined} giftImage
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.giftImage = null;
-
-        /**
-         * ChatMessage agreeMsgId.
-         * @member {number} agreeMsgId
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.agreeMsgId = 0;
-
-        /**
-         * ChatMessage priorityLevel.
-         * @member {number} priorityLevel
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.priorityLevel = 0;
-
-        /**
-         * ChatMessage landscapeAreaCommon.
-         * @member {douyin.ILandscapeAreaCommon|null|undefined} landscapeAreaCommon
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.landscapeAreaCommon = null;
-
-        /**
-         * ChatMessage eventTime.
-         * @member {number} eventTime
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.eventTime = 0;
-
-        /**
-         * ChatMessage sendReview.
-         * @member {boolean} sendReview
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.sendReview = false;
-
-        /**
-         * ChatMessage fromIntercom.
-         * @member {boolean} fromIntercom
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.fromIntercom = false;
-
-        /**
-         * ChatMessage intercomHideUserCard.
-         * @member {boolean} intercomHideUserCard
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.intercomHideUserCard = false;
-
-        /**
-         * ChatMessage chatBy.
-         * @member {string} chatBy
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.chatBy = "";
-
-        /**
-         * ChatMessage individualChatPriority.
-         * @member {number} individualChatPriority
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.individualChatPriority = 0;
-
-        /**
-         * ChatMessage rtfContent.
-         * @member {douyin.IText|null|undefined} rtfContent
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.rtfContent = null;
-
-        /**
          * Creates a new ChatMessage instance using the specified properties.
          * @function create
          * @memberof douyin.ChatMessage
@@ -1213,38 +1033,6 @@ export const douyin = $root.douyin = (() => {
                 $root.douyin.User.encode(message.user, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             if (message.content != null && Object.hasOwnProperty.call(message, "content"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.content);
-            if (message.visibleToSender != null && Object.hasOwnProperty.call(message, "visibleToSender"))
-                writer.uint32(/* id 4, wireType 0 =*/32).bool(message.visibleToSender);
-            if (message.backgroundImage != null && Object.hasOwnProperty.call(message, "backgroundImage"))
-                $root.douyin.Image.encode(message.backgroundImage, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-            if (message.fullScreenTextColor != null && Object.hasOwnProperty.call(message, "fullScreenTextColor"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.fullScreenTextColor);
-            if (message.backgroundImageV2 != null && Object.hasOwnProperty.call(message, "backgroundImageV2"))
-                $root.douyin.Image.encode(message.backgroundImageV2, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-            if (message.publicAreaCommon != null && Object.hasOwnProperty.call(message, "publicAreaCommon"))
-                $root.douyin.PublicAreaCommon.encode(message.publicAreaCommon, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-            if (message.giftImage != null && Object.hasOwnProperty.call(message, "giftImage"))
-                $root.douyin.Image.encode(message.giftImage, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
-            if (message.agreeMsgId != null && Object.hasOwnProperty.call(message, "agreeMsgId"))
-                writer.uint32(/* id 11, wireType 0 =*/88).uint32(message.agreeMsgId);
-            if (message.priorityLevel != null && Object.hasOwnProperty.call(message, "priorityLevel"))
-                writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.priorityLevel);
-            if (message.landscapeAreaCommon != null && Object.hasOwnProperty.call(message, "landscapeAreaCommon"))
-                $root.douyin.LandscapeAreaCommon.encode(message.landscapeAreaCommon, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
-            if (message.eventTime != null && Object.hasOwnProperty.call(message, "eventTime"))
-                writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.eventTime);
-            if (message.sendReview != null && Object.hasOwnProperty.call(message, "sendReview"))
-                writer.uint32(/* id 16, wireType 0 =*/128).bool(message.sendReview);
-            if (message.fromIntercom != null && Object.hasOwnProperty.call(message, "fromIntercom"))
-                writer.uint32(/* id 17, wireType 0 =*/136).bool(message.fromIntercom);
-            if (message.intercomHideUserCard != null && Object.hasOwnProperty.call(message, "intercomHideUserCard"))
-                writer.uint32(/* id 18, wireType 0 =*/144).bool(message.intercomHideUserCard);
-            if (message.chatBy != null && Object.hasOwnProperty.call(message, "chatBy"))
-                writer.uint32(/* id 20, wireType 2 =*/162).string(message.chatBy);
-            if (message.individualChatPriority != null && Object.hasOwnProperty.call(message, "individualChatPriority"))
-                writer.uint32(/* id 21, wireType 0 =*/168).uint32(message.individualChatPriority);
-            if (message.rtfContent != null && Object.hasOwnProperty.call(message, "rtfContent"))
-                $root.douyin.Text.encode(message.rtfContent, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
             return writer;
         };
 
@@ -1289,70 +1077,6 @@ export const douyin = $root.douyin = (() => {
                     }
                 case 3: {
                         message.content = reader.string();
-                        break;
-                    }
-                case 4: {
-                        message.visibleToSender = reader.bool();
-                        break;
-                    }
-                case 5: {
-                        message.backgroundImage = $root.douyin.Image.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 6: {
-                        message.fullScreenTextColor = reader.string();
-                        break;
-                    }
-                case 7: {
-                        message.backgroundImageV2 = $root.douyin.Image.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 8: {
-                        message.publicAreaCommon = $root.douyin.PublicAreaCommon.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 9: {
-                        message.giftImage = $root.douyin.Image.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 11: {
-                        message.agreeMsgId = reader.uint32();
-                        break;
-                    }
-                case 12: {
-                        message.priorityLevel = reader.uint32();
-                        break;
-                    }
-                case 13: {
-                        message.landscapeAreaCommon = $root.douyin.LandscapeAreaCommon.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 15: {
-                        message.eventTime = reader.uint32();
-                        break;
-                    }
-                case 16: {
-                        message.sendReview = reader.bool();
-                        break;
-                    }
-                case 17: {
-                        message.fromIntercom = reader.bool();
-                        break;
-                    }
-                case 18: {
-                        message.intercomHideUserCard = reader.bool();
-                        break;
-                    }
-                case 20: {
-                        message.chatBy = reader.string();
-                        break;
-                    }
-                case 21: {
-                        message.individualChatPriority = reader.uint32();
-                        break;
-                    }
-                case 22: {
-                        message.rtfContent = $root.douyin.Text.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -1403,66 +1127,6 @@ export const douyin = $root.douyin = (() => {
             if (message.content != null && message.hasOwnProperty("content"))
                 if (!$util.isString(message.content))
                     return "content: string expected";
-            if (message.visibleToSender != null && message.hasOwnProperty("visibleToSender"))
-                if (typeof message.visibleToSender !== "boolean")
-                    return "visibleToSender: boolean expected";
-            if (message.backgroundImage != null && message.hasOwnProperty("backgroundImage")) {
-                let error = $root.douyin.Image.verify(message.backgroundImage);
-                if (error)
-                    return "backgroundImage." + error;
-            }
-            if (message.fullScreenTextColor != null && message.hasOwnProperty("fullScreenTextColor"))
-                if (!$util.isString(message.fullScreenTextColor))
-                    return "fullScreenTextColor: string expected";
-            if (message.backgroundImageV2 != null && message.hasOwnProperty("backgroundImageV2")) {
-                let error = $root.douyin.Image.verify(message.backgroundImageV2);
-                if (error)
-                    return "backgroundImageV2." + error;
-            }
-            if (message.publicAreaCommon != null && message.hasOwnProperty("publicAreaCommon")) {
-                let error = $root.douyin.PublicAreaCommon.verify(message.publicAreaCommon);
-                if (error)
-                    return "publicAreaCommon." + error;
-            }
-            if (message.giftImage != null && message.hasOwnProperty("giftImage")) {
-                let error = $root.douyin.Image.verify(message.giftImage);
-                if (error)
-                    return "giftImage." + error;
-            }
-            if (message.agreeMsgId != null && message.hasOwnProperty("agreeMsgId"))
-                if (!$util.isInteger(message.agreeMsgId))
-                    return "agreeMsgId: integer expected";
-            if (message.priorityLevel != null && message.hasOwnProperty("priorityLevel"))
-                if (!$util.isInteger(message.priorityLevel))
-                    return "priorityLevel: integer expected";
-            if (message.landscapeAreaCommon != null && message.hasOwnProperty("landscapeAreaCommon")) {
-                let error = $root.douyin.LandscapeAreaCommon.verify(message.landscapeAreaCommon);
-                if (error)
-                    return "landscapeAreaCommon." + error;
-            }
-            if (message.eventTime != null && message.hasOwnProperty("eventTime"))
-                if (!$util.isInteger(message.eventTime))
-                    return "eventTime: integer expected";
-            if (message.sendReview != null && message.hasOwnProperty("sendReview"))
-                if (typeof message.sendReview !== "boolean")
-                    return "sendReview: boolean expected";
-            if (message.fromIntercom != null && message.hasOwnProperty("fromIntercom"))
-                if (typeof message.fromIntercom !== "boolean")
-                    return "fromIntercom: boolean expected";
-            if (message.intercomHideUserCard != null && message.hasOwnProperty("intercomHideUserCard"))
-                if (typeof message.intercomHideUserCard !== "boolean")
-                    return "intercomHideUserCard: boolean expected";
-            if (message.chatBy != null && message.hasOwnProperty("chatBy"))
-                if (!$util.isString(message.chatBy))
-                    return "chatBy: string expected";
-            if (message.individualChatPriority != null && message.hasOwnProperty("individualChatPriority"))
-                if (!$util.isInteger(message.individualChatPriority))
-                    return "individualChatPriority: integer expected";
-            if (message.rtfContent != null && message.hasOwnProperty("rtfContent")) {
-                let error = $root.douyin.Text.verify(message.rtfContent);
-                if (error)
-                    return "rtfContent." + error;
-            }
             return null;
         };
 
@@ -1490,56 +1154,6 @@ export const douyin = $root.douyin = (() => {
             }
             if (object.content != null)
                 message.content = String(object.content);
-            if (object.visibleToSender != null)
-                message.visibleToSender = Boolean(object.visibleToSender);
-            if (object.backgroundImage != null) {
-                if (typeof object.backgroundImage !== "object")
-                    throw TypeError(".douyin.ChatMessage.backgroundImage: object expected");
-                message.backgroundImage = $root.douyin.Image.fromObject(object.backgroundImage);
-            }
-            if (object.fullScreenTextColor != null)
-                message.fullScreenTextColor = String(object.fullScreenTextColor);
-            if (object.backgroundImageV2 != null) {
-                if (typeof object.backgroundImageV2 !== "object")
-                    throw TypeError(".douyin.ChatMessage.backgroundImageV2: object expected");
-                message.backgroundImageV2 = $root.douyin.Image.fromObject(object.backgroundImageV2);
-            }
-            if (object.publicAreaCommon != null) {
-                if (typeof object.publicAreaCommon !== "object")
-                    throw TypeError(".douyin.ChatMessage.publicAreaCommon: object expected");
-                message.publicAreaCommon = $root.douyin.PublicAreaCommon.fromObject(object.publicAreaCommon);
-            }
-            if (object.giftImage != null) {
-                if (typeof object.giftImage !== "object")
-                    throw TypeError(".douyin.ChatMessage.giftImage: object expected");
-                message.giftImage = $root.douyin.Image.fromObject(object.giftImage);
-            }
-            if (object.agreeMsgId != null)
-                message.agreeMsgId = object.agreeMsgId >>> 0;
-            if (object.priorityLevel != null)
-                message.priorityLevel = object.priorityLevel >>> 0;
-            if (object.landscapeAreaCommon != null) {
-                if (typeof object.landscapeAreaCommon !== "object")
-                    throw TypeError(".douyin.ChatMessage.landscapeAreaCommon: object expected");
-                message.landscapeAreaCommon = $root.douyin.LandscapeAreaCommon.fromObject(object.landscapeAreaCommon);
-            }
-            if (object.eventTime != null)
-                message.eventTime = object.eventTime >>> 0;
-            if (object.sendReview != null)
-                message.sendReview = Boolean(object.sendReview);
-            if (object.fromIntercom != null)
-                message.fromIntercom = Boolean(object.fromIntercom);
-            if (object.intercomHideUserCard != null)
-                message.intercomHideUserCard = Boolean(object.intercomHideUserCard);
-            if (object.chatBy != null)
-                message.chatBy = String(object.chatBy);
-            if (object.individualChatPriority != null)
-                message.individualChatPriority = object.individualChatPriority >>> 0;
-            if (object.rtfContent != null) {
-                if (typeof object.rtfContent !== "object")
-                    throw TypeError(".douyin.ChatMessage.rtfContent: object expected");
-                message.rtfContent = $root.douyin.Text.fromObject(object.rtfContent);
-            }
             return message;
         };
 
@@ -1560,22 +1174,6 @@ export const douyin = $root.douyin = (() => {
                 object.common = null;
                 object.user = null;
                 object.content = "";
-                object.visibleToSender = false;
-                object.backgroundImage = null;
-                object.fullScreenTextColor = "";
-                object.backgroundImageV2 = null;
-                object.publicAreaCommon = null;
-                object.giftImage = null;
-                object.agreeMsgId = 0;
-                object.priorityLevel = 0;
-                object.landscapeAreaCommon = null;
-                object.eventTime = 0;
-                object.sendReview = false;
-                object.fromIntercom = false;
-                object.intercomHideUserCard = false;
-                object.chatBy = "";
-                object.individualChatPriority = 0;
-                object.rtfContent = null;
             }
             if (message.common != null && message.hasOwnProperty("common"))
                 object.common = $root.douyin.Common.toObject(message.common, options);
@@ -1583,38 +1181,6 @@ export const douyin = $root.douyin = (() => {
                 object.user = $root.douyin.User.toObject(message.user, options);
             if (message.content != null && message.hasOwnProperty("content"))
                 object.content = message.content;
-            if (message.visibleToSender != null && message.hasOwnProperty("visibleToSender"))
-                object.visibleToSender = message.visibleToSender;
-            if (message.backgroundImage != null && message.hasOwnProperty("backgroundImage"))
-                object.backgroundImage = $root.douyin.Image.toObject(message.backgroundImage, options);
-            if (message.fullScreenTextColor != null && message.hasOwnProperty("fullScreenTextColor"))
-                object.fullScreenTextColor = message.fullScreenTextColor;
-            if (message.backgroundImageV2 != null && message.hasOwnProperty("backgroundImageV2"))
-                object.backgroundImageV2 = $root.douyin.Image.toObject(message.backgroundImageV2, options);
-            if (message.publicAreaCommon != null && message.hasOwnProperty("publicAreaCommon"))
-                object.publicAreaCommon = $root.douyin.PublicAreaCommon.toObject(message.publicAreaCommon, options);
-            if (message.giftImage != null && message.hasOwnProperty("giftImage"))
-                object.giftImage = $root.douyin.Image.toObject(message.giftImage, options);
-            if (message.agreeMsgId != null && message.hasOwnProperty("agreeMsgId"))
-                object.agreeMsgId = message.agreeMsgId;
-            if (message.priorityLevel != null && message.hasOwnProperty("priorityLevel"))
-                object.priorityLevel = message.priorityLevel;
-            if (message.landscapeAreaCommon != null && message.hasOwnProperty("landscapeAreaCommon"))
-                object.landscapeAreaCommon = $root.douyin.LandscapeAreaCommon.toObject(message.landscapeAreaCommon, options);
-            if (message.eventTime != null && message.hasOwnProperty("eventTime"))
-                object.eventTime = message.eventTime;
-            if (message.sendReview != null && message.hasOwnProperty("sendReview"))
-                object.sendReview = message.sendReview;
-            if (message.fromIntercom != null && message.hasOwnProperty("fromIntercom"))
-                object.fromIntercom = message.fromIntercom;
-            if (message.intercomHideUserCard != null && message.hasOwnProperty("intercomHideUserCard"))
-                object.intercomHideUserCard = message.intercomHideUserCard;
-            if (message.chatBy != null && message.hasOwnProperty("chatBy"))
-                object.chatBy = message.chatBy;
-            if (message.individualChatPriority != null && message.hasOwnProperty("individualChatPriority"))
-                object.individualChatPriority = message.individualChatPriority;
-            if (message.rtfContent != null && message.hasOwnProperty("rtfContent"))
-                object.rtfContent = $root.douyin.Text.toObject(message.rtfContent, options);
             return object;
         };
 
@@ -17335,14 +16901,15 @@ export const douyin = $root.douyin = (() => {
          * Properties of a PushFrame.
          * @memberof douyin
          * @interface IPushFrame
-         * @property {number|Long|null} [seqId] PushFrame seqId
-         * @property {number|Long|null} [logId] PushFrame logId
-         * @property {number|Long|null} [service] PushFrame service
-         * @property {number|Long|null} [method] PushFrame method
-         * @property {Array.<douyin.IHeadersList>|null} [headersList] PushFrame headersList
+         * @property {number|Long|null} [SeqID] PushFrame SeqID
+         * @property {number|Long|null} [LogID] PushFrame LogID
+         * @property {number|null} [service] PushFrame service
+         * @property {number|null} [method] PushFrame method
+         * @property {Array.<douyin.IHeaders>|null} [headers] PushFrame headers
          * @property {string|null} [payloadEncoding] PushFrame payloadEncoding
          * @property {string|null} [payloadType] PushFrame payloadType
          * @property {Uint8Array|null} [payload] PushFrame payload
+         * @property {string|null} [LodIDNew] PushFrame LodIDNew
          */
 
         /**
@@ -17354,7 +16921,7 @@ export const douyin = $root.douyin = (() => {
          * @param {douyin.IPushFrame=} [properties] Properties to set
          */
         function PushFrame(properties) {
-            this.headersList = [];
+            this.headers = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -17362,44 +16929,44 @@ export const douyin = $root.douyin = (() => {
         }
 
         /**
-         * PushFrame seqId.
-         * @member {number|Long} seqId
+         * PushFrame SeqID.
+         * @member {number|Long} SeqID
          * @memberof douyin.PushFrame
          * @instance
          */
-        PushFrame.prototype.seqId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+        PushFrame.prototype.SeqID = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
         /**
-         * PushFrame logId.
-         * @member {number|Long} logId
+         * PushFrame LogID.
+         * @member {number|Long} LogID
          * @memberof douyin.PushFrame
          * @instance
          */
-        PushFrame.prototype.logId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+        PushFrame.prototype.LogID = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
 
         /**
          * PushFrame service.
-         * @member {number|Long} service
+         * @member {number} service
          * @memberof douyin.PushFrame
          * @instance
          */
-        PushFrame.prototype.service = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+        PushFrame.prototype.service = 0;
 
         /**
          * PushFrame method.
-         * @member {number|Long} method
+         * @member {number} method
          * @memberof douyin.PushFrame
          * @instance
          */
-        PushFrame.prototype.method = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+        PushFrame.prototype.method = 0;
 
         /**
-         * PushFrame headersList.
-         * @member {Array.<douyin.IHeadersList>} headersList
+         * PushFrame headers.
+         * @member {Array.<douyin.IHeaders>} headers
          * @memberof douyin.PushFrame
          * @instance
          */
-        PushFrame.prototype.headersList = $util.emptyArray;
+        PushFrame.prototype.headers = $util.emptyArray;
 
         /**
          * PushFrame payloadEncoding.
@@ -17426,6 +16993,14 @@ export const douyin = $root.douyin = (() => {
         PushFrame.prototype.payload = $util.newBuffer([]);
 
         /**
+         * PushFrame LodIDNew.
+         * @member {string} LodIDNew
+         * @memberof douyin.PushFrame
+         * @instance
+         */
+        PushFrame.prototype.LodIDNew = "";
+
+        /**
          * Creates a new PushFrame instance using the specified properties.
          * @function create
          * @memberof douyin.PushFrame
@@ -17449,23 +17024,25 @@ export const douyin = $root.douyin = (() => {
         PushFrame.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.seqId != null && Object.hasOwnProperty.call(message, "seqId"))
-                writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.seqId);
-            if (message.logId != null && Object.hasOwnProperty.call(message, "logId"))
-                writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.logId);
+            if (message.SeqID != null && Object.hasOwnProperty.call(message, "SeqID"))
+                writer.uint32(/* id 1, wireType 0 =*/8).uint64(message.SeqID);
+            if (message.LogID != null && Object.hasOwnProperty.call(message, "LogID"))
+                writer.uint32(/* id 2, wireType 0 =*/16).uint64(message.LogID);
             if (message.service != null && Object.hasOwnProperty.call(message, "service"))
-                writer.uint32(/* id 3, wireType 0 =*/24).uint64(message.service);
+                writer.uint32(/* id 3, wireType 0 =*/24).uint32(message.service);
             if (message.method != null && Object.hasOwnProperty.call(message, "method"))
-                writer.uint32(/* id 4, wireType 0 =*/32).uint64(message.method);
-            if (message.headersList != null && message.headersList.length)
-                for (let i = 0; i < message.headersList.length; ++i)
-                    $root.douyin.HeadersList.encode(message.headersList[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+                writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.method);
+            if (message.headers != null && message.headers.length)
+                for (let i = 0; i < message.headers.length; ++i)
+                    $root.douyin.Headers.encode(message.headers[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             if (message.payloadEncoding != null && Object.hasOwnProperty.call(message, "payloadEncoding"))
                 writer.uint32(/* id 6, wireType 2 =*/50).string(message.payloadEncoding);
             if (message.payloadType != null && Object.hasOwnProperty.call(message, "payloadType"))
                 writer.uint32(/* id 7, wireType 2 =*/58).string(message.payloadType);
             if (message.payload != null && Object.hasOwnProperty.call(message, "payload"))
                 writer.uint32(/* id 8, wireType 2 =*/66).bytes(message.payload);
+            if (message.LodIDNew != null && Object.hasOwnProperty.call(message, "LodIDNew"))
+                writer.uint32(/* id 9, wireType 2 =*/74).string(message.LodIDNew);
             return writer;
         };
 
@@ -17501,25 +17078,25 @@ export const douyin = $root.douyin = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1: {
-                        message.seqId = reader.uint64();
+                        message.SeqID = reader.uint64();
                         break;
                     }
                 case 2: {
-                        message.logId = reader.uint64();
+                        message.LogID = reader.uint64();
                         break;
                     }
                 case 3: {
-                        message.service = reader.uint64();
+                        message.service = reader.uint32();
                         break;
                     }
                 case 4: {
-                        message.method = reader.uint64();
+                        message.method = reader.uint32();
                         break;
                     }
                 case 5: {
-                        if (!(message.headersList && message.headersList.length))
-                            message.headersList = [];
-                        message.headersList.push($root.douyin.HeadersList.decode(reader, reader.uint32()));
+                        if (!(message.headers && message.headers.length))
+                            message.headers = [];
+                        message.headers.push($root.douyin.Headers.decode(reader, reader.uint32()));
                         break;
                     }
                 case 6: {
@@ -17532,6 +17109,10 @@ export const douyin = $root.douyin = (() => {
                     }
                 case 8: {
                         message.payload = reader.bytes();
+                        break;
+                    }
+                case 9: {
+                        message.LodIDNew = reader.string();
                         break;
                     }
                 default:
@@ -17569,25 +17150,25 @@ export const douyin = $root.douyin = (() => {
         PushFrame.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.seqId != null && message.hasOwnProperty("seqId"))
-                if (!$util.isInteger(message.seqId) && !(message.seqId && $util.isInteger(message.seqId.low) && $util.isInteger(message.seqId.high)))
-                    return "seqId: integer|Long expected";
-            if (message.logId != null && message.hasOwnProperty("logId"))
-                if (!$util.isInteger(message.logId) && !(message.logId && $util.isInteger(message.logId.low) && $util.isInteger(message.logId.high)))
-                    return "logId: integer|Long expected";
+            if (message.SeqID != null && message.hasOwnProperty("SeqID"))
+                if (!$util.isInteger(message.SeqID) && !(message.SeqID && $util.isInteger(message.SeqID.low) && $util.isInteger(message.SeqID.high)))
+                    return "SeqID: integer|Long expected";
+            if (message.LogID != null && message.hasOwnProperty("LogID"))
+                if (!$util.isInteger(message.LogID) && !(message.LogID && $util.isInteger(message.LogID.low) && $util.isInteger(message.LogID.high)))
+                    return "LogID: integer|Long expected";
             if (message.service != null && message.hasOwnProperty("service"))
-                if (!$util.isInteger(message.service) && !(message.service && $util.isInteger(message.service.low) && $util.isInteger(message.service.high)))
-                    return "service: integer|Long expected";
+                if (!$util.isInteger(message.service))
+                    return "service: integer expected";
             if (message.method != null && message.hasOwnProperty("method"))
-                if (!$util.isInteger(message.method) && !(message.method && $util.isInteger(message.method.low) && $util.isInteger(message.method.high)))
-                    return "method: integer|Long expected";
-            if (message.headersList != null && message.hasOwnProperty("headersList")) {
-                if (!Array.isArray(message.headersList))
-                    return "headersList: array expected";
-                for (let i = 0; i < message.headersList.length; ++i) {
-                    let error = $root.douyin.HeadersList.verify(message.headersList[i]);
+                if (!$util.isInteger(message.method))
+                    return "method: integer expected";
+            if (message.headers != null && message.hasOwnProperty("headers")) {
+                if (!Array.isArray(message.headers))
+                    return "headers: array expected";
+                for (let i = 0; i < message.headers.length; ++i) {
+                    let error = $root.douyin.Headers.verify(message.headers[i]);
                     if (error)
-                        return "headersList." + error;
+                        return "headers." + error;
                 }
             }
             if (message.payloadEncoding != null && message.hasOwnProperty("payloadEncoding"))
@@ -17599,6 +17180,9 @@ export const douyin = $root.douyin = (() => {
             if (message.payload != null && message.hasOwnProperty("payload"))
                 if (!(message.payload && typeof message.payload.length === "number" || $util.isString(message.payload)))
                     return "payload: buffer expected";
+            if (message.LodIDNew != null && message.hasOwnProperty("LodIDNew"))
+                if (!$util.isString(message.LodIDNew))
+                    return "LodIDNew: string expected";
             return null;
         };
 
@@ -17614,50 +17198,36 @@ export const douyin = $root.douyin = (() => {
             if (object instanceof $root.douyin.PushFrame)
                 return object;
             let message = new $root.douyin.PushFrame();
-            if (object.seqId != null)
+            if (object.SeqID != null)
                 if ($util.Long)
-                    (message.seqId = $util.Long.fromValue(object.seqId)).unsigned = true;
-                else if (typeof object.seqId === "string")
-                    message.seqId = parseInt(object.seqId, 10);
-                else if (typeof object.seqId === "number")
-                    message.seqId = object.seqId;
-                else if (typeof object.seqId === "object")
-                    message.seqId = new $util.LongBits(object.seqId.low >>> 0, object.seqId.high >>> 0).toNumber(true);
-            if (object.logId != null)
+                    (message.SeqID = $util.Long.fromValue(object.SeqID)).unsigned = true;
+                else if (typeof object.SeqID === "string")
+                    message.SeqID = parseInt(object.SeqID, 10);
+                else if (typeof object.SeqID === "number")
+                    message.SeqID = object.SeqID;
+                else if (typeof object.SeqID === "object")
+                    message.SeqID = new $util.LongBits(object.SeqID.low >>> 0, object.SeqID.high >>> 0).toNumber(true);
+            if (object.LogID != null)
                 if ($util.Long)
-                    (message.logId = $util.Long.fromValue(object.logId)).unsigned = true;
-                else if (typeof object.logId === "string")
-                    message.logId = parseInt(object.logId, 10);
-                else if (typeof object.logId === "number")
-                    message.logId = object.logId;
-                else if (typeof object.logId === "object")
-                    message.logId = new $util.LongBits(object.logId.low >>> 0, object.logId.high >>> 0).toNumber(true);
+                    (message.LogID = $util.Long.fromValue(object.LogID)).unsigned = true;
+                else if (typeof object.LogID === "string")
+                    message.LogID = parseInt(object.LogID, 10);
+                else if (typeof object.LogID === "number")
+                    message.LogID = object.LogID;
+                else if (typeof object.LogID === "object")
+                    message.LogID = new $util.LongBits(object.LogID.low >>> 0, object.LogID.high >>> 0).toNumber(true);
             if (object.service != null)
-                if ($util.Long)
-                    (message.service = $util.Long.fromValue(object.service)).unsigned = true;
-                else if (typeof object.service === "string")
-                    message.service = parseInt(object.service, 10);
-                else if (typeof object.service === "number")
-                    message.service = object.service;
-                else if (typeof object.service === "object")
-                    message.service = new $util.LongBits(object.service.low >>> 0, object.service.high >>> 0).toNumber(true);
+                message.service = object.service >>> 0;
             if (object.method != null)
-                if ($util.Long)
-                    (message.method = $util.Long.fromValue(object.method)).unsigned = true;
-                else if (typeof object.method === "string")
-                    message.method = parseInt(object.method, 10);
-                else if (typeof object.method === "number")
-                    message.method = object.method;
-                else if (typeof object.method === "object")
-                    message.method = new $util.LongBits(object.method.low >>> 0, object.method.high >>> 0).toNumber(true);
-            if (object.headersList) {
-                if (!Array.isArray(object.headersList))
-                    throw TypeError(".douyin.PushFrame.headersList: array expected");
-                message.headersList = [];
-                for (let i = 0; i < object.headersList.length; ++i) {
-                    if (typeof object.headersList[i] !== "object")
-                        throw TypeError(".douyin.PushFrame.headersList: object expected");
-                    message.headersList[i] = $root.douyin.HeadersList.fromObject(object.headersList[i]);
+                message.method = object.method >>> 0;
+            if (object.headers) {
+                if (!Array.isArray(object.headers))
+                    throw TypeError(".douyin.PushFrame.headers: array expected");
+                message.headers = [];
+                for (let i = 0; i < object.headers.length; ++i) {
+                    if (typeof object.headers[i] !== "object")
+                        throw TypeError(".douyin.PushFrame.headers: object expected");
+                    message.headers[i] = $root.douyin.Headers.fromObject(object.headers[i]);
                 }
             }
             if (object.payloadEncoding != null)
@@ -17669,6 +17239,8 @@ export const douyin = $root.douyin = (() => {
                     $util.base64.decode(object.payload, message.payload = $util.newBuffer($util.base64.length(object.payload)), 0);
                 else if (object.payload.length >= 0)
                     message.payload = object.payload;
+            if (object.LodIDNew != null)
+                message.LodIDNew = String(object.LodIDNew);
             return message;
         };
 
@@ -17686,28 +17258,20 @@ export const douyin = $root.douyin = (() => {
                 options = {};
             let object = {};
             if (options.arrays || options.defaults)
-                object.headersList = [];
+                object.headers = [];
             if (options.defaults) {
                 if ($util.Long) {
                     let long = new $util.Long(0, 0, true);
-                    object.seqId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    object.SeqID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
-                    object.seqId = options.longs === String ? "0" : 0;
+                    object.SeqID = options.longs === String ? "0" : 0;
                 if ($util.Long) {
                     let long = new $util.Long(0, 0, true);
-                    object.logId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    object.LogID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
-                    object.logId = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, true);
-                    object.service = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.service = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, true);
-                    object.method = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.method = options.longs === String ? "0" : 0;
+                    object.LogID = options.longs === String ? "0" : 0;
+                object.service = 0;
+                object.method = 0;
                 object.payloadEncoding = "";
                 object.payloadType = "";
                 if (options.bytes === String)
@@ -17717,31 +17281,26 @@ export const douyin = $root.douyin = (() => {
                     if (options.bytes !== Array)
                         object.payload = $util.newBuffer(object.payload);
                 }
+                object.LodIDNew = "";
             }
-            if (message.seqId != null && message.hasOwnProperty("seqId"))
-                if (typeof message.seqId === "number")
-                    object.seqId = options.longs === String ? String(message.seqId) : message.seqId;
+            if (message.SeqID != null && message.hasOwnProperty("SeqID"))
+                if (typeof message.SeqID === "number")
+                    object.SeqID = options.longs === String ? String(message.SeqID) : message.SeqID;
                 else
-                    object.seqId = options.longs === String ? $util.Long.prototype.toString.call(message.seqId) : options.longs === Number ? new $util.LongBits(message.seqId.low >>> 0, message.seqId.high >>> 0).toNumber(true) : message.seqId;
-            if (message.logId != null && message.hasOwnProperty("logId"))
-                if (typeof message.logId === "number")
-                    object.logId = options.longs === String ? String(message.logId) : message.logId;
+                    object.SeqID = options.longs === String ? $util.Long.prototype.toString.call(message.SeqID) : options.longs === Number ? new $util.LongBits(message.SeqID.low >>> 0, message.SeqID.high >>> 0).toNumber(true) : message.SeqID;
+            if (message.LogID != null && message.hasOwnProperty("LogID"))
+                if (typeof message.LogID === "number")
+                    object.LogID = options.longs === String ? String(message.LogID) : message.LogID;
                 else
-                    object.logId = options.longs === String ? $util.Long.prototype.toString.call(message.logId) : options.longs === Number ? new $util.LongBits(message.logId.low >>> 0, message.logId.high >>> 0).toNumber(true) : message.logId;
+                    object.LogID = options.longs === String ? $util.Long.prototype.toString.call(message.LogID) : options.longs === Number ? new $util.LongBits(message.LogID.low >>> 0, message.LogID.high >>> 0).toNumber(true) : message.LogID;
             if (message.service != null && message.hasOwnProperty("service"))
-                if (typeof message.service === "number")
-                    object.service = options.longs === String ? String(message.service) : message.service;
-                else
-                    object.service = options.longs === String ? $util.Long.prototype.toString.call(message.service) : options.longs === Number ? new $util.LongBits(message.service.low >>> 0, message.service.high >>> 0).toNumber(true) : message.service;
+                object.service = message.service;
             if (message.method != null && message.hasOwnProperty("method"))
-                if (typeof message.method === "number")
-                    object.method = options.longs === String ? String(message.method) : message.method;
-                else
-                    object.method = options.longs === String ? $util.Long.prototype.toString.call(message.method) : options.longs === Number ? new $util.LongBits(message.method.low >>> 0, message.method.high >>> 0).toNumber(true) : message.method;
-            if (message.headersList && message.headersList.length) {
-                object.headersList = [];
-                for (let j = 0; j < message.headersList.length; ++j)
-                    object.headersList[j] = $root.douyin.HeadersList.toObject(message.headersList[j], options);
+                object.method = message.method;
+            if (message.headers && message.headers.length) {
+                object.headers = [];
+                for (let j = 0; j < message.headers.length; ++j)
+                    object.headers[j] = $root.douyin.Headers.toObject(message.headers[j], options);
             }
             if (message.payloadEncoding != null && message.hasOwnProperty("payloadEncoding"))
                 object.payloadEncoding = message.payloadEncoding;
@@ -17749,6 +17308,8 @@ export const douyin = $root.douyin = (() => {
                 object.payloadType = message.payloadType;
             if (message.payload != null && message.hasOwnProperty("payload"))
                 object.payload = options.bytes === String ? $util.base64.encode(message.payload, 0, message.payload.length) : options.bytes === Array ? Array.prototype.slice.call(message.payload) : message.payload;
+            if (message.LodIDNew != null && message.hasOwnProperty("LodIDNew"))
+                object.LodIDNew = message.LodIDNew;
             return object;
         };
 
@@ -19401,7 +18962,7 @@ export const douyin = $root.douyin = (() => {
          * @property {douyin.ISendMessageBody|null} [sendMessageBody] PreMessage sendMessageBody
          * @property {string|null} [aa] PreMessage aa
          * @property {string|null} [devicePlatform] PreMessage devicePlatform
-         * @property {Array.<douyin.IHeadersList>|null} [headers] PreMessage headers
+         * @property {Array.<douyin.IHeaders>|null} [headers] PreMessage headers
          * @property {number|null} [authType] PreMessage authType
          * @property {string|null} [biz] PreMessage biz
          * @property {string|null} [access] PreMessage access
@@ -19505,7 +19066,7 @@ export const douyin = $root.douyin = (() => {
 
         /**
          * PreMessage headers.
-         * @member {Array.<douyin.IHeadersList>} headers
+         * @member {Array.<douyin.IHeaders>} headers
          * @memberof douyin.PreMessage
          * @instance
          */
@@ -19581,7 +19142,7 @@ export const douyin = $root.douyin = (() => {
                 writer.uint32(/* id 11, wireType 2 =*/90).string(message.devicePlatform);
             if (message.headers != null && message.headers.length)
                 for (let i = 0; i < message.headers.length; ++i)
-                    $root.douyin.HeadersList.encode(message.headers[i], writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
+                    $root.douyin.Headers.encode(message.headers[i], writer.uint32(/* id 15, wireType 2 =*/122).fork()).ldelim();
             if (message.authType != null && Object.hasOwnProperty.call(message, "authType"))
                 writer.uint32(/* id 18, wireType 0 =*/144).uint32(message.authType);
             if (message.biz != null && Object.hasOwnProperty.call(message, "biz"))
@@ -19665,7 +19226,7 @@ export const douyin = $root.douyin = (() => {
                 case 15: {
                         if (!(message.headers && message.headers.length))
                             message.headers = [];
-                        message.headers.push($root.douyin.HeadersList.decode(reader, reader.uint32()));
+                        message.headers.push($root.douyin.Headers.decode(reader, reader.uint32()));
                         break;
                     }
                 case 18: {
@@ -19751,7 +19312,7 @@ export const douyin = $root.douyin = (() => {
                 if (!Array.isArray(message.headers))
                     return "headers: array expected";
                 for (let i = 0; i < message.headers.length; ++i) {
-                    let error = $root.douyin.HeadersList.verify(message.headers[i]);
+                    let error = $root.douyin.Headers.verify(message.headers[i]);
                     if (error)
                         return "headers." + error;
                 }
@@ -19810,7 +19371,7 @@ export const douyin = $root.douyin = (() => {
                 for (let i = 0; i < object.headers.length; ++i) {
                     if (typeof object.headers[i] !== "object")
                         throw TypeError(".douyin.PreMessage.headers: object expected");
-                    message.headers[i] = $root.douyin.HeadersList.fromObject(object.headers[i]);
+                    message.headers[i] = $root.douyin.Headers.fromObject(object.headers[i]);
                 }
             }
             if (object.authType != null)
@@ -19875,7 +19436,7 @@ export const douyin = $root.douyin = (() => {
             if (message.headers && message.headers.length) {
                 object.headers = [];
                 for (let j = 0; j < message.headers.length; ++j)
-                    object.headers[j] = $root.douyin.HeadersList.toObject(message.headers[j], options);
+                    object.headers[j] = $root.douyin.Headers.toObject(message.headers[j], options);
             }
             if (message.authType != null && message.hasOwnProperty("authType"))
                 object.authType = message.authType;
@@ -19915,25 +19476,25 @@ export const douyin = $root.douyin = (() => {
         return PreMessage;
     })();
 
-    douyin.HeadersList = (function() {
+    douyin.Headers = (function() {
 
         /**
-         * Properties of a HeadersList.
+         * Properties of a Headers.
          * @memberof douyin
-         * @interface IHeadersList
-         * @property {string|null} [key] HeadersList key
-         * @property {string|null} [value] HeadersList value
+         * @interface IHeaders
+         * @property {string|null} [key] Headers key
+         * @property {string|null} [value] Headers value
          */
 
         /**
-         * Constructs a new HeadersList.
+         * Constructs a new Headers.
          * @memberof douyin
-         * @classdesc Represents a HeadersList.
-         * @implements IHeadersList
+         * @classdesc Represents a Headers.
+         * @implements IHeaders
          * @constructor
-         * @param {douyin.IHeadersList=} [properties] Properties to set
+         * @param {douyin.IHeaders=} [properties] Properties to set
          */
-        function HeadersList(properties) {
+        function Headers(properties) {
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -19941,43 +19502,43 @@ export const douyin = $root.douyin = (() => {
         }
 
         /**
-         * HeadersList key.
+         * Headers key.
          * @member {string} key
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @instance
          */
-        HeadersList.prototype.key = "";
+        Headers.prototype.key = "";
 
         /**
-         * HeadersList value.
+         * Headers value.
          * @member {string} value
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @instance
          */
-        HeadersList.prototype.value = "";
+        Headers.prototype.value = "";
 
         /**
-         * Creates a new HeadersList instance using the specified properties.
+         * Creates a new Headers instance using the specified properties.
          * @function create
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @static
-         * @param {douyin.IHeadersList=} [properties] Properties to set
-         * @returns {douyin.HeadersList} HeadersList instance
+         * @param {douyin.IHeaders=} [properties] Properties to set
+         * @returns {douyin.Headers} Headers instance
          */
-        HeadersList.create = function create(properties) {
-            return new HeadersList(properties);
+        Headers.create = function create(properties) {
+            return new Headers(properties);
         };
 
         /**
-         * Encodes the specified HeadersList message. Does not implicitly {@link douyin.HeadersList.verify|verify} messages.
+         * Encodes the specified Headers message. Does not implicitly {@link douyin.Headers.verify|verify} messages.
          * @function encode
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @static
-         * @param {douyin.IHeadersList} message HeadersList message or plain object to encode
+         * @param {douyin.IHeaders} message Headers message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        HeadersList.encode = function encode(message, writer) {
+        Headers.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
             if (message.key != null && Object.hasOwnProperty.call(message, "key"))
@@ -19988,33 +19549,33 @@ export const douyin = $root.douyin = (() => {
         };
 
         /**
-         * Encodes the specified HeadersList message, length delimited. Does not implicitly {@link douyin.HeadersList.verify|verify} messages.
+         * Encodes the specified Headers message, length delimited. Does not implicitly {@link douyin.Headers.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @static
-         * @param {douyin.IHeadersList} message HeadersList message or plain object to encode
+         * @param {douyin.IHeaders} message Headers message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        HeadersList.encodeDelimited = function encodeDelimited(message, writer) {
+        Headers.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
         };
 
         /**
-         * Decodes a HeadersList message from the specified reader or buffer.
+         * Decodes a Headers message from the specified reader or buffer.
          * @function decode
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {douyin.HeadersList} HeadersList
+         * @returns {douyin.Headers} Headers
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        HeadersList.decode = function decode(reader, length) {
+        Headers.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.douyin.HeadersList();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.douyin.Headers();
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
@@ -20035,30 +19596,30 @@ export const douyin = $root.douyin = (() => {
         };
 
         /**
-         * Decodes a HeadersList message from the specified reader or buffer, length delimited.
+         * Decodes a Headers message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {douyin.HeadersList} HeadersList
+         * @returns {douyin.Headers} Headers
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        HeadersList.decodeDelimited = function decodeDelimited(reader) {
+        Headers.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
         /**
-         * Verifies a HeadersList message.
+         * Verifies a Headers message.
          * @function verify
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        HeadersList.verify = function verify(message) {
+        Headers.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
             if (message.key != null && message.hasOwnProperty("key"))
@@ -20071,17 +19632,17 @@ export const douyin = $root.douyin = (() => {
         };
 
         /**
-         * Creates a HeadersList message from a plain object. Also converts values to their respective internal types.
+         * Creates a Headers message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {douyin.HeadersList} HeadersList
+         * @returns {douyin.Headers} Headers
          */
-        HeadersList.fromObject = function fromObject(object) {
-            if (object instanceof $root.douyin.HeadersList)
+        Headers.fromObject = function fromObject(object) {
+            if (object instanceof $root.douyin.Headers)
                 return object;
-            let message = new $root.douyin.HeadersList();
+            let message = new $root.douyin.Headers();
             if (object.key != null)
                 message.key = String(object.key);
             if (object.value != null)
@@ -20090,15 +19651,15 @@ export const douyin = $root.douyin = (() => {
         };
 
         /**
-         * Creates a plain object from a HeadersList message. Also converts values to other types if specified.
+         * Creates a plain object from a Headers message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @static
-         * @param {douyin.HeadersList} message HeadersList
+         * @param {douyin.Headers} message Headers
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        HeadersList.toObject = function toObject(message, options) {
+        Headers.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
             let object = {};
@@ -20114,32 +19675,32 @@ export const douyin = $root.douyin = (() => {
         };
 
         /**
-         * Converts this HeadersList to JSON.
+         * Converts this Headers to JSON.
          * @function toJSON
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
-        HeadersList.prototype.toJSON = function toJSON() {
+        Headers.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
         /**
-         * Gets the default type url for HeadersList
+         * Gets the default type url for Headers
          * @function getTypeUrl
-         * @memberof douyin.HeadersList
+         * @memberof douyin.Headers
          * @static
          * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
          * @returns {string} The default type url
          */
-        HeadersList.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        Headers.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
             if (typeUrlPrefix === undefined) {
                 typeUrlPrefix = "type.googleapis.com";
             }
-            return typeUrlPrefix + "/douyin.HeadersList";
+            return typeUrlPrefix + "/douyin.Headers";
         };
 
-        return HeadersList;
+        return Headers;
     })();
 
     douyin.LiveShoppingMessage = (function() {

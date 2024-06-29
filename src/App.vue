@@ -236,16 +236,16 @@ const destroyPlayer = () => {
 const onMessage = (msg: any) => {
     // console.log('收到消息', msg)
     // 解析消息
-    const decodeMsg = douyin.PushFrame.decode(msg.data)
-    // console.log('decodeMsg--', decodeMsg)
+    const pushFrame = douyin.PushFrame.decode(msg.data)
+    console.log('pushFrame--', pushFrame)
     // console.log('logId--', decodeMsg.logId)
     // logTxt.value = decodeMsg.logId
     // 滚动盒子到底部
-    if (liveMsg.value) {
-        liveMsg.value.scrollTop = liveMsg.value.scrollHeight + 500
-    }
+    // if (liveMsg.value) {
+    //     liveMsg.value.scrollTop = liveMsg.value.scrollHeight + 500
+    // }
     // 解压缩应该是没问题，
-    const gzipData = pako.inflate(decodeMsg.payload)
+    const gzipData = pako.inflate(pushFrame.payload)
     // console.log('gzipData--', gzipData)
     // Response解码，有问题, 所以要用Response.decode解码也应该是数字类型
     const response = douyin.Response.decode(gzipData)
@@ -260,7 +260,7 @@ const onMessage = (msg: any) => {
     //     socketClient?.send(ack)
     // }
     // 解析直播消息
-    handleMessage(response.messagesList)
+    handleMessage(response.messages)
     // console.log('decodeRes---', liveMsg.value)
 }
 
@@ -276,17 +276,17 @@ const handleMessage = (messageList: douyin.Message) => {
             // 点赞数
             case 'WebcastLikeMessage':
                 // console.log('点赞数')
-                likeLive(msg.payload)
+                // likeLive(msg.payload)
                 break
             // 成员进入直播间消息
             case 'WebcastMemberMessage':
                 // console.log('成员进入直播间消息')
-                enterLive(msg.payload)
+                // enterLive(msg.payload)
                 break
             // 礼物消息
             case 'WebcastGiftMessage':
                 // console.log('礼物消息')
-                decodeGift(msg.payload)
+                // decodeGift(msg.payload)
                 break
             // 聊天弹幕消息
             case 'WebcastChatMessage':
@@ -296,7 +296,7 @@ const handleMessage = (messageList: douyin.Message) => {
             // 关注消息
             case 'WebcastSocialMessage':
                 // console.log('联谊会消息')
-                followLive(msg.payload)
+                // followLive(msg.payload)
                 break
             // 更新粉丝票
             case 'WebcastUpdateFanTicketMessage':
@@ -313,7 +313,7 @@ const handleMessage = (messageList: douyin.Message) => {
             // 直播间统计消息
             case 'WebcastRoomUserSeqMessage':
                 // console.log('直播间统计消息')
-                countLive(msg.payload)
+                // countLive(msg.payload)
                 break
             // 待解析方法
             default:
@@ -326,16 +326,17 @@ const handleMessage = (messageList: douyin.Message) => {
 const decodeChat = (data) => {
     // 校验消息
     const chatMsg = douyin.ChatMessage.decode(data)
-    // console.log('chatMsg-----', chatMsg)
-    const { common, user, content } = chatMsg
-    const message = {
-        id: common.userId,
-        name: user.nickName,
-        msg: content,
-    }
-    messageList.value.push(message)
+    console.log('chatMsg-----', chatMsg)
+    // const { common, user, content } = chatMsg
+    // const message = {
+    //     id: common.userId,
+    //     name: user.nickName,
+    //     msg: content,
+    // }
+    // messageList.value.push(message)
     // console.log('chatMsg---', user.nickName, content)
 }
+
 // 解析礼物消息
 const decodeGift = (data) => {
     const giftMsg = douyin.GiftMessage.decode(data)
