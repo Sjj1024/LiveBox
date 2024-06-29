@@ -12,6 +12,7 @@ windows/mac/linux 下载地址：https://github.com/Sjj1024/LiveBox/releases
 
 ## 界面介绍
 
+注意：mac 电脑提示：已损坏,无法打开,你应该将它移到废纸篓，可以按照这篇文章解决：https://zhuanlan.zhihu.com/p/675337069
 ![alt text](./analysis/image-2.png)
 ![alt text](./analysis/image-5.png)
 
