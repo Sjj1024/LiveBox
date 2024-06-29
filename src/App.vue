@@ -48,12 +48,18 @@ const pushUrl = ref('')
 // 聊天消息盒子
 const liveMsg = ref()
 
+// 直播播放器
+let dplayer: DPlayerImp | null = null
+
 // 开始监听
 const startListen = async () => {
     const url = inputUrl.value.trim()
     // console.log('直播间地址:', proto)
     localStorage.setItem('url', url)
-    if (url) {
+    // 先清空历史直播
+    clearLivex()
+    // 再开始新的直播
+    if (url.trim()) {
         // 根据直播间地址获取roomid等字段
         const roomJson: LiveInfoImp = await invoke('get_live_html', { url })
         console.log('获取到的直播房间信息:', roomJson)
@@ -108,6 +114,20 @@ const startListen = async () => {
     }
 }
 
+// 清空直播和聊天内容
+const clearLivex = () => {
+    console.log('清空')
+    dplayer?.destroy()
+    messageList.value = [
+        {
+            id: '1',
+            name: '1024小神',
+            msg: '欢迎使用直播盒子，输入直播地址开始安静看直播，没有刷礼物功能，所以理性看播，不要乱消费',
+        },
+    ]
+    socketClient?.disconnect()
+}
+
 // 创建websokcet
 const creatSokcet = async (roomId: string, uniqueId: string, ttwid: string) => {
     console.log('创建连接', roomId, uniqueId)
@@ -141,9 +161,6 @@ const creatSokcet = async (roomId: string, uniqueId: string, ttwid: string) => {
     // socketClient = new SocketCli(socketUrl)
     // socketClient.onMessage = onMessage
 }
-
-// 直播播放器
-let dplayer: DPlayerImp | null = null
 // 加载直播视频
 const loadLive = (videoUrl: string, live: boolean = true) => {
     // 根据不同的视频加载不同的播放器
@@ -259,23 +276,27 @@ const handleMessage = (messageList: douyin.Message) => {
             // 点赞数
             case 'WebcastLikeMessage':
                 // console.log('点赞数')
+                likeLive(msg.payload)
                 break
             // 成员进入直播间消息
             case 'WebcastMemberMessage':
                 // console.log('成员进入直播间消息')
+                enterLive(msg.payload)
                 break
             // 礼物消息
             case 'WebcastGiftMessage':
                 // console.log('礼物消息')
+                decodeGift(msg.payload)
                 break
             // 聊天弹幕消息
             case 'WebcastChatMessage':
                 // console.log('聊天弹幕消息')
                 decodeChat(msg.payload)
                 break
-            // 联谊会消息
+            // 关注消息
             case 'WebcastSocialMessage':
                 // console.log('联谊会消息')
+                followLive(msg.payload)
                 break
             // 更新粉丝票
             case 'WebcastUpdateFanTicketMessage':
@@ -291,7 +312,8 @@ const handleMessage = (messageList: douyin.Message) => {
                 break
             // 直播间统计消息
             case 'WebcastRoomUserSeqMessage':
-                // console.log('商品改变消息')
+                // console.log('直播间统计消息')
+                countLive(msg.payload)
                 break
             // 待解析方法
             default:
@@ -312,13 +334,73 @@ const decodeChat = (data) => {
         msg: content,
     }
     messageList.value.push(message)
-    console.log('chatMsg---', user.nickName, content)
+    // console.log('chatMsg---', user.nickName, content)
 }
 // 解析礼物消息
 const decodeGift = (data) => {
     const giftMsg = douyin.GiftMessage.decode(data)
-    console.log('giftMsg---', giftMsg)
-    console.log('创建连接')
+    const { common, user, gift, repeatCount } = giftMsg
+    const message = {
+        id: common.msgId,
+        name: user.nickName,
+        msg: `送出${gift.name} x${repeatCount}个`,
+    }
+    messageList.value.push(message)
+    // console.log('giftMsg---', giftMsg)
+}
+
+// 进入房间
+const enterLive = (data) => {
+    const enteryMsg = douyin.MemberMessage.decode(data)
+    const { common, user } = enteryMsg
+    const message = {
+        id: common.msgId,
+        name: user.nickName,
+        msg: '来了',
+    }
+    messageList.value.push(message)
+    // console.log('enterLive---', enteryMsg)
+}
+
+// 点赞消息
+const likeLive = (data) => {
+    const likeMsg = douyin.LikeMessage.decode(data)
+    const { common, user, count } = likeMsg
+    const message = {
+        id: common.msgId,
+        name: user.nickName,
+        msg: `为主播点赞了`,
+    }
+    messageList.value.push(message)
+    // console.log('likeMsg---', likeMsg)
+}
+
+// 关注主播
+const followLive = (data) => {
+    const followMsg = douyin.SocialMessage.decode(data)
+    const { common, user, followCount } = followMsg
+    const message = {
+        id: common.msgId,
+        name: user.nickName,
+        msg: `关注了主播`,
+    }
+    liveInfo.value = {
+        ...liveInfo.value,
+        fans: followCount,
+    }
+    messageList.value.push(message)
+    // console.log('followLive---', followMsg)
+}
+
+// 直播间统计
+const countLive = (data) => {
+    const countMsg = douyin.RoomUserSeqMessage.decode(data)
+    console.log('countLive---', countMsg)
+    liveInfo.value = {
+        ...liveInfo.value,
+        customer: countMsg.onlineUserForAnchor,
+    }
+    // messageList.value.push(message)
 }
 </script>
 
@@ -352,7 +434,10 @@ const decodeGift = (data) => {
                 </div>
                 <!-- 右侧本场点赞等信息 -->
                 <div class="likeInfo">
-                    <div class="title"></div>
+                    <div class="fans">主播粉丝：{{ liveInfo.fans }}</div>
+                    <div class="customer">
+                        在线观众：{{ liveInfo.customer }}
+                    </div>
                 </div>
                 <!-- 视频播放器 -->
                 <div id="dplayer" class="dplayer"></div>
@@ -512,6 +597,26 @@ const decodeGift = (data) => {
                 }
             }
 
+            .likeInfo {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                height: 40px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                // background-color: #0000008b;
+                padding: 10px 4px;
+                border-radius: 20px;
+                z-index: 999;
+                user-select: none;
+                color: white;
+
+                .customer {
+                    margin-left: 20px;
+                }
+            }
+
             .dplayer {
                 width: 100%;
                 height: 100%;
@@ -544,7 +649,8 @@ const decodeGift = (data) => {
             box-shadow: 0 0 10px 2px gray;
             scrollbar-color: #363741 transparent;
             scrollbar-width: thin;
-            overflow: scroll;
+            overflow-y: scroll;
+            overflow-x: hidden;
 
             .msgBox {
                 display: flex;

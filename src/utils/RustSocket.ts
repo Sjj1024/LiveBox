@@ -83,6 +83,13 @@ class SocketCli {
         // 将回调函数放进事件数组中
         this.listeners[event].push(callback)
     }
+
+    // 断开连接
+    disconnect() {
+        if (this.ws) {
+            this.ws.disconnect()
+        }
+    }
 }
 
 // 导出对象
