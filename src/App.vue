@@ -38,7 +38,7 @@ const liveInfo = ref({
     avatar: Logo,
     fans: 0,
     customer: 0,
-    totalCustomer: 0,
+    totalLike: 0,
     signature: '',
 })
 
@@ -80,7 +80,7 @@ const startListen = async () => {
                     avatar: roomInfo.owner.avatar_thumb.url_list[0],
                     fans: 0,
                     customer: roomInfo.user_count_str,
-                    totalCustomer: roomInfo.stats.total_user_str,
+                    totalLike: roomInfo.stats.total_user_str,
                     signature: 'roomInfo.signature',
                 }
                 // 加载直播视频:可能没有HD1
@@ -101,7 +101,7 @@ const startListen = async () => {
                     avatar: roomInfo.avatar_thumb.url_list[0],
                     fans: 0,
                     customer: 0,
-                    totalCustomer: 0,
+                    totalLike: 0,
                     signature: 'roomInfo.signature',
                 }
                 // 清空播放器
@@ -329,7 +329,7 @@ const decodeChat = (data) => {
     // console.log('chatMsg-----', chatMsg)
     const { common, user, content } = chatMsg
     const message = {
-        id: common.userId,
+        id: common.msgId,
         name: user.nickName,
         msg: content,
     }
@@ -365,14 +365,18 @@ const enterLive = (data) => {
 // 点赞消息
 const likeLive = (data) => {
     const likeMsg = douyin.LikeMessage.decode(data)
-    const { common, user, count } = likeMsg
+    console.log('likeMsg---', likeMsg)
+    const { common, user, total } = likeMsg
     const message = {
         id: common.msgId,
         name: user.nickName,
         msg: `为主播点赞了`,
     }
+    liveInfo.value = {
+        ...liveInfo.value,
+        totalLike: total,
+    }
     messageList.value.push(message)
-    // console.log('likeMsg---', likeMsg)
 }
 
 // 关注主播
@@ -428,7 +432,7 @@ const countLive = (data) => {
                     <div class="nickBox">
                         <span class="nickName">{{ liveInfo.name }}</span>
                         <span class="fans">
-                            {{ liveInfo.totalCustomer }}本场点赞
+                            {{ liveInfo.totalLike }}本场点赞
                         </span>
                     </div>
                 </div>

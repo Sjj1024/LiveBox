@@ -998,22 +998,6 @@ export const douyin = $root.douyin = (() => {
          * @property {douyin.ICommon|null} [common] ChatMessage common
          * @property {douyin.IUser|null} [user] ChatMessage user
          * @property {string|null} [content] ChatMessage content
-         * @property {boolean|null} [visibleToSender] ChatMessage visibleToSender
-         * @property {douyin.IImage|null} [backgroundImage] ChatMessage backgroundImage
-         * @property {string|null} [fullScreenTextColor] ChatMessage fullScreenTextColor
-         * @property {douyin.IImage|null} [backgroundImageV2] ChatMessage backgroundImageV2
-         * @property {douyin.IPublicAreaCommon|null} [publicAreaCommon] ChatMessage publicAreaCommon
-         * @property {douyin.IImage|null} [giftImage] ChatMessage giftImage
-         * @property {number|null} [agreeMsgId] ChatMessage agreeMsgId
-         * @property {number|null} [priorityLevel] ChatMessage priorityLevel
-         * @property {douyin.ILandscapeAreaCommon|null} [landscapeAreaCommon] ChatMessage landscapeAreaCommon
-         * @property {number|null} [eventTime] ChatMessage eventTime
-         * @property {boolean|null} [sendReview] ChatMessage sendReview
-         * @property {boolean|null} [fromIntercom] ChatMessage fromIntercom
-         * @property {boolean|null} [intercomHideUserCard] ChatMessage intercomHideUserCard
-         * @property {string|null} [chatBy] ChatMessage chatBy
-         * @property {number|null} [individualChatPriority] ChatMessage individualChatPriority
-         * @property {douyin.IText|null} [rtfContent] ChatMessage rtfContent
          */
 
         /**
@@ -1056,134 +1040,6 @@ export const douyin = $root.douyin = (() => {
         ChatMessage.prototype.content = "";
 
         /**
-         * ChatMessage visibleToSender.
-         * @member {boolean} visibleToSender
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.visibleToSender = false;
-
-        /**
-         * ChatMessage backgroundImage.
-         * @member {douyin.IImage|null|undefined} backgroundImage
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.backgroundImage = null;
-
-        /**
-         * ChatMessage fullScreenTextColor.
-         * @member {string} fullScreenTextColor
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.fullScreenTextColor = "";
-
-        /**
-         * ChatMessage backgroundImageV2.
-         * @member {douyin.IImage|null|undefined} backgroundImageV2
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.backgroundImageV2 = null;
-
-        /**
-         * ChatMessage publicAreaCommon.
-         * @member {douyin.IPublicAreaCommon|null|undefined} publicAreaCommon
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.publicAreaCommon = null;
-
-        /**
-         * ChatMessage giftImage.
-         * @member {douyin.IImage|null|undefined} giftImage
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.giftImage = null;
-
-        /**
-         * ChatMessage agreeMsgId.
-         * @member {number} agreeMsgId
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.agreeMsgId = 0;
-
-        /**
-         * ChatMessage priorityLevel.
-         * @member {number} priorityLevel
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.priorityLevel = 0;
-
-        /**
-         * ChatMessage landscapeAreaCommon.
-         * @member {douyin.ILandscapeAreaCommon|null|undefined} landscapeAreaCommon
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.landscapeAreaCommon = null;
-
-        /**
-         * ChatMessage eventTime.
-         * @member {number} eventTime
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.eventTime = 0;
-
-        /**
-         * ChatMessage sendReview.
-         * @member {boolean} sendReview
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.sendReview = false;
-
-        /**
-         * ChatMessage fromIntercom.
-         * @member {boolean} fromIntercom
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.fromIntercom = false;
-
-        /**
-         * ChatMessage intercomHideUserCard.
-         * @member {boolean} intercomHideUserCard
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.intercomHideUserCard = false;
-
-        /**
-         * ChatMessage chatBy.
-         * @member {string} chatBy
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.chatBy = "";
-
-        /**
-         * ChatMessage individualChatPriority.
-         * @member {number} individualChatPriority
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.individualChatPriority = 0;
-
-        /**
-         * ChatMessage rtfContent.
-         * @member {douyin.IText|null|undefined} rtfContent
-         * @memberof douyin.ChatMessage
-         * @instance
-         */
-        ChatMessage.prototype.rtfContent = null;
-
-        /**
          * Creates a new ChatMessage instance using the specified properties.
          * @function create
          * @memberof douyin.ChatMessage
@@ -1213,38 +1069,6 @@ export const douyin = $root.douyin = (() => {
                 $root.douyin.User.encode(message.user, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             if (message.content != null && Object.hasOwnProperty.call(message, "content"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.content);
-            if (message.visibleToSender != null && Object.hasOwnProperty.call(message, "visibleToSender"))
-                writer.uint32(/* id 4, wireType 0 =*/32).bool(message.visibleToSender);
-            if (message.backgroundImage != null && Object.hasOwnProperty.call(message, "backgroundImage"))
-                $root.douyin.Image.encode(message.backgroundImage, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-            if (message.fullScreenTextColor != null && Object.hasOwnProperty.call(message, "fullScreenTextColor"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.fullScreenTextColor);
-            if (message.backgroundImageV2 != null && Object.hasOwnProperty.call(message, "backgroundImageV2"))
-                $root.douyin.Image.encode(message.backgroundImageV2, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-            if (message.publicAreaCommon != null && Object.hasOwnProperty.call(message, "publicAreaCommon"))
-                $root.douyin.PublicAreaCommon.encode(message.publicAreaCommon, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
-            if (message.giftImage != null && Object.hasOwnProperty.call(message, "giftImage"))
-                $root.douyin.Image.encode(message.giftImage, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
-            if (message.agreeMsgId != null && Object.hasOwnProperty.call(message, "agreeMsgId"))
-                writer.uint32(/* id 11, wireType 0 =*/88).uint32(message.agreeMsgId);
-            if (message.priorityLevel != null && Object.hasOwnProperty.call(message, "priorityLevel"))
-                writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.priorityLevel);
-            if (message.landscapeAreaCommon != null && Object.hasOwnProperty.call(message, "landscapeAreaCommon"))
-                $root.douyin.LandscapeAreaCommon.encode(message.landscapeAreaCommon, writer.uint32(/* id 13, wireType 2 =*/106).fork()).ldelim();
-            if (message.eventTime != null && Object.hasOwnProperty.call(message, "eventTime"))
-                writer.uint32(/* id 15, wireType 0 =*/120).uint32(message.eventTime);
-            if (message.sendReview != null && Object.hasOwnProperty.call(message, "sendReview"))
-                writer.uint32(/* id 16, wireType 0 =*/128).bool(message.sendReview);
-            if (message.fromIntercom != null && Object.hasOwnProperty.call(message, "fromIntercom"))
-                writer.uint32(/* id 17, wireType 0 =*/136).bool(message.fromIntercom);
-            if (message.intercomHideUserCard != null && Object.hasOwnProperty.call(message, "intercomHideUserCard"))
-                writer.uint32(/* id 18, wireType 0 =*/144).bool(message.intercomHideUserCard);
-            if (message.chatBy != null && Object.hasOwnProperty.call(message, "chatBy"))
-                writer.uint32(/* id 20, wireType 2 =*/162).string(message.chatBy);
-            if (message.individualChatPriority != null && Object.hasOwnProperty.call(message, "individualChatPriority"))
-                writer.uint32(/* id 21, wireType 0 =*/168).uint32(message.individualChatPriority);
-            if (message.rtfContent != null && Object.hasOwnProperty.call(message, "rtfContent"))
-                $root.douyin.Text.encode(message.rtfContent, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
             return writer;
         };
 
@@ -1289,70 +1113,6 @@ export const douyin = $root.douyin = (() => {
                     }
                 case 3: {
                         message.content = reader.string();
-                        break;
-                    }
-                case 4: {
-                        message.visibleToSender = reader.bool();
-                        break;
-                    }
-                case 5: {
-                        message.backgroundImage = $root.douyin.Image.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 6: {
-                        message.fullScreenTextColor = reader.string();
-                        break;
-                    }
-                case 7: {
-                        message.backgroundImageV2 = $root.douyin.Image.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 8: {
-                        message.publicAreaCommon = $root.douyin.PublicAreaCommon.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 9: {
-                        message.giftImage = $root.douyin.Image.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 11: {
-                        message.agreeMsgId = reader.uint32();
-                        break;
-                    }
-                case 12: {
-                        message.priorityLevel = reader.uint32();
-                        break;
-                    }
-                case 13: {
-                        message.landscapeAreaCommon = $root.douyin.LandscapeAreaCommon.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 15: {
-                        message.eventTime = reader.uint32();
-                        break;
-                    }
-                case 16: {
-                        message.sendReview = reader.bool();
-                        break;
-                    }
-                case 17: {
-                        message.fromIntercom = reader.bool();
-                        break;
-                    }
-                case 18: {
-                        message.intercomHideUserCard = reader.bool();
-                        break;
-                    }
-                case 20: {
-                        message.chatBy = reader.string();
-                        break;
-                    }
-                case 21: {
-                        message.individualChatPriority = reader.uint32();
-                        break;
-                    }
-                case 22: {
-                        message.rtfContent = $root.douyin.Text.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -1403,66 +1163,6 @@ export const douyin = $root.douyin = (() => {
             if (message.content != null && message.hasOwnProperty("content"))
                 if (!$util.isString(message.content))
                     return "content: string expected";
-            if (message.visibleToSender != null && message.hasOwnProperty("visibleToSender"))
-                if (typeof message.visibleToSender !== "boolean")
-                    return "visibleToSender: boolean expected";
-            if (message.backgroundImage != null && message.hasOwnProperty("backgroundImage")) {
-                let error = $root.douyin.Image.verify(message.backgroundImage);
-                if (error)
-                    return "backgroundImage." + error;
-            }
-            if (message.fullScreenTextColor != null && message.hasOwnProperty("fullScreenTextColor"))
-                if (!$util.isString(message.fullScreenTextColor))
-                    return "fullScreenTextColor: string expected";
-            if (message.backgroundImageV2 != null && message.hasOwnProperty("backgroundImageV2")) {
-                let error = $root.douyin.Image.verify(message.backgroundImageV2);
-                if (error)
-                    return "backgroundImageV2." + error;
-            }
-            if (message.publicAreaCommon != null && message.hasOwnProperty("publicAreaCommon")) {
-                let error = $root.douyin.PublicAreaCommon.verify(message.publicAreaCommon);
-                if (error)
-                    return "publicAreaCommon." + error;
-            }
-            if (message.giftImage != null && message.hasOwnProperty("giftImage")) {
-                let error = $root.douyin.Image.verify(message.giftImage);
-                if (error)
-                    return "giftImage." + error;
-            }
-            if (message.agreeMsgId != null && message.hasOwnProperty("agreeMsgId"))
-                if (!$util.isInteger(message.agreeMsgId))
-                    return "agreeMsgId: integer expected";
-            if (message.priorityLevel != null && message.hasOwnProperty("priorityLevel"))
-                if (!$util.isInteger(message.priorityLevel))
-                    return "priorityLevel: integer expected";
-            if (message.landscapeAreaCommon != null && message.hasOwnProperty("landscapeAreaCommon")) {
-                let error = $root.douyin.LandscapeAreaCommon.verify(message.landscapeAreaCommon);
-                if (error)
-                    return "landscapeAreaCommon." + error;
-            }
-            if (message.eventTime != null && message.hasOwnProperty("eventTime"))
-                if (!$util.isInteger(message.eventTime))
-                    return "eventTime: integer expected";
-            if (message.sendReview != null && message.hasOwnProperty("sendReview"))
-                if (typeof message.sendReview !== "boolean")
-                    return "sendReview: boolean expected";
-            if (message.fromIntercom != null && message.hasOwnProperty("fromIntercom"))
-                if (typeof message.fromIntercom !== "boolean")
-                    return "fromIntercom: boolean expected";
-            if (message.intercomHideUserCard != null && message.hasOwnProperty("intercomHideUserCard"))
-                if (typeof message.intercomHideUserCard !== "boolean")
-                    return "intercomHideUserCard: boolean expected";
-            if (message.chatBy != null && message.hasOwnProperty("chatBy"))
-                if (!$util.isString(message.chatBy))
-                    return "chatBy: string expected";
-            if (message.individualChatPriority != null && message.hasOwnProperty("individualChatPriority"))
-                if (!$util.isInteger(message.individualChatPriority))
-                    return "individualChatPriority: integer expected";
-            if (message.rtfContent != null && message.hasOwnProperty("rtfContent")) {
-                let error = $root.douyin.Text.verify(message.rtfContent);
-                if (error)
-                    return "rtfContent." + error;
-            }
             return null;
         };
 
@@ -1490,56 +1190,6 @@ export const douyin = $root.douyin = (() => {
             }
             if (object.content != null)
                 message.content = String(object.content);
-            if (object.visibleToSender != null)
-                message.visibleToSender = Boolean(object.visibleToSender);
-            if (object.backgroundImage != null) {
-                if (typeof object.backgroundImage !== "object")
-                    throw TypeError(".douyin.ChatMessage.backgroundImage: object expected");
-                message.backgroundImage = $root.douyin.Image.fromObject(object.backgroundImage);
-            }
-            if (object.fullScreenTextColor != null)
-                message.fullScreenTextColor = String(object.fullScreenTextColor);
-            if (object.backgroundImageV2 != null) {
-                if (typeof object.backgroundImageV2 !== "object")
-                    throw TypeError(".douyin.ChatMessage.backgroundImageV2: object expected");
-                message.backgroundImageV2 = $root.douyin.Image.fromObject(object.backgroundImageV2);
-            }
-            if (object.publicAreaCommon != null) {
-                if (typeof object.publicAreaCommon !== "object")
-                    throw TypeError(".douyin.ChatMessage.publicAreaCommon: object expected");
-                message.publicAreaCommon = $root.douyin.PublicAreaCommon.fromObject(object.publicAreaCommon);
-            }
-            if (object.giftImage != null) {
-                if (typeof object.giftImage !== "object")
-                    throw TypeError(".douyin.ChatMessage.giftImage: object expected");
-                message.giftImage = $root.douyin.Image.fromObject(object.giftImage);
-            }
-            if (object.agreeMsgId != null)
-                message.agreeMsgId = object.agreeMsgId >>> 0;
-            if (object.priorityLevel != null)
-                message.priorityLevel = object.priorityLevel >>> 0;
-            if (object.landscapeAreaCommon != null) {
-                if (typeof object.landscapeAreaCommon !== "object")
-                    throw TypeError(".douyin.ChatMessage.landscapeAreaCommon: object expected");
-                message.landscapeAreaCommon = $root.douyin.LandscapeAreaCommon.fromObject(object.landscapeAreaCommon);
-            }
-            if (object.eventTime != null)
-                message.eventTime = object.eventTime >>> 0;
-            if (object.sendReview != null)
-                message.sendReview = Boolean(object.sendReview);
-            if (object.fromIntercom != null)
-                message.fromIntercom = Boolean(object.fromIntercom);
-            if (object.intercomHideUserCard != null)
-                message.intercomHideUserCard = Boolean(object.intercomHideUserCard);
-            if (object.chatBy != null)
-                message.chatBy = String(object.chatBy);
-            if (object.individualChatPriority != null)
-                message.individualChatPriority = object.individualChatPriority >>> 0;
-            if (object.rtfContent != null) {
-                if (typeof object.rtfContent !== "object")
-                    throw TypeError(".douyin.ChatMessage.rtfContent: object expected");
-                message.rtfContent = $root.douyin.Text.fromObject(object.rtfContent);
-            }
             return message;
         };
 
@@ -1560,22 +1210,6 @@ export const douyin = $root.douyin = (() => {
                 object.common = null;
                 object.user = null;
                 object.content = "";
-                object.visibleToSender = false;
-                object.backgroundImage = null;
-                object.fullScreenTextColor = "";
-                object.backgroundImageV2 = null;
-                object.publicAreaCommon = null;
-                object.giftImage = null;
-                object.agreeMsgId = 0;
-                object.priorityLevel = 0;
-                object.landscapeAreaCommon = null;
-                object.eventTime = 0;
-                object.sendReview = false;
-                object.fromIntercom = false;
-                object.intercomHideUserCard = false;
-                object.chatBy = "";
-                object.individualChatPriority = 0;
-                object.rtfContent = null;
             }
             if (message.common != null && message.hasOwnProperty("common"))
                 object.common = $root.douyin.Common.toObject(message.common, options);
@@ -1583,38 +1217,6 @@ export const douyin = $root.douyin = (() => {
                 object.user = $root.douyin.User.toObject(message.user, options);
             if (message.content != null && message.hasOwnProperty("content"))
                 object.content = message.content;
-            if (message.visibleToSender != null && message.hasOwnProperty("visibleToSender"))
-                object.visibleToSender = message.visibleToSender;
-            if (message.backgroundImage != null && message.hasOwnProperty("backgroundImage"))
-                object.backgroundImage = $root.douyin.Image.toObject(message.backgroundImage, options);
-            if (message.fullScreenTextColor != null && message.hasOwnProperty("fullScreenTextColor"))
-                object.fullScreenTextColor = message.fullScreenTextColor;
-            if (message.backgroundImageV2 != null && message.hasOwnProperty("backgroundImageV2"))
-                object.backgroundImageV2 = $root.douyin.Image.toObject(message.backgroundImageV2, options);
-            if (message.publicAreaCommon != null && message.hasOwnProperty("publicAreaCommon"))
-                object.publicAreaCommon = $root.douyin.PublicAreaCommon.toObject(message.publicAreaCommon, options);
-            if (message.giftImage != null && message.hasOwnProperty("giftImage"))
-                object.giftImage = $root.douyin.Image.toObject(message.giftImage, options);
-            if (message.agreeMsgId != null && message.hasOwnProperty("agreeMsgId"))
-                object.agreeMsgId = message.agreeMsgId;
-            if (message.priorityLevel != null && message.hasOwnProperty("priorityLevel"))
-                object.priorityLevel = message.priorityLevel;
-            if (message.landscapeAreaCommon != null && message.hasOwnProperty("landscapeAreaCommon"))
-                object.landscapeAreaCommon = $root.douyin.LandscapeAreaCommon.toObject(message.landscapeAreaCommon, options);
-            if (message.eventTime != null && message.hasOwnProperty("eventTime"))
-                object.eventTime = message.eventTime;
-            if (message.sendReview != null && message.hasOwnProperty("sendReview"))
-                object.sendReview = message.sendReview;
-            if (message.fromIntercom != null && message.hasOwnProperty("fromIntercom"))
-                object.fromIntercom = message.fromIntercom;
-            if (message.intercomHideUserCard != null && message.hasOwnProperty("intercomHideUserCard"))
-                object.intercomHideUserCard = message.intercomHideUserCard;
-            if (message.chatBy != null && message.hasOwnProperty("chatBy"))
-                object.chatBy = message.chatBy;
-            if (message.individualChatPriority != null && message.hasOwnProperty("individualChatPriority"))
-                object.individualChatPriority = message.individualChatPriority;
-            if (message.rtfContent != null && message.hasOwnProperty("rtfContent"))
-                object.rtfContent = $root.douyin.Text.toObject(message.rtfContent, options);
             return object;
         };
 

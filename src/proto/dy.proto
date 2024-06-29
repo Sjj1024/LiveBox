@@ -33,23 +33,23 @@ message ChatMessage {
   Common common = 1;
   User user = 2;
   string content = 3;
-  bool visibleToSender = 4;
-  Image backgroundImage = 5;
-  string fullScreenTextColor = 6;
-  Image backgroundImageV2 = 7;
-  PublicAreaCommon publicAreaCommon = 8;
-  Image giftImage = 9;
-  uint64 agreeMsgId = 11;
-  uint32 priorityLevel = 12;
-  LandscapeAreaCommon landscapeAreaCommon = 13;
-  uint64 eventTime = 15;
-  bool sendReview = 16;
-  bool fromIntercom = 17;
-  bool intercomHideUserCard = 18;
+//   bool visibleToSender = 4;
+//   Image backgroundImage = 5;
+//   string fullScreenTextColor = 6;
+//   Image backgroundImageV2 = 7;
+//   PublicAreaCommon publicAreaCommon = 8;
+//   Image giftImage = 9;
+//   uint64 agreeMsgId = 11;
+//   uint32 priorityLevel = 12;
+//   LandscapeAreaCommon landscapeAreaCommon = 13;
+//   uint64 eventTime = 15;
+//   bool sendReview = 16;
+//   bool fromIntercom = 17;
+//   bool intercomHideUserCard = 18;
   //  repeated chatTagsList = 19;
-  string chatBy = 20;
-  uint32 individualChatPriority = 21;
-  Text rtfContent = 22;
+//   string chatBy = 20;
+//   uint32 individualChatPriority = 21;
+//   Text rtfContent = 22;
 }
 
 message LandscapeAreaCommon {
