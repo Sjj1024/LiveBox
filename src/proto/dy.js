@@ -962,6 +962,11 @@ export const douyin = $root.douyin = (() => {
          * @property {douyin.ICommon|null} [common] ChatMessage common
          * @property {douyin.IUser|null} [user] ChatMessage user
          * @property {string|null} [content] ChatMessage content
+         * @property {boolean|null} [visibleToSender] ChatMessage visibleToSender
+         * @property {douyin.IImage|null} [backgroundImage] ChatMessage backgroundImage
+         * @property {string|null} [fullScreenTextColor] ChatMessage fullScreenTextColor
+         * @property {douyin.IImage|null} [backgroundImageV2] ChatMessage backgroundImageV2
+         * @property {douyin.IPublicAreaCommon|null} [publicAreaCommon] ChatMessage publicAreaCommon
          */
 
         /**
@@ -1004,6 +1009,46 @@ export const douyin = $root.douyin = (() => {
         ChatMessage.prototype.content = "";
 
         /**
+         * ChatMessage visibleToSender.
+         * @member {boolean} visibleToSender
+         * @memberof douyin.ChatMessage
+         * @instance
+         */
+        ChatMessage.prototype.visibleToSender = false;
+
+        /**
+         * ChatMessage backgroundImage.
+         * @member {douyin.IImage|null|undefined} backgroundImage
+         * @memberof douyin.ChatMessage
+         * @instance
+         */
+        ChatMessage.prototype.backgroundImage = null;
+
+        /**
+         * ChatMessage fullScreenTextColor.
+         * @member {string} fullScreenTextColor
+         * @memberof douyin.ChatMessage
+         * @instance
+         */
+        ChatMessage.prototype.fullScreenTextColor = "";
+
+        /**
+         * ChatMessage backgroundImageV2.
+         * @member {douyin.IImage|null|undefined} backgroundImageV2
+         * @memberof douyin.ChatMessage
+         * @instance
+         */
+        ChatMessage.prototype.backgroundImageV2 = null;
+
+        /**
+         * ChatMessage publicAreaCommon.
+         * @member {douyin.IPublicAreaCommon|null|undefined} publicAreaCommon
+         * @memberof douyin.ChatMessage
+         * @instance
+         */
+        ChatMessage.prototype.publicAreaCommon = null;
+
+        /**
          * Creates a new ChatMessage instance using the specified properties.
          * @function create
          * @memberof douyin.ChatMessage
@@ -1033,6 +1078,16 @@ export const douyin = $root.douyin = (() => {
                 $root.douyin.User.encode(message.user, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             if (message.content != null && Object.hasOwnProperty.call(message, "content"))
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.content);
+            if (message.visibleToSender != null && Object.hasOwnProperty.call(message, "visibleToSender"))
+                writer.uint32(/* id 4, wireType 0 =*/32).bool(message.visibleToSender);
+            if (message.backgroundImage != null && Object.hasOwnProperty.call(message, "backgroundImage"))
+                $root.douyin.Image.encode(message.backgroundImage, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.fullScreenTextColor != null && Object.hasOwnProperty.call(message, "fullScreenTextColor"))
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.fullScreenTextColor);
+            if (message.backgroundImageV2 != null && Object.hasOwnProperty.call(message, "backgroundImageV2"))
+                $root.douyin.Image.encode(message.backgroundImageV2, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            if (message.publicAreaCommon != null && Object.hasOwnProperty.call(message, "publicAreaCommon"))
+                $root.douyin.PublicAreaCommon.encode(message.publicAreaCommon, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
             return writer;
         };
 
@@ -1077,6 +1132,26 @@ export const douyin = $root.douyin = (() => {
                     }
                 case 3: {
                         message.content = reader.string();
+                        break;
+                    }
+                case 4: {
+                        message.visibleToSender = reader.bool();
+                        break;
+                    }
+                case 5: {
+                        message.backgroundImage = $root.douyin.Image.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 6: {
+                        message.fullScreenTextColor = reader.string();
+                        break;
+                    }
+                case 7: {
+                        message.backgroundImageV2 = $root.douyin.Image.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 9: {
+                        message.publicAreaCommon = $root.douyin.PublicAreaCommon.decode(reader, reader.uint32());
                         break;
                     }
                 default:
@@ -1127,6 +1202,27 @@ export const douyin = $root.douyin = (() => {
             if (message.content != null && message.hasOwnProperty("content"))
                 if (!$util.isString(message.content))
                     return "content: string expected";
+            if (message.visibleToSender != null && message.hasOwnProperty("visibleToSender"))
+                if (typeof message.visibleToSender !== "boolean")
+                    return "visibleToSender: boolean expected";
+            if (message.backgroundImage != null && message.hasOwnProperty("backgroundImage")) {
+                let error = $root.douyin.Image.verify(message.backgroundImage);
+                if (error)
+                    return "backgroundImage." + error;
+            }
+            if (message.fullScreenTextColor != null && message.hasOwnProperty("fullScreenTextColor"))
+                if (!$util.isString(message.fullScreenTextColor))
+                    return "fullScreenTextColor: string expected";
+            if (message.backgroundImageV2 != null && message.hasOwnProperty("backgroundImageV2")) {
+                let error = $root.douyin.Image.verify(message.backgroundImageV2);
+                if (error)
+                    return "backgroundImageV2." + error;
+            }
+            if (message.publicAreaCommon != null && message.hasOwnProperty("publicAreaCommon")) {
+                let error = $root.douyin.PublicAreaCommon.verify(message.publicAreaCommon);
+                if (error)
+                    return "publicAreaCommon." + error;
+            }
             return null;
         };
 
@@ -1154,6 +1250,25 @@ export const douyin = $root.douyin = (() => {
             }
             if (object.content != null)
                 message.content = String(object.content);
+            if (object.visibleToSender != null)
+                message.visibleToSender = Boolean(object.visibleToSender);
+            if (object.backgroundImage != null) {
+                if (typeof object.backgroundImage !== "object")
+                    throw TypeError(".douyin.ChatMessage.backgroundImage: object expected");
+                message.backgroundImage = $root.douyin.Image.fromObject(object.backgroundImage);
+            }
+            if (object.fullScreenTextColor != null)
+                message.fullScreenTextColor = String(object.fullScreenTextColor);
+            if (object.backgroundImageV2 != null) {
+                if (typeof object.backgroundImageV2 !== "object")
+                    throw TypeError(".douyin.ChatMessage.backgroundImageV2: object expected");
+                message.backgroundImageV2 = $root.douyin.Image.fromObject(object.backgroundImageV2);
+            }
+            if (object.publicAreaCommon != null) {
+                if (typeof object.publicAreaCommon !== "object")
+                    throw TypeError(".douyin.ChatMessage.publicAreaCommon: object expected");
+                message.publicAreaCommon = $root.douyin.PublicAreaCommon.fromObject(object.publicAreaCommon);
+            }
             return message;
         };
 
@@ -1174,6 +1289,11 @@ export const douyin = $root.douyin = (() => {
                 object.common = null;
                 object.user = null;
                 object.content = "";
+                object.visibleToSender = false;
+                object.backgroundImage = null;
+                object.fullScreenTextColor = "";
+                object.backgroundImageV2 = null;
+                object.publicAreaCommon = null;
             }
             if (message.common != null && message.hasOwnProperty("common"))
                 object.common = $root.douyin.Common.toObject(message.common, options);
@@ -1181,6 +1301,16 @@ export const douyin = $root.douyin = (() => {
                 object.user = $root.douyin.User.toObject(message.user, options);
             if (message.content != null && message.hasOwnProperty("content"))
                 object.content = message.content;
+            if (message.visibleToSender != null && message.hasOwnProperty("visibleToSender"))
+                object.visibleToSender = message.visibleToSender;
+            if (message.backgroundImage != null && message.hasOwnProperty("backgroundImage"))
+                object.backgroundImage = $root.douyin.Image.toObject(message.backgroundImage, options);
+            if (message.fullScreenTextColor != null && message.hasOwnProperty("fullScreenTextColor"))
+                object.fullScreenTextColor = message.fullScreenTextColor;
+            if (message.backgroundImageV2 != null && message.hasOwnProperty("backgroundImageV2"))
+                object.backgroundImageV2 = $root.douyin.Image.toObject(message.backgroundImageV2, options);
+            if (message.publicAreaCommon != null && message.hasOwnProperty("publicAreaCommon"))
+                object.publicAreaCommon = $root.douyin.PublicAreaCommon.toObject(message.publicAreaCommon, options);
             return object;
         };
 
