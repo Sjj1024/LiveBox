@@ -2,6 +2,7 @@
 ![alt text](image-2.png)
 ![alt text](image-3.png)
 ![alt text](image-4.png)
+![alt text](image-5.png)
 
 HLS 视频源：
 学习资料：https://blog.csdn.net/weixin_66948502/article/details/135567409

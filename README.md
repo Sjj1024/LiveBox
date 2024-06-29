@@ -13,8 +13,7 @@ windows/mac/linux 下载地址：https://github.com/Sjj1024/LiveBox/releases
 ## 界面介绍
 
 ![alt text](./analysis/image-2.png)
-![alt text](./analysis/image-3.png)
-![alt text](./analysis/image-4.png)
+![alt text](./analysis/image-5.png)
 
 ## 赞助
 
