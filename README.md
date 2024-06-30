@@ -16,6 +16,11 @@ windows/mac/linux 下载地址：https://github.com/Sjj1024/LiveBox/releases
 ![alt text](./analysis/image-2.png)
 ![alt text](./analysis/image-5.png)
 
+## TODO
+
+1.长列表优化渲染  
+2.直播视频优化
+
 ## 赞助
 
 开源不易, 有了您的赞助, 我们会做的更好~
