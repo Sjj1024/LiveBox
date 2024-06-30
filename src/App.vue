@@ -42,6 +42,9 @@ const liveInfo = ref({
     signature: '',
 })
 
+// 主播收益
+const diamond = ref(0)
+
 // 推送流地址
 const pushUrl = ref('')
 
@@ -339,6 +342,7 @@ const decodeChat = (data) => {
 // 解析礼物消息
 const decodeGift = (data) => {
     const giftMsg = douyin.GiftMessage.decode(data)
+    console.log('giftMsg---', giftMsg)
     const { common, user, gift, repeatCount } = giftMsg
     const message = {
         id: common.msgId,
@@ -346,7 +350,8 @@ const decodeGift = (data) => {
         msg: `送出${gift.name} x${repeatCount}个`,
     }
     messageList.value.push(message)
-    // console.log('giftMsg---', giftMsg)
+    // 计算主播收益
+    diamond.value = diamond.value + gift.diamondCount * repeatCount
 }
 
 // 进入房间
@@ -442,6 +447,7 @@ const countLive = (data) => {
                     <div class="customer">
                         在线观众：{{ liveInfo.customer }}
                     </div>
+                    <div class="diamond">主播收益：{{ diamond }}</div>
                 </div>
                 <!-- 视频播放器 -->
                 <div id="dplayer" class="dplayer"></div>
@@ -462,9 +468,9 @@ const countLive = (data) => {
             </div>
         </div>
         <!-- 设置推流地址 -->
-        <!-- <el-icon :size="20" class="pushUrl" @click="dialogVisible = true">
+        <el-icon :size="20" class="pushUrl" @click="dialogVisible = true">
             <Setting />
-        </el-icon> -->
+        </el-icon>
     </div>
     <!-- 设置推流地址 -->
     <el-dialog
@@ -617,7 +623,7 @@ const countLive = (data) => {
                 color: white;
 
                 .customer {
-                    margin-left: 20px;
+                    margin: 0 20px;
                 }
             }
 
