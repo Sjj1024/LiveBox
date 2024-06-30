@@ -254,14 +254,14 @@ const onMessage = (msg: any) => {
     const response = douyin.Response.decode(gzipData)
     // 遍历 payloadPackage.messagesList
     // 判断是否需要回复，自动回复
-    // if (decodeRes.needAck) {
-    //     const ack = douyin.PushFrame.encode({
-    //         payloadType: 'ack',
-    //         logId: decodeMsg.logId,
-    //     }).finish()
-    //     console.log('ack-------', ack)
-    //     socketClient?.send(ack)
-    // }
+    if (response.needAck) {
+        const ack = douyin.PushFrame.encode({
+            payloadType: 'ack',
+            logId: decodeMsg.logId,
+        }).finish()
+        console.log('ack-------', ack)
+        socketClient?.send(ack)
+    }
     // 解析直播消息
     handleMessage(response.messagesList)
     // console.log('decodeRes---', liveMsg.value)
@@ -320,7 +320,7 @@ const handleMessage = (messageList: douyin.Message) => {
                 break
             // 待解析方法
             default:
-                // console.log('待解析方法' + msg.method)
+                console.log('待解析方法' + msg.method)
                 break
         }
     })
@@ -342,7 +342,7 @@ const decodeChat = (data) => {
 // 解析礼物消息
 const decodeGift = (data) => {
     const giftMsg = douyin.GiftMessage.decode(data)
-    console.log('giftMsg---', giftMsg)
+    // console.log('giftMsg---', giftMsg)
     const { common, user, gift, repeatCount } = giftMsg
     const message = {
         id: common.msgId,
@@ -370,7 +370,7 @@ const enterLive = (data) => {
 // 点赞消息
 const likeLive = (data) => {
     const likeMsg = douyin.LikeMessage.decode(data)
-    console.log('likeMsg---', likeMsg)
+    // console.log('likeMsg---', likeMsg)
     const { common, user, total } = likeMsg
     const message = {
         id: common.msgId,
@@ -404,7 +404,7 @@ const followLive = (data) => {
 // 直播间统计
 const countLive = (data) => {
     const countMsg = douyin.RoomUserSeqMessage.decode(data)
-    console.log('countLive---', countMsg)
+    // console.log('countLive---', countMsg)
     liveInfo.value = {
         ...liveInfo.value,
         customer: countMsg.onlineUserForAnchor,

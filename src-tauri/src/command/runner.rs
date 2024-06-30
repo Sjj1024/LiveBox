@@ -74,7 +74,7 @@ impl DouYinReq {
         // 替换里面的双引号,方便json解析
         let room_info = String::from(main_info) + "}";
         self.room_info = room_info.replace(r#"\""#, r#"""#);
-        println!("直播间信息是：{}", self.room_info);
+        // println!("直播间信息是：{}", self.room_info);
         Ok(LiveInfo {
             room_info: self.room_info.clone(),
             ttwid,
