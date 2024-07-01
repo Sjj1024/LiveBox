@@ -65,7 +65,7 @@ const startListen = async () => {
     if (url.trim()) {
         // 根据直播间地址获取roomid等字段
         const roomJson: LiveInfoImp = await invoke('get_live_html', { url })
-        console.log('获取到的直播房间信息:', roomJson)
+        // console.log('获取到的直播房间信息:', roomJson)
         // roomInfo
         const roomInfo = JSON.parse(roomJson.room_info)
         console.log('roomInfo----', roomInfo)
@@ -119,7 +119,7 @@ const startListen = async () => {
 
 // 清空直播和聊天内容
 const clearLivex = () => {
-    console.log('清空')
+    // console.log('清空')
     dplayer?.destroy()
     messageList.value = [
         {
@@ -133,9 +133,9 @@ const clearLivex = () => {
 
 // 创建websokcet
 const creatSokcet = async (roomId: string, uniqueId: string, ttwid: string) => {
-    console.log('创建连接', roomId, uniqueId)
+    // console.log('创建连接', roomId, uniqueId)
     let sign = window.creatSignature(roomId, uniqueId)
-    console.log('sign----', sign)
+    // console.log('sign----', sign)
     // 组装参数
     let socketUrl = `wss://webcast5-ws-web-lf.douyin.com/webcast/im/push/v2/?room_id=${roomId}&compress=gzip&version_code=180800&webcast_sdk_version=1.0.14-beta.0&live_id=1&did_rule=3&user_unique_id=${uniqueId}&identity=audience&signature=${sign}&aid=6383&device_platform=web&browser_language=zh-CN&browser_platform=Win32&browser_name=Mozilla&browser_version=5.0+%28Windows+NT+10.0%3B+Win64%3B+x64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F126.0.0.0+Safari%2F537.36+Edg%2F126.0.0.0`
     // header
@@ -153,10 +153,8 @@ const creatSokcet = async (roomId: string, uniqueId: string, ttwid: string) => {
                 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0',
         },
     }
-    console.log('socketUrl---', socketUrl)
     // ping消息
     const pingMsg = douyin.PushFrame.encode({ payloadType: 'hb' }).finish()
-    console.log('pingMsg---', pingMsg)
     // 使用rust webscoket
     socketClient = new SocketCli(socketUrl, options, onMessage, pingMsg)
 
@@ -167,7 +165,6 @@ const creatSokcet = async (roomId: string, uniqueId: string, ttwid: string) => {
 // 加载直播视频
 const loadLive = (videoUrl: string, live: boolean = true) => {
     // 根据不同的视频加载不同的播放器
-    console.log('加载的videlurl', videoUrl)
     if (videoUrl.includes('m3u8')) {
         dplayer = new DPlayer({
             container: document.getElementById(`dplayer`),
@@ -259,7 +256,6 @@ const onMessage = (msg: any) => {
             payloadType: 'ack',
             logId: decodeMsg.logId,
         }).finish()
-        console.log('ack-------', ack)
         socketClient?.send(ack)
     }
     // 解析直播消息
@@ -411,6 +407,21 @@ const countLive = (data) => {
     }
     // messageList.value.push(message)
 }
+
+// 弹幕消息列表：优化
+var lastScrollTop = 0
+const msgScroll = (event) => {
+    console.log('列表滚动', event)
+    const { scrollTop } = event.target
+    if (scrollTop < lastScrollTop) {
+        // 向上滚动
+        console.log('向上滚动')
+    } else if (scrollTop > lastScrollTop) {
+        // 向下滚动
+        console.log('向下滚动')
+    }
+    lastScrollTop = scrollTop
+}
 </script>
 
 <template>
@@ -454,15 +465,15 @@ const countLive = (data) => {
                 <!-- 直播结束 -->
                 <div v-if="liveInfo.status === 4" class="over">直播已结束</div>
             </div>
-            <div class="liveMeg" ref="liveMsg">
+            <div class="liveMeg" ref="liveMsg" @scroll="msgScroll">
                 <div
-                    v-for="u in messageList"
-                    :key="u.id + u.msg"
+                    v-for="item in messageList"
+                    :key="item.id + item.msg"
                     class="msgBox"
                 >
                     <div class="msg">
-                        <span class="name">{{ u.name }}：</span>
-                        <span class="msg">{{ u.msg }}</span>
+                        <span class="name">{{ item.name }}：</span>
+                        <span class="msg">{{ item.msg }}</span>
                     </div>
                 </div>
             </div>
@@ -659,8 +670,8 @@ const countLive = (data) => {
             box-shadow: 0 0 10px 2px gray;
             scrollbar-color: #363741 transparent;
             scrollbar-width: thin;
-            overflow-y: scroll;
-            overflow-x: hidden;
+            overflow-y: hidden;
+            overflow-x: scroll;
 
             .msgBox {
                 display: flex;
