@@ -232,17 +232,25 @@ const destroyPlayer = () => {
     }
 }
 
+// 消息列表添加消息：长列表优化
+const pushMsg = (msg: any) => {
+    // 列表长度限制在50个
+    messageList.value.push(msg)
+}
+
 // 收到websocket消息回调
 const onMessage = (msg: any) => {
     // console.log('收到消息', msg)
     // 解析消息
     const decodeMsg = douyin.PushFrame.decode(msg.data)
     // console.log('decodeMsg--', decodeMsg)
-    // console.log('logId--', decodeMsg.logId)
-    // logTxt.value = decodeMsg.logId
     // 滚动盒子到底部
     if (liveMsg.value) {
-        liveMsg.value.scrollTop = liveMsg.value.scrollHeight + 500
+        const msgDom: HTMLElement | null = document.getElementById('liveMsg')
+        console.log('liveMsg.value--', msgDom)
+        if (msgDom) {
+            msgDom.scrollTop = msgDom.scrollHeight
+        }
     }
     // 解压缩应该是没问题，
     const gzipData = pako.inflate(decodeMsg.payload)
@@ -465,7 +473,7 @@ const msgScroll = (event) => {
                 <!-- 直播结束 -->
                 <div v-if="liveInfo.status === 4" class="over">直播已结束</div>
             </div>
-            <div class="liveMeg" ref="liveMsg" @scroll="msgScroll">
+            <!-- <div class="liveMeg" ref="liveMsg">
                 <div
                     v-for="item in messageList"
                     :key="item.id + item.msg"
@@ -476,7 +484,31 @@ const msgScroll = (event) => {
                         <span class="msg">{{ item.msg }}</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
+            <!-- 长列表优化 -->
+            <DynamicScroller
+                :items="messageList"
+                :min-item-size="32"
+                class="liveMeg"
+                id="liveMsg"
+                ref="liveMsg"
+                v-if="messageList.length"
+            >
+                <template v-slot="{ item, active }">
+                    <DynamicScrollerItem
+                        :item="item"
+                        :active="active"
+                        class="msgBox"
+                        :size-dependencies="[item.name, item.msg]"
+                        :data-index="item.id"
+                    >
+                        <div class="content">
+                            <span class="name">{{ item.name }}：</span>
+                            <span class="msg">{{ item.msg }}</span>
+                        </div>
+                    </DynamicScrollerItem>
+                </template>
+            </DynamicScroller>
         </div>
         <!-- 设置推流地址 -->
         <el-icon :size="20" class="pushUrl" @click="dialogVisible = true">
@@ -670,8 +702,7 @@ const msgScroll = (event) => {
             box-shadow: 0 0 10px 2px gray;
             scrollbar-color: #363741 transparent;
             scrollbar-width: thin;
-            overflow-y: hidden;
-            overflow-x: scroll;
+            overflow-y: scroll;
 
             .msgBox {
                 display: flex;
@@ -713,4 +744,3 @@ const msgScroll = (event) => {
     }
 }
 </style>
-./utils/RustSocket
