@@ -317,7 +317,7 @@ const handleMessage = (messageList: douyin.Message) => {
                 break
             // 待解析方法
             default:
-                // console.log('待解析方法' + msg.method)
+                console.log('待解析方法' + msg.method)
                 break
         }
     })
