@@ -295,7 +295,7 @@ const handleMessage = (messageList: douyin.Message) => {
             // 礼物消息
             case 'WebcastGiftMessage':
                 // console.log('礼物消息')
-                checkList.value.includes('gift') && decodeGift(msg.payload)
+                decodeGift(msg.payload)
                 break
             // 聊天弹幕消息
             case 'WebcastChatMessage':
@@ -355,7 +355,7 @@ const decodeGift = (data) => {
         name: user.nickName,
         msg: `送出${gift.name} x${repeatCount}个`,
     }
-    messageList.value.push(message)
+    checkList.value.includes('gift') && messageList.value.push(message)
     // 计算主播收益
     diamond.value = diamond.value + gift.diamondCount * repeatCount
 }
