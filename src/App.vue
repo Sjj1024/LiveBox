@@ -47,6 +47,8 @@ const diamond = ref(0)
 
 // 推送流地址
 const pushUrl = ref('')
+// 选中消息类型
+const checkList = ref<string[]>(['chat', 'gift', 'like'])
 
 // 聊天消息盒子
 const liveMsg = ref()
@@ -279,27 +281,27 @@ const handleMessage = (messageList: douyin.Message) => {
             // 点赞数
             case 'WebcastLikeMessage':
                 // console.log('点赞数')
-                likeLive(msg.payload)
+                checkList.value.includes('like') && likeLive(msg.payload)
                 break
             // 成员进入直播间消息
             case 'WebcastMemberMessage':
                 // console.log('成员进入直播间消息')
-                enterLive(msg.payload)
+                checkList.value.includes('comein') && enterLive(msg.payload)
                 break
             // 礼物消息
             case 'WebcastGiftMessage':
                 // console.log('礼物消息')
-                decodeGift(msg.payload)
+                checkList.value.includes('gift') && decodeGift(msg.payload)
                 break
             // 聊天弹幕消息
             case 'WebcastChatMessage':
                 // console.log('聊天弹幕消息')
-                decodeChat(msg.payload)
+                checkList.value.includes('chat') && decodeChat(msg.payload)
                 break
             // 关注消息
             case 'WebcastSocialMessage':
                 // console.log('联谊会消息')
-                followLive(msg.payload)
+                checkList.value.includes('follow') && followLive(msg.payload)
                 break
             // 更新粉丝票
             case 'WebcastUpdateFanTicketMessage':
@@ -482,6 +484,17 @@ const countLive = (data) => {
     >
         <div class="setBox">
             <el-input v-model="pushUrl" placeholder="请输入推送地址" />
+            <!-- 选择消息 -->
+            <div class="messageSel">
+                <span>选择消息类型：</span>
+                <el-checkbox-group v-model="checkList">
+                    <el-checkbox label="聊天" value="chat" />
+                    <el-checkbox label="礼物" value="gift" />
+                    <el-checkbox label="点赞" value="like" />
+                    <el-checkbox label="关注" value="follow" />
+                    <el-checkbox label="进来" value="comein" />
+                </el-checkbox-group>
+            </div>
             <div class="tips">
                 *推送的消息会以POST请求的形式发送到该地址，请确保该地址能够接收POST请求
             </div>
@@ -695,6 +708,10 @@ const countLive = (data) => {
     justify-content: center;
     align-items: center;
     margin: 2vh 5vw;
+
+    .messageSel {
+        margin-top: 4px;
+    }
 
     .tips {
         font-size: small;
