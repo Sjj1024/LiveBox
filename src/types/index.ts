@@ -9,3 +9,9 @@ export interface DPlayerImp {
     destroy: () => void
     play: () => void
 }
+
+export interface MessageImp {
+    id: string
+    name: string
+    msg: string
+}

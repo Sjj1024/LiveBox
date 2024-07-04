@@ -10,6 +10,7 @@
         "build proto": "pnpm pbjs -t static-module -w es6 -o src/proto/dy.js src/proto/dy.proto",
         "tauri": "tauri",
         "tauri dev": "tauri dev",
+        "tauri debug": "tauri build -d",
         "tauri build": "tauri build"
     },
     "dependencies": {
@@ -24,7 +25,8 @@
         "protobufjs": "^7.3.2",
         "protobufjs-cli": "^1.1.2",
         "tauri-plugin-websocket-api": "github:tauri-apps/tauri-plugin-websocket#v1",
-        "vue": "^3.3.4"
+        "vue": "^3.3.4",
+        "vue-virtual-scroller": "next"
     },
     "devDependencies": {
         "@tauri-apps/cli": "^1",
