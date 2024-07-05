@@ -249,7 +249,6 @@ const onMessage = (msg: any) => {
     // 滚动盒子到底部
     if (liveMsg.value) {
         const msgDom: HTMLElement | null = document.getElementById('liveMsg')
-        console.log('liveMsg.value--', msgDom)
         if (msgDom) {
             msgDom.scrollTop = msgDom.scrollHeight
         }
