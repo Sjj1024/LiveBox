@@ -1,0 +1,11 @@
+[Log] 待解析方法WebcastRoomMessage (index-0i6P1KFC.js, line 4710)
+
+[Log] 待解析方法WebcastRoomStatsMessage (index-0i6P1KFC.js, line 4710)
+[Log] 待解析方法WebcastRanklistHourEntranceMessage (index-0i6P1KFC.js, line 4710)
+
+[Log] 待解析方法WebcastRanklistHourEntranceMessage (index-0i6P1KFC.js, line 4710)
+
+[Log] 待解析方法WebcastRanklistHourEntranceMessage (index-0i6P1KFC.js, line 4710)
+
+[Log] 待解析方法WebcastControlMessage (index-0i6P1KFC.js, line 4710)
+[Log] 待解析方法WebcastGameCPBaseMessage (index-0i6P1KFC.js, line 4710)
