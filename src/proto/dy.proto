@@ -605,3 +605,10 @@ message ProductChangeMessage {
   int64 total = 5;
   repeated CategoryInfo updateCategoryInfoList = 8;
 }
+
+
+message ControlMessage {
+    Common common = 1;
+    int64 action = 2;
+    string tips = 3;
+}

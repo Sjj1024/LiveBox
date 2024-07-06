@@ -1,0 +1,15 @@
+[Log] 待解析方法WebcastRoomMessage (index-0i6P1KFC.js, line 4710)
+
+[Log] 待解析方法WebcastRoomStatsMessage (index-0i6P1KFC.js, line 4710)
+[Log] 待解析方法WebcastRanklistHourEntranceMessage (index-0i6P1KFC.js, line 4710)
+
+[Log] 待解析方法WebcastRanklistHourEntranceMessage (index-0i6P1KFC.js, line 4710)
+
+[Log] 待解析方法WebcastRanklistHourEntranceMessage (index-0i6P1KFC.js, line 4710)
+
+[Log] 待解析方法WebcastControlMessage (index-0i6P1KFC.js, line 4710)
+[Log] 待解析方法WebcastGameCPBaseMessage (index-0i6P1KFC.js, line 4710)
+
+# 直播结束消息
+
+https://github.com/3130585774/live-room-watcher/blob/d7c6925e464e5904e786b69a8e60a42d111bb7b8/src/main/java/cool/scx/live_room_watcher/douyin/DouYinLiveRoomWatcher.java#L415
