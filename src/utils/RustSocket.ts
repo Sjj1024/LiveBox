@@ -64,7 +64,7 @@ class SocketCli {
     startHeartbeat() {
         this.heartbeatTimer = setInterval(() => {
             // 其实心跳主要是发送的消息内容是啥，所以传递一个心跳消息内容即可
-            console.log('发送心跳信息:', this.pingMsg)
+            // console.log('发送心跳信息:', this.pingMsg)
             this.ws?.send([...this.pingMsg])
         }, this.heartbeatInterval)
     }

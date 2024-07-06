@@ -967,6 +967,9 @@ export const douyin = $root.douyin = (() => {
          * @property {string|null} [fullScreenTextColor] ChatMessage fullScreenTextColor
          * @property {douyin.IImage|null} [backgroundImageV2] ChatMessage backgroundImageV2
          * @property {douyin.IPublicAreaCommon|null} [publicAreaCommon] ChatMessage publicAreaCommon
+         * @property {douyin.IImage|null} [giftImage] ChatMessage giftImage
+         * @property {number|Long|null} [agreeMsgId] ChatMessage agreeMsgId
+         * @property {number|null} [priorityLevel] ChatMessage priorityLevel
          */
 
         /**
@@ -1049,6 +1052,30 @@ export const douyin = $root.douyin = (() => {
         ChatMessage.prototype.publicAreaCommon = null;
 
         /**
+         * ChatMessage giftImage.
+         * @member {douyin.IImage|null|undefined} giftImage
+         * @memberof douyin.ChatMessage
+         * @instance
+         */
+        ChatMessage.prototype.giftImage = null;
+
+        /**
+         * ChatMessage agreeMsgId.
+         * @member {number|Long} agreeMsgId
+         * @memberof douyin.ChatMessage
+         * @instance
+         */
+        ChatMessage.prototype.agreeMsgId = $util.Long ? $util.Long.fromBits(0,0,true) : 0;
+
+        /**
+         * ChatMessage priorityLevel.
+         * @member {number} priorityLevel
+         * @memberof douyin.ChatMessage
+         * @instance
+         */
+        ChatMessage.prototype.priorityLevel = 0;
+
+        /**
          * Creates a new ChatMessage instance using the specified properties.
          * @function create
          * @memberof douyin.ChatMessage
@@ -1088,6 +1115,12 @@ export const douyin = $root.douyin = (() => {
                 $root.douyin.Image.encode(message.backgroundImageV2, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
             if (message.publicAreaCommon != null && Object.hasOwnProperty.call(message, "publicAreaCommon"))
                 $root.douyin.PublicAreaCommon.encode(message.publicAreaCommon, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+            if (message.giftImage != null && Object.hasOwnProperty.call(message, "giftImage"))
+                $root.douyin.Image.encode(message.giftImage, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
+            if (message.agreeMsgId != null && Object.hasOwnProperty.call(message, "agreeMsgId"))
+                writer.uint32(/* id 11, wireType 0 =*/88).uint64(message.agreeMsgId);
+            if (message.priorityLevel != null && Object.hasOwnProperty.call(message, "priorityLevel"))
+                writer.uint32(/* id 12, wireType 0 =*/96).uint32(message.priorityLevel);
             return writer;
         };
 
@@ -1152,6 +1185,18 @@ export const douyin = $root.douyin = (() => {
                     }
                 case 9: {
                         message.publicAreaCommon = $root.douyin.PublicAreaCommon.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 10: {
+                        message.giftImage = $root.douyin.Image.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 11: {
+                        message.agreeMsgId = reader.uint64();
+                        break;
+                    }
+                case 12: {
+                        message.priorityLevel = reader.uint32();
                         break;
                     }
                 default:
@@ -1223,6 +1268,17 @@ export const douyin = $root.douyin = (() => {
                 if (error)
                     return "publicAreaCommon." + error;
             }
+            if (message.giftImage != null && message.hasOwnProperty("giftImage")) {
+                let error = $root.douyin.Image.verify(message.giftImage);
+                if (error)
+                    return "giftImage." + error;
+            }
+            if (message.agreeMsgId != null && message.hasOwnProperty("agreeMsgId"))
+                if (!$util.isInteger(message.agreeMsgId) && !(message.agreeMsgId && $util.isInteger(message.agreeMsgId.low) && $util.isInteger(message.agreeMsgId.high)))
+                    return "agreeMsgId: integer|Long expected";
+            if (message.priorityLevel != null && message.hasOwnProperty("priorityLevel"))
+                if (!$util.isInteger(message.priorityLevel))
+                    return "priorityLevel: integer expected";
             return null;
         };
 
@@ -1269,6 +1325,22 @@ export const douyin = $root.douyin = (() => {
                     throw TypeError(".douyin.ChatMessage.publicAreaCommon: object expected");
                 message.publicAreaCommon = $root.douyin.PublicAreaCommon.fromObject(object.publicAreaCommon);
             }
+            if (object.giftImage != null) {
+                if (typeof object.giftImage !== "object")
+                    throw TypeError(".douyin.ChatMessage.giftImage: object expected");
+                message.giftImage = $root.douyin.Image.fromObject(object.giftImage);
+            }
+            if (object.agreeMsgId != null)
+                if ($util.Long)
+                    (message.agreeMsgId = $util.Long.fromValue(object.agreeMsgId)).unsigned = true;
+                else if (typeof object.agreeMsgId === "string")
+                    message.agreeMsgId = parseInt(object.agreeMsgId, 10);
+                else if (typeof object.agreeMsgId === "number")
+                    message.agreeMsgId = object.agreeMsgId;
+                else if (typeof object.agreeMsgId === "object")
+                    message.agreeMsgId = new $util.LongBits(object.agreeMsgId.low >>> 0, object.agreeMsgId.high >>> 0).toNumber(true);
+            if (object.priorityLevel != null)
+                message.priorityLevel = object.priorityLevel >>> 0;
             return message;
         };
 
@@ -1294,6 +1366,13 @@ export const douyin = $root.douyin = (() => {
                 object.fullScreenTextColor = "";
                 object.backgroundImageV2 = null;
                 object.publicAreaCommon = null;
+                object.giftImage = null;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, true);
+                    object.agreeMsgId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.agreeMsgId = options.longs === String ? "0" : 0;
+                object.priorityLevel = 0;
             }
             if (message.common != null && message.hasOwnProperty("common"))
                 object.common = $root.douyin.Common.toObject(message.common, options);
@@ -1311,6 +1390,15 @@ export const douyin = $root.douyin = (() => {
                 object.backgroundImageV2 = $root.douyin.Image.toObject(message.backgroundImageV2, options);
             if (message.publicAreaCommon != null && message.hasOwnProperty("publicAreaCommon"))
                 object.publicAreaCommon = $root.douyin.PublicAreaCommon.toObject(message.publicAreaCommon, options);
+            if (message.giftImage != null && message.hasOwnProperty("giftImage"))
+                object.giftImage = $root.douyin.Image.toObject(message.giftImage, options);
+            if (message.agreeMsgId != null && message.hasOwnProperty("agreeMsgId"))
+                if (typeof message.agreeMsgId === "number")
+                    object.agreeMsgId = options.longs === String ? String(message.agreeMsgId) : message.agreeMsgId;
+                else
+                    object.agreeMsgId = options.longs === String ? $util.Long.prototype.toString.call(message.agreeMsgId) : options.longs === Number ? new $util.LongBits(message.agreeMsgId.low >>> 0, message.agreeMsgId.high >>> 0).toNumber(true) : message.agreeMsgId;
+            if (message.priorityLevel != null && message.hasOwnProperty("priorityLevel"))
+                object.priorityLevel = message.priorityLevel;
             return object;
         };
 
@@ -19833,275 +19921,6 @@ export const douyin = $root.douyin = (() => {
         return Headers;
     })();
 
-    douyin.LiveShoppingMessage = (function() {
-
-        /**
-         * Properties of a LiveShoppingMessage.
-         * @memberof douyin
-         * @interface ILiveShoppingMessage
-         * @property {douyin.ICommon|null} [common] LiveShoppingMessage common
-         * @property {number|null} [msgType] LiveShoppingMessage msgType
-         * @property {number|Long|null} [promotionId] LiveShoppingMessage promotionId
-         */
-
-        /**
-         * Constructs a new LiveShoppingMessage.
-         * @memberof douyin
-         * @classdesc Represents a LiveShoppingMessage.
-         * @implements ILiveShoppingMessage
-         * @constructor
-         * @param {douyin.ILiveShoppingMessage=} [properties] Properties to set
-         */
-        function LiveShoppingMessage(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * LiveShoppingMessage common.
-         * @member {douyin.ICommon|null|undefined} common
-         * @memberof douyin.LiveShoppingMessage
-         * @instance
-         */
-        LiveShoppingMessage.prototype.common = null;
-
-        /**
-         * LiveShoppingMessage msgType.
-         * @member {number} msgType
-         * @memberof douyin.LiveShoppingMessage
-         * @instance
-         */
-        LiveShoppingMessage.prototype.msgType = 0;
-
-        /**
-         * LiveShoppingMessage promotionId.
-         * @member {number|Long} promotionId
-         * @memberof douyin.LiveShoppingMessage
-         * @instance
-         */
-        LiveShoppingMessage.prototype.promotionId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Creates a new LiveShoppingMessage instance using the specified properties.
-         * @function create
-         * @memberof douyin.LiveShoppingMessage
-         * @static
-         * @param {douyin.ILiveShoppingMessage=} [properties] Properties to set
-         * @returns {douyin.LiveShoppingMessage} LiveShoppingMessage instance
-         */
-        LiveShoppingMessage.create = function create(properties) {
-            return new LiveShoppingMessage(properties);
-        };
-
-        /**
-         * Encodes the specified LiveShoppingMessage message. Does not implicitly {@link douyin.LiveShoppingMessage.verify|verify} messages.
-         * @function encode
-         * @memberof douyin.LiveShoppingMessage
-         * @static
-         * @param {douyin.ILiveShoppingMessage} message LiveShoppingMessage message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        LiveShoppingMessage.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.common != null && Object.hasOwnProperty.call(message, "common"))
-                $root.douyin.Common.encode(message.common, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.msgType != null && Object.hasOwnProperty.call(message, "msgType"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.msgType);
-            if (message.promotionId != null && Object.hasOwnProperty.call(message, "promotionId"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.promotionId);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified LiveShoppingMessage message, length delimited. Does not implicitly {@link douyin.LiveShoppingMessage.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof douyin.LiveShoppingMessage
-         * @static
-         * @param {douyin.ILiveShoppingMessage} message LiveShoppingMessage message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        LiveShoppingMessage.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a LiveShoppingMessage message from the specified reader or buffer.
-         * @function decode
-         * @memberof douyin.LiveShoppingMessage
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {douyin.LiveShoppingMessage} LiveShoppingMessage
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        LiveShoppingMessage.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.douyin.LiveShoppingMessage();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1: {
-                        message.common = $root.douyin.Common.decode(reader, reader.uint32());
-                        break;
-                    }
-                case 2: {
-                        message.msgType = reader.int32();
-                        break;
-                    }
-                case 4: {
-                        message.promotionId = reader.int64();
-                        break;
-                    }
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a LiveShoppingMessage message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof douyin.LiveShoppingMessage
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {douyin.LiveShoppingMessage} LiveShoppingMessage
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        LiveShoppingMessage.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a LiveShoppingMessage message.
-         * @function verify
-         * @memberof douyin.LiveShoppingMessage
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        LiveShoppingMessage.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.common != null && message.hasOwnProperty("common")) {
-                let error = $root.douyin.Common.verify(message.common);
-                if (error)
-                    return "common." + error;
-            }
-            if (message.msgType != null && message.hasOwnProperty("msgType"))
-                if (!$util.isInteger(message.msgType))
-                    return "msgType: integer expected";
-            if (message.promotionId != null && message.hasOwnProperty("promotionId"))
-                if (!$util.isInteger(message.promotionId) && !(message.promotionId && $util.isInteger(message.promotionId.low) && $util.isInteger(message.promotionId.high)))
-                    return "promotionId: integer|Long expected";
-            return null;
-        };
-
-        /**
-         * Creates a LiveShoppingMessage message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof douyin.LiveShoppingMessage
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {douyin.LiveShoppingMessage} LiveShoppingMessage
-         */
-        LiveShoppingMessage.fromObject = function fromObject(object) {
-            if (object instanceof $root.douyin.LiveShoppingMessage)
-                return object;
-            let message = new $root.douyin.LiveShoppingMessage();
-            if (object.common != null) {
-                if (typeof object.common !== "object")
-                    throw TypeError(".douyin.LiveShoppingMessage.common: object expected");
-                message.common = $root.douyin.Common.fromObject(object.common);
-            }
-            if (object.msgType != null)
-                message.msgType = object.msgType | 0;
-            if (object.promotionId != null)
-                if ($util.Long)
-                    (message.promotionId = $util.Long.fromValue(object.promotionId)).unsigned = false;
-                else if (typeof object.promotionId === "string")
-                    message.promotionId = parseInt(object.promotionId, 10);
-                else if (typeof object.promotionId === "number")
-                    message.promotionId = object.promotionId;
-                else if (typeof object.promotionId === "object")
-                    message.promotionId = new $util.LongBits(object.promotionId.low >>> 0, object.promotionId.high >>> 0).toNumber();
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a LiveShoppingMessage message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof douyin.LiveShoppingMessage
-         * @static
-         * @param {douyin.LiveShoppingMessage} message LiveShoppingMessage
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        LiveShoppingMessage.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.common = null;
-                object.msgType = 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.promotionId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.promotionId = options.longs === String ? "0" : 0;
-            }
-            if (message.common != null && message.hasOwnProperty("common"))
-                object.common = $root.douyin.Common.toObject(message.common, options);
-            if (message.msgType != null && message.hasOwnProperty("msgType"))
-                object.msgType = message.msgType;
-            if (message.promotionId != null && message.hasOwnProperty("promotionId"))
-                if (typeof message.promotionId === "number")
-                    object.promotionId = options.longs === String ? String(message.promotionId) : message.promotionId;
-                else
-                    object.promotionId = options.longs === String ? $util.Long.prototype.toString.call(message.promotionId) : options.longs === Number ? new $util.LongBits(message.promotionId.low >>> 0, message.promotionId.high >>> 0).toNumber() : message.promotionId;
-            return object;
-        };
-
-        /**
-         * Converts this LiveShoppingMessage to JSON.
-         * @function toJSON
-         * @memberof douyin.LiveShoppingMessage
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        LiveShoppingMessage.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        /**
-         * Gets the default type url for LiveShoppingMessage
-         * @function getTypeUrl
-         * @memberof douyin.LiveShoppingMessage
-         * @static
-         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
-         * @returns {string} The default type url
-         */
-        LiveShoppingMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
-            if (typeUrlPrefix === undefined) {
-                typeUrlPrefix = "type.googleapis.com";
-            }
-            return typeUrlPrefix + "/douyin.LiveShoppingMessage";
-        };
-
-        return LiveShoppingMessage;
-    })();
-
     douyin.RoomStatsMessage = (function() {
 
         /**
@@ -21649,6 +21468,1099 @@ export const douyin = $root.douyin = (() => {
         };
 
         return ProductChangeMessage;
+    })();
+
+    douyin.ControlMessage = (function() {
+
+        /**
+         * Properties of a ControlMessage.
+         * @memberof douyin
+         * @interface IControlMessage
+         * @property {douyin.ICommon|null} [common] ControlMessage common
+         * @property {number|Long|null} [action] ControlMessage action
+         * @property {string|null} [tips] ControlMessage tips
+         */
+
+        /**
+         * Constructs a new ControlMessage.
+         * @memberof douyin
+         * @classdesc Represents a ControlMessage.
+         * @implements IControlMessage
+         * @constructor
+         * @param {douyin.IControlMessage=} [properties] Properties to set
+         */
+        function ControlMessage(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ControlMessage common.
+         * @member {douyin.ICommon|null|undefined} common
+         * @memberof douyin.ControlMessage
+         * @instance
+         */
+        ControlMessage.prototype.common = null;
+
+        /**
+         * ControlMessage action.
+         * @member {number|Long} action
+         * @memberof douyin.ControlMessage
+         * @instance
+         */
+        ControlMessage.prototype.action = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * ControlMessage tips.
+         * @member {string} tips
+         * @memberof douyin.ControlMessage
+         * @instance
+         */
+        ControlMessage.prototype.tips = "";
+
+        /**
+         * Creates a new ControlMessage instance using the specified properties.
+         * @function create
+         * @memberof douyin.ControlMessage
+         * @static
+         * @param {douyin.IControlMessage=} [properties] Properties to set
+         * @returns {douyin.ControlMessage} ControlMessage instance
+         */
+        ControlMessage.create = function create(properties) {
+            return new ControlMessage(properties);
+        };
+
+        /**
+         * Encodes the specified ControlMessage message. Does not implicitly {@link douyin.ControlMessage.verify|verify} messages.
+         * @function encode
+         * @memberof douyin.ControlMessage
+         * @static
+         * @param {douyin.IControlMessage} message ControlMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ControlMessage.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.common != null && Object.hasOwnProperty.call(message, "common"))
+                $root.douyin.Common.encode(message.common, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.action != null && Object.hasOwnProperty.call(message, "action"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.action);
+            if (message.tips != null && Object.hasOwnProperty.call(message, "tips"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.tips);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ControlMessage message, length delimited. Does not implicitly {@link douyin.ControlMessage.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof douyin.ControlMessage
+         * @static
+         * @param {douyin.IControlMessage} message ControlMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ControlMessage.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ControlMessage message from the specified reader or buffer.
+         * @function decode
+         * @memberof douyin.ControlMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {douyin.ControlMessage} ControlMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ControlMessage.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.douyin.ControlMessage();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.common = $root.douyin.Common.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 2: {
+                        message.action = reader.int64();
+                        break;
+                    }
+                case 3: {
+                        message.tips = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ControlMessage message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof douyin.ControlMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {douyin.ControlMessage} ControlMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ControlMessage.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ControlMessage message.
+         * @function verify
+         * @memberof douyin.ControlMessage
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ControlMessage.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.common != null && message.hasOwnProperty("common")) {
+                let error = $root.douyin.Common.verify(message.common);
+                if (error)
+                    return "common." + error;
+            }
+            if (message.action != null && message.hasOwnProperty("action"))
+                if (!$util.isInteger(message.action) && !(message.action && $util.isInteger(message.action.low) && $util.isInteger(message.action.high)))
+                    return "action: integer|Long expected";
+            if (message.tips != null && message.hasOwnProperty("tips"))
+                if (!$util.isString(message.tips))
+                    return "tips: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a ControlMessage message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof douyin.ControlMessage
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {douyin.ControlMessage} ControlMessage
+         */
+        ControlMessage.fromObject = function fromObject(object) {
+            if (object instanceof $root.douyin.ControlMessage)
+                return object;
+            let message = new $root.douyin.ControlMessage();
+            if (object.common != null) {
+                if (typeof object.common !== "object")
+                    throw TypeError(".douyin.ControlMessage.common: object expected");
+                message.common = $root.douyin.Common.fromObject(object.common);
+            }
+            if (object.action != null)
+                if ($util.Long)
+                    (message.action = $util.Long.fromValue(object.action)).unsigned = false;
+                else if (typeof object.action === "string")
+                    message.action = parseInt(object.action, 10);
+                else if (typeof object.action === "number")
+                    message.action = object.action;
+                else if (typeof object.action === "object")
+                    message.action = new $util.LongBits(object.action.low >>> 0, object.action.high >>> 0).toNumber();
+            if (object.tips != null)
+                message.tips = String(object.tips);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ControlMessage message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof douyin.ControlMessage
+         * @static
+         * @param {douyin.ControlMessage} message ControlMessage
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ControlMessage.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.common = null;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.action = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.action = options.longs === String ? "0" : 0;
+                object.tips = "";
+            }
+            if (message.common != null && message.hasOwnProperty("common"))
+                object.common = $root.douyin.Common.toObject(message.common, options);
+            if (message.action != null && message.hasOwnProperty("action"))
+                if (typeof message.action === "number")
+                    object.action = options.longs === String ? String(message.action) : message.action;
+                else
+                    object.action = options.longs === String ? $util.Long.prototype.toString.call(message.action) : options.longs === Number ? new $util.LongBits(message.action.low >>> 0, message.action.high >>> 0).toNumber() : message.action;
+            if (message.tips != null && message.hasOwnProperty("tips"))
+                object.tips = message.tips;
+            return object;
+        };
+
+        /**
+         * Converts this ControlMessage to JSON.
+         * @function toJSON
+         * @memberof douyin.ControlMessage
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ControlMessage.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for ControlMessage
+         * @function getTypeUrl
+         * @memberof douyin.ControlMessage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        ControlMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/douyin.ControlMessage";
+        };
+
+        return ControlMessage;
+    })();
+
+    douyin.UpdatedProductInfo = (function() {
+
+        /**
+         * Properties of an UpdatedProductInfo.
+         * @memberof douyin
+         * @interface IUpdatedProductInfo
+         * @property {number|Long|null} [price] UpdatedProductInfo price
+         * @property {string|null} [title] UpdatedProductInfo title
+         * @property {string|null} [cover] UpdatedProductInfo cover
+         * @property {number|Long|null} [status] UpdatedProductInfo status
+         * @property {string|null} [popUpicon] UpdatedProductInfo popUpicon
+         */
+
+        /**
+         * Constructs a new UpdatedProductInfo.
+         * @memberof douyin
+         * @classdesc Represents an UpdatedProductInfo.
+         * @implements IUpdatedProductInfo
+         * @constructor
+         * @param {douyin.IUpdatedProductInfo=} [properties] Properties to set
+         */
+        function UpdatedProductInfo(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * UpdatedProductInfo price.
+         * @member {number|Long} price
+         * @memberof douyin.UpdatedProductInfo
+         * @instance
+         */
+        UpdatedProductInfo.prototype.price = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * UpdatedProductInfo title.
+         * @member {string} title
+         * @memberof douyin.UpdatedProductInfo
+         * @instance
+         */
+        UpdatedProductInfo.prototype.title = "";
+
+        /**
+         * UpdatedProductInfo cover.
+         * @member {string} cover
+         * @memberof douyin.UpdatedProductInfo
+         * @instance
+         */
+        UpdatedProductInfo.prototype.cover = "";
+
+        /**
+         * UpdatedProductInfo status.
+         * @member {number|Long} status
+         * @memberof douyin.UpdatedProductInfo
+         * @instance
+         */
+        UpdatedProductInfo.prototype.status = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * UpdatedProductInfo popUpicon.
+         * @member {string} popUpicon
+         * @memberof douyin.UpdatedProductInfo
+         * @instance
+         */
+        UpdatedProductInfo.prototype.popUpicon = "";
+
+        /**
+         * Creates a new UpdatedProductInfo instance using the specified properties.
+         * @function create
+         * @memberof douyin.UpdatedProductInfo
+         * @static
+         * @param {douyin.IUpdatedProductInfo=} [properties] Properties to set
+         * @returns {douyin.UpdatedProductInfo} UpdatedProductInfo instance
+         */
+        UpdatedProductInfo.create = function create(properties) {
+            return new UpdatedProductInfo(properties);
+        };
+
+        /**
+         * Encodes the specified UpdatedProductInfo message. Does not implicitly {@link douyin.UpdatedProductInfo.verify|verify} messages.
+         * @function encode
+         * @memberof douyin.UpdatedProductInfo
+         * @static
+         * @param {douyin.IUpdatedProductInfo} message UpdatedProductInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        UpdatedProductInfo.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.price != null && Object.hasOwnProperty.call(message, "price"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.price);
+            if (message.title != null && Object.hasOwnProperty.call(message, "title"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.title);
+            if (message.cover != null && Object.hasOwnProperty.call(message, "cover"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.cover);
+            if (message.status != null && Object.hasOwnProperty.call(message, "status"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.status);
+            if (message.popUpicon != null && Object.hasOwnProperty.call(message, "popUpicon"))
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.popUpicon);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified UpdatedProductInfo message, length delimited. Does not implicitly {@link douyin.UpdatedProductInfo.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof douyin.UpdatedProductInfo
+         * @static
+         * @param {douyin.IUpdatedProductInfo} message UpdatedProductInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        UpdatedProductInfo.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an UpdatedProductInfo message from the specified reader or buffer.
+         * @function decode
+         * @memberof douyin.UpdatedProductInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {douyin.UpdatedProductInfo} UpdatedProductInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        UpdatedProductInfo.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.douyin.UpdatedProductInfo();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.price = reader.int64();
+                        break;
+                    }
+                case 2: {
+                        message.title = reader.string();
+                        break;
+                    }
+                case 3: {
+                        message.cover = reader.string();
+                        break;
+                    }
+                case 4: {
+                        message.status = reader.int64();
+                        break;
+                    }
+                case 5: {
+                        message.popUpicon = reader.string();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an UpdatedProductInfo message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof douyin.UpdatedProductInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {douyin.UpdatedProductInfo} UpdatedProductInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        UpdatedProductInfo.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an UpdatedProductInfo message.
+         * @function verify
+         * @memberof douyin.UpdatedProductInfo
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        UpdatedProductInfo.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.price != null && message.hasOwnProperty("price"))
+                if (!$util.isInteger(message.price) && !(message.price && $util.isInteger(message.price.low) && $util.isInteger(message.price.high)))
+                    return "price: integer|Long expected";
+            if (message.title != null && message.hasOwnProperty("title"))
+                if (!$util.isString(message.title))
+                    return "title: string expected";
+            if (message.cover != null && message.hasOwnProperty("cover"))
+                if (!$util.isString(message.cover))
+                    return "cover: string expected";
+            if (message.status != null && message.hasOwnProperty("status"))
+                if (!$util.isInteger(message.status) && !(message.status && $util.isInteger(message.status.low) && $util.isInteger(message.status.high)))
+                    return "status: integer|Long expected";
+            if (message.popUpicon != null && message.hasOwnProperty("popUpicon"))
+                if (!$util.isString(message.popUpicon))
+                    return "popUpicon: string expected";
+            return null;
+        };
+
+        /**
+         * Creates an UpdatedProductInfo message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof douyin.UpdatedProductInfo
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {douyin.UpdatedProductInfo} UpdatedProductInfo
+         */
+        UpdatedProductInfo.fromObject = function fromObject(object) {
+            if (object instanceof $root.douyin.UpdatedProductInfo)
+                return object;
+            let message = new $root.douyin.UpdatedProductInfo();
+            if (object.price != null)
+                if ($util.Long)
+                    (message.price = $util.Long.fromValue(object.price)).unsigned = false;
+                else if (typeof object.price === "string")
+                    message.price = parseInt(object.price, 10);
+                else if (typeof object.price === "number")
+                    message.price = object.price;
+                else if (typeof object.price === "object")
+                    message.price = new $util.LongBits(object.price.low >>> 0, object.price.high >>> 0).toNumber();
+            if (object.title != null)
+                message.title = String(object.title);
+            if (object.cover != null)
+                message.cover = String(object.cover);
+            if (object.status != null)
+                if ($util.Long)
+                    (message.status = $util.Long.fromValue(object.status)).unsigned = false;
+                else if (typeof object.status === "string")
+                    message.status = parseInt(object.status, 10);
+                else if (typeof object.status === "number")
+                    message.status = object.status;
+                else if (typeof object.status === "object")
+                    message.status = new $util.LongBits(object.status.low >>> 0, object.status.high >>> 0).toNumber();
+            if (object.popUpicon != null)
+                message.popUpicon = String(object.popUpicon);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an UpdatedProductInfo message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof douyin.UpdatedProductInfo
+         * @static
+         * @param {douyin.UpdatedProductInfo} message UpdatedProductInfo
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        UpdatedProductInfo.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.price = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.price = options.longs === String ? "0" : 0;
+                object.title = "";
+                object.cover = "";
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.status = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.status = options.longs === String ? "0" : 0;
+                object.popUpicon = "";
+            }
+            if (message.price != null && message.hasOwnProperty("price"))
+                if (typeof message.price === "number")
+                    object.price = options.longs === String ? String(message.price) : message.price;
+                else
+                    object.price = options.longs === String ? $util.Long.prototype.toString.call(message.price) : options.longs === Number ? new $util.LongBits(message.price.low >>> 0, message.price.high >>> 0).toNumber() : message.price;
+            if (message.title != null && message.hasOwnProperty("title"))
+                object.title = message.title;
+            if (message.cover != null && message.hasOwnProperty("cover"))
+                object.cover = message.cover;
+            if (message.status != null && message.hasOwnProperty("status"))
+                if (typeof message.status === "number")
+                    object.status = options.longs === String ? String(message.status) : message.status;
+                else
+                    object.status = options.longs === String ? $util.Long.prototype.toString.call(message.status) : options.longs === Number ? new $util.LongBits(message.status.low >>> 0, message.status.high >>> 0).toNumber() : message.status;
+            if (message.popUpicon != null && message.hasOwnProperty("popUpicon"))
+                object.popUpicon = message.popUpicon;
+            return object;
+        };
+
+        /**
+         * Converts this UpdatedProductInfo to JSON.
+         * @function toJSON
+         * @memberof douyin.UpdatedProductInfo
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        UpdatedProductInfo.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for UpdatedProductInfo
+         * @function getTypeUrl
+         * @memberof douyin.UpdatedProductInfo
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        UpdatedProductInfo.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/douyin.UpdatedProductInfo";
+        };
+
+        return UpdatedProductInfo;
+    })();
+
+    douyin.LiveShoppingMessage = (function() {
+
+        /**
+         * Properties of a LiveShoppingMessage.
+         * @memberof douyin
+         * @interface ILiveShoppingMessage
+         * @property {douyin.ICommon|null} [common] LiveShoppingMessage common
+         * @property {number|null} [msgType] LiveShoppingMessage msgType
+         * @property {number|Long|null} [promotionId] LiveShoppingMessage promotionId
+         * @property {number|Long|null} [targetUid] LiveShoppingMessage targetUid
+         * @property {number|null} [bubbleType] LiveShoppingMessage bubbleType
+         * @property {number|Long|null} [screenshotTimestamp] LiveShoppingMessage screenshotTimestamp
+         * @property {string|null} [secTargetUid] LiveShoppingMessage secTargetUid
+         * @property {string|null} [ecomNotice] LiveShoppingMessage ecomNotice
+         * @property {number|Long|null} [updatedProductIds] LiveShoppingMessage updatedProductIds
+         * @property {number|null} [updateType] LiveShoppingMessage updateType
+         * @property {douyin.IUpdatedProductInfo|null} [updatedProductInfo] LiveShoppingMessage updatedProductInfo
+         */
+
+        /**
+         * Constructs a new LiveShoppingMessage.
+         * @memberof douyin
+         * @classdesc Represents a LiveShoppingMessage.
+         * @implements ILiveShoppingMessage
+         * @constructor
+         * @param {douyin.ILiveShoppingMessage=} [properties] Properties to set
+         */
+        function LiveShoppingMessage(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * LiveShoppingMessage common.
+         * @member {douyin.ICommon|null|undefined} common
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.common = null;
+
+        /**
+         * LiveShoppingMessage msgType.
+         * @member {number} msgType
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.msgType = 0;
+
+        /**
+         * LiveShoppingMessage promotionId.
+         * @member {number|Long} promotionId
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.promotionId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * LiveShoppingMessage targetUid.
+         * @member {number|Long} targetUid
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.targetUid = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * LiveShoppingMessage bubbleType.
+         * @member {number} bubbleType
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.bubbleType = 0;
+
+        /**
+         * LiveShoppingMessage screenshotTimestamp.
+         * @member {number|Long} screenshotTimestamp
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.screenshotTimestamp = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * LiveShoppingMessage secTargetUid.
+         * @member {string} secTargetUid
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.secTargetUid = "";
+
+        /**
+         * LiveShoppingMessage ecomNotice.
+         * @member {string} ecomNotice
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.ecomNotice = "";
+
+        /**
+         * LiveShoppingMessage updatedProductIds.
+         * @member {number|Long} updatedProductIds
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.updatedProductIds = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * LiveShoppingMessage updateType.
+         * @member {number} updateType
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.updateType = 0;
+
+        /**
+         * LiveShoppingMessage updatedProductInfo.
+         * @member {douyin.IUpdatedProductInfo|null|undefined} updatedProductInfo
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         */
+        LiveShoppingMessage.prototype.updatedProductInfo = null;
+
+        /**
+         * Creates a new LiveShoppingMessage instance using the specified properties.
+         * @function create
+         * @memberof douyin.LiveShoppingMessage
+         * @static
+         * @param {douyin.ILiveShoppingMessage=} [properties] Properties to set
+         * @returns {douyin.LiveShoppingMessage} LiveShoppingMessage instance
+         */
+        LiveShoppingMessage.create = function create(properties) {
+            return new LiveShoppingMessage(properties);
+        };
+
+        /**
+         * Encodes the specified LiveShoppingMessage message. Does not implicitly {@link douyin.LiveShoppingMessage.verify|verify} messages.
+         * @function encode
+         * @memberof douyin.LiveShoppingMessage
+         * @static
+         * @param {douyin.ILiveShoppingMessage} message LiveShoppingMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        LiveShoppingMessage.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.common != null && Object.hasOwnProperty.call(message, "common"))
+                $root.douyin.Common.encode(message.common, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.msgType != null && Object.hasOwnProperty.call(message, "msgType"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.msgType);
+            if (message.promotionId != null && Object.hasOwnProperty.call(message, "promotionId"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.promotionId);
+            if (message.targetUid != null && Object.hasOwnProperty.call(message, "targetUid"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.targetUid);
+            if (message.bubbleType != null && Object.hasOwnProperty.call(message, "bubbleType"))
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.bubbleType);
+            if (message.screenshotTimestamp != null && Object.hasOwnProperty.call(message, "screenshotTimestamp"))
+                writer.uint32(/* id 6, wireType 0 =*/48).int64(message.screenshotTimestamp);
+            if (message.secTargetUid != null && Object.hasOwnProperty.call(message, "secTargetUid"))
+                writer.uint32(/* id 7, wireType 2 =*/58).string(message.secTargetUid);
+            if (message.ecomNotice != null && Object.hasOwnProperty.call(message, "ecomNotice"))
+                writer.uint32(/* id 8, wireType 2 =*/66).string(message.ecomNotice);
+            if (message.updatedProductIds != null && Object.hasOwnProperty.call(message, "updatedProductIds"))
+                writer.uint32(/* id 9, wireType 0 =*/72).int64(message.updatedProductIds);
+            if (message.updateType != null && Object.hasOwnProperty.call(message, "updateType"))
+                writer.uint32(/* id 10, wireType 0 =*/80).int32(message.updateType);
+            if (message.updatedProductInfo != null && Object.hasOwnProperty.call(message, "updatedProductInfo"))
+                $root.douyin.UpdatedProductInfo.encode(message.updatedProductInfo, writer.uint32(/* id 11, wireType 2 =*/90).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified LiveShoppingMessage message, length delimited. Does not implicitly {@link douyin.LiveShoppingMessage.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof douyin.LiveShoppingMessage
+         * @static
+         * @param {douyin.ILiveShoppingMessage} message LiveShoppingMessage message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        LiveShoppingMessage.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a LiveShoppingMessage message from the specified reader or buffer.
+         * @function decode
+         * @memberof douyin.LiveShoppingMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {douyin.LiveShoppingMessage} LiveShoppingMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        LiveShoppingMessage.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.douyin.LiveShoppingMessage();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1: {
+                        message.common = $root.douyin.Common.decode(reader, reader.uint32());
+                        break;
+                    }
+                case 2: {
+                        message.msgType = reader.int32();
+                        break;
+                    }
+                case 3: {
+                        message.promotionId = reader.int64();
+                        break;
+                    }
+                case 4: {
+                        message.targetUid = reader.int64();
+                        break;
+                    }
+                case 5: {
+                        message.bubbleType = reader.int32();
+                        break;
+                    }
+                case 6: {
+                        message.screenshotTimestamp = reader.int64();
+                        break;
+                    }
+                case 7: {
+                        message.secTargetUid = reader.string();
+                        break;
+                    }
+                case 8: {
+                        message.ecomNotice = reader.string();
+                        break;
+                    }
+                case 9: {
+                        message.updatedProductIds = reader.int64();
+                        break;
+                    }
+                case 10: {
+                        message.updateType = reader.int32();
+                        break;
+                    }
+                case 11: {
+                        message.updatedProductInfo = $root.douyin.UpdatedProductInfo.decode(reader, reader.uint32());
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a LiveShoppingMessage message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof douyin.LiveShoppingMessage
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {douyin.LiveShoppingMessage} LiveShoppingMessage
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        LiveShoppingMessage.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a LiveShoppingMessage message.
+         * @function verify
+         * @memberof douyin.LiveShoppingMessage
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        LiveShoppingMessage.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.common != null && message.hasOwnProperty("common")) {
+                let error = $root.douyin.Common.verify(message.common);
+                if (error)
+                    return "common." + error;
+            }
+            if (message.msgType != null && message.hasOwnProperty("msgType"))
+                if (!$util.isInteger(message.msgType))
+                    return "msgType: integer expected";
+            if (message.promotionId != null && message.hasOwnProperty("promotionId"))
+                if (!$util.isInteger(message.promotionId) && !(message.promotionId && $util.isInteger(message.promotionId.low) && $util.isInteger(message.promotionId.high)))
+                    return "promotionId: integer|Long expected";
+            if (message.targetUid != null && message.hasOwnProperty("targetUid"))
+                if (!$util.isInteger(message.targetUid) && !(message.targetUid && $util.isInteger(message.targetUid.low) && $util.isInteger(message.targetUid.high)))
+                    return "targetUid: integer|Long expected";
+            if (message.bubbleType != null && message.hasOwnProperty("bubbleType"))
+                if (!$util.isInteger(message.bubbleType))
+                    return "bubbleType: integer expected";
+            if (message.screenshotTimestamp != null && message.hasOwnProperty("screenshotTimestamp"))
+                if (!$util.isInteger(message.screenshotTimestamp) && !(message.screenshotTimestamp && $util.isInteger(message.screenshotTimestamp.low) && $util.isInteger(message.screenshotTimestamp.high)))
+                    return "screenshotTimestamp: integer|Long expected";
+            if (message.secTargetUid != null && message.hasOwnProperty("secTargetUid"))
+                if (!$util.isString(message.secTargetUid))
+                    return "secTargetUid: string expected";
+            if (message.ecomNotice != null && message.hasOwnProperty("ecomNotice"))
+                if (!$util.isString(message.ecomNotice))
+                    return "ecomNotice: string expected";
+            if (message.updatedProductIds != null && message.hasOwnProperty("updatedProductIds"))
+                if (!$util.isInteger(message.updatedProductIds) && !(message.updatedProductIds && $util.isInteger(message.updatedProductIds.low) && $util.isInteger(message.updatedProductIds.high)))
+                    return "updatedProductIds: integer|Long expected";
+            if (message.updateType != null && message.hasOwnProperty("updateType"))
+                if (!$util.isInteger(message.updateType))
+                    return "updateType: integer expected";
+            if (message.updatedProductInfo != null && message.hasOwnProperty("updatedProductInfo")) {
+                let error = $root.douyin.UpdatedProductInfo.verify(message.updatedProductInfo);
+                if (error)
+                    return "updatedProductInfo." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a LiveShoppingMessage message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof douyin.LiveShoppingMessage
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {douyin.LiveShoppingMessage} LiveShoppingMessage
+         */
+        LiveShoppingMessage.fromObject = function fromObject(object) {
+            if (object instanceof $root.douyin.LiveShoppingMessage)
+                return object;
+            let message = new $root.douyin.LiveShoppingMessage();
+            if (object.common != null) {
+                if (typeof object.common !== "object")
+                    throw TypeError(".douyin.LiveShoppingMessage.common: object expected");
+                message.common = $root.douyin.Common.fromObject(object.common);
+            }
+            if (object.msgType != null)
+                message.msgType = object.msgType | 0;
+            if (object.promotionId != null)
+                if ($util.Long)
+                    (message.promotionId = $util.Long.fromValue(object.promotionId)).unsigned = false;
+                else if (typeof object.promotionId === "string")
+                    message.promotionId = parseInt(object.promotionId, 10);
+                else if (typeof object.promotionId === "number")
+                    message.promotionId = object.promotionId;
+                else if (typeof object.promotionId === "object")
+                    message.promotionId = new $util.LongBits(object.promotionId.low >>> 0, object.promotionId.high >>> 0).toNumber();
+            if (object.targetUid != null)
+                if ($util.Long)
+                    (message.targetUid = $util.Long.fromValue(object.targetUid)).unsigned = false;
+                else if (typeof object.targetUid === "string")
+                    message.targetUid = parseInt(object.targetUid, 10);
+                else if (typeof object.targetUid === "number")
+                    message.targetUid = object.targetUid;
+                else if (typeof object.targetUid === "object")
+                    message.targetUid = new $util.LongBits(object.targetUid.low >>> 0, object.targetUid.high >>> 0).toNumber();
+            if (object.bubbleType != null)
+                message.bubbleType = object.bubbleType | 0;
+            if (object.screenshotTimestamp != null)
+                if ($util.Long)
+                    (message.screenshotTimestamp = $util.Long.fromValue(object.screenshotTimestamp)).unsigned = false;
+                else if (typeof object.screenshotTimestamp === "string")
+                    message.screenshotTimestamp = parseInt(object.screenshotTimestamp, 10);
+                else if (typeof object.screenshotTimestamp === "number")
+                    message.screenshotTimestamp = object.screenshotTimestamp;
+                else if (typeof object.screenshotTimestamp === "object")
+                    message.screenshotTimestamp = new $util.LongBits(object.screenshotTimestamp.low >>> 0, object.screenshotTimestamp.high >>> 0).toNumber();
+            if (object.secTargetUid != null)
+                message.secTargetUid = String(object.secTargetUid);
+            if (object.ecomNotice != null)
+                message.ecomNotice = String(object.ecomNotice);
+            if (object.updatedProductIds != null)
+                if ($util.Long)
+                    (message.updatedProductIds = $util.Long.fromValue(object.updatedProductIds)).unsigned = false;
+                else if (typeof object.updatedProductIds === "string")
+                    message.updatedProductIds = parseInt(object.updatedProductIds, 10);
+                else if (typeof object.updatedProductIds === "number")
+                    message.updatedProductIds = object.updatedProductIds;
+                else if (typeof object.updatedProductIds === "object")
+                    message.updatedProductIds = new $util.LongBits(object.updatedProductIds.low >>> 0, object.updatedProductIds.high >>> 0).toNumber();
+            if (object.updateType != null)
+                message.updateType = object.updateType | 0;
+            if (object.updatedProductInfo != null) {
+                if (typeof object.updatedProductInfo !== "object")
+                    throw TypeError(".douyin.LiveShoppingMessage.updatedProductInfo: object expected");
+                message.updatedProductInfo = $root.douyin.UpdatedProductInfo.fromObject(object.updatedProductInfo);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a LiveShoppingMessage message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof douyin.LiveShoppingMessage
+         * @static
+         * @param {douyin.LiveShoppingMessage} message LiveShoppingMessage
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        LiveShoppingMessage.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.common = null;
+                object.msgType = 0;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.promotionId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.promotionId = options.longs === String ? "0" : 0;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.targetUid = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.targetUid = options.longs === String ? "0" : 0;
+                object.bubbleType = 0;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.screenshotTimestamp = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.screenshotTimestamp = options.longs === String ? "0" : 0;
+                object.secTargetUid = "";
+                object.ecomNotice = "";
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.updatedProductIds = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.updatedProductIds = options.longs === String ? "0" : 0;
+                object.updateType = 0;
+                object.updatedProductInfo = null;
+            }
+            if (message.common != null && message.hasOwnProperty("common"))
+                object.common = $root.douyin.Common.toObject(message.common, options);
+            if (message.msgType != null && message.hasOwnProperty("msgType"))
+                object.msgType = message.msgType;
+            if (message.promotionId != null && message.hasOwnProperty("promotionId"))
+                if (typeof message.promotionId === "number")
+                    object.promotionId = options.longs === String ? String(message.promotionId) : message.promotionId;
+                else
+                    object.promotionId = options.longs === String ? $util.Long.prototype.toString.call(message.promotionId) : options.longs === Number ? new $util.LongBits(message.promotionId.low >>> 0, message.promotionId.high >>> 0).toNumber() : message.promotionId;
+            if (message.targetUid != null && message.hasOwnProperty("targetUid"))
+                if (typeof message.targetUid === "number")
+                    object.targetUid = options.longs === String ? String(message.targetUid) : message.targetUid;
+                else
+                    object.targetUid = options.longs === String ? $util.Long.prototype.toString.call(message.targetUid) : options.longs === Number ? new $util.LongBits(message.targetUid.low >>> 0, message.targetUid.high >>> 0).toNumber() : message.targetUid;
+            if (message.bubbleType != null && message.hasOwnProperty("bubbleType"))
+                object.bubbleType = message.bubbleType;
+            if (message.screenshotTimestamp != null && message.hasOwnProperty("screenshotTimestamp"))
+                if (typeof message.screenshotTimestamp === "number")
+                    object.screenshotTimestamp = options.longs === String ? String(message.screenshotTimestamp) : message.screenshotTimestamp;
+                else
+                    object.screenshotTimestamp = options.longs === String ? $util.Long.prototype.toString.call(message.screenshotTimestamp) : options.longs === Number ? new $util.LongBits(message.screenshotTimestamp.low >>> 0, message.screenshotTimestamp.high >>> 0).toNumber() : message.screenshotTimestamp;
+            if (message.secTargetUid != null && message.hasOwnProperty("secTargetUid"))
+                object.secTargetUid = message.secTargetUid;
+            if (message.ecomNotice != null && message.hasOwnProperty("ecomNotice"))
+                object.ecomNotice = message.ecomNotice;
+            if (message.updatedProductIds != null && message.hasOwnProperty("updatedProductIds"))
+                if (typeof message.updatedProductIds === "number")
+                    object.updatedProductIds = options.longs === String ? String(message.updatedProductIds) : message.updatedProductIds;
+                else
+                    object.updatedProductIds = options.longs === String ? $util.Long.prototype.toString.call(message.updatedProductIds) : options.longs === Number ? new $util.LongBits(message.updatedProductIds.low >>> 0, message.updatedProductIds.high >>> 0).toNumber() : message.updatedProductIds;
+            if (message.updateType != null && message.hasOwnProperty("updateType"))
+                object.updateType = message.updateType;
+            if (message.updatedProductInfo != null && message.hasOwnProperty("updatedProductInfo"))
+                object.updatedProductInfo = $root.douyin.UpdatedProductInfo.toObject(message.updatedProductInfo, options);
+            return object;
+        };
+
+        /**
+         * Converts this LiveShoppingMessage to JSON.
+         * @function toJSON
+         * @memberof douyin.LiveShoppingMessage
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        LiveShoppingMessage.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for LiveShoppingMessage
+         * @function getTypeUrl
+         * @memberof douyin.LiveShoppingMessage
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        LiveShoppingMessage.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/douyin.LiveShoppingMessage";
+        };
+
+        return LiveShoppingMessage;
     })();
 
     return douyin;

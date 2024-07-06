@@ -559,12 +559,6 @@ message Headers {
   string value = 2;
 }
 
-message LiveShoppingMessage {
-  Common common = 1;
-  int32 msgType = 2;
-  int64 promotionId = 4;
-}
-
 message RoomStatsMessage {
   Common common = 1;
   string displayShort = 2;
@@ -612,3 +606,26 @@ message ControlMessage {
     int64 action = 2;
     string tips = 3;
 }
+
+message UpdatedProductInfo  {
+    int64 price = 1;
+    string title = 2;
+    string cover = 3;
+    int64 status = 4;
+    string pop_upicon = 5;
+}
+
+
+// message LiveShoppingMessage{
+//     Common common = 1;
+//     int32 msg_type = 2;
+//     int64 promotion_id = 3;
+//     int64 target_uid = 4;
+//     int32 bubble_type = 5;
+//     int64 screenshot_timestamp = 6;
+//     string sec_target_uid = 7;
+//     string ecom_notice = 8;
+//     int64 updated_product_ids = 9;
+//     int32 update_type = 10;
+//     UpdatedProductInfo updated_product_info = 11;
+// }

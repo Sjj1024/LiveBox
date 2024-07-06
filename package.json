@@ -10,6 +10,7 @@
         "build proto": "pnpm pbjs -t static-module -w es6 -o src/proto/dy.js src/proto/dy.proto",
         "tauri": "tauri",
         "tauri dev": "tauri dev",
+        "tauri debug": "tauri build -d",
         "tauri build": "tauri build"
     },
     "dependencies": {

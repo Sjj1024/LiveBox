@@ -237,7 +237,7 @@ const onMessage = (msg: any) => {
     // console.log('收到消息', msg)
     // 解析消息
     const pushFrame = douyin.PushFrame.decode(msg.data)
-    console.log('pushFrame--', pushFrame)
+    // console.log('pushFrame--', pushFrame)
     // console.log('logId--', decodeMsg.logId)
     // logTxt.value = decodeMsg.logId
     // 滚动盒子到底部
@@ -291,7 +291,7 @@ const handleMessage = (messageList: douyin.Message) => {
             // 聊天弹幕消息
             case 'WebcastChatMessage':
                 // console.log('聊天弹幕消息')
-                decodeChat(msg.payload)
+                // decodeChat(msg.payload)
                 break
             // 关注消息
             case 'WebcastSocialMessage':
@@ -315,6 +315,16 @@ const handleMessage = (messageList: douyin.Message) => {
                 // console.log('直播间统计消息')
                 // countLive(msg.payload)
                 break
+            // 直播间状态改变
+            case 'WebcastControlMessage':
+                console.log('WebcastControlMessage')
+                changeLive(msg.payload)
+                break
+            // 商品改变
+            // case 'WebcastLiveShoppingMessage':
+            //     console.log('LiveShoppingMessage')
+            //     goodsChange(msg.payload)
+            //     break
             // 待解析方法
             default:
                 console.log('待解析方法' + msg.method)
@@ -335,6 +345,18 @@ const decodeChat = (data) => {
     // }
     // messageList.value.push(message)
     // console.log('chatMsg---', user.nickName, content)
+}
+
+// 直播间状态改变
+const changeLive = (data) => {
+    const changeMsg = douyin.ControlMessage.decode(data)
+    console.log('changeMsg ControlMessage---', changeMsg)
+}
+
+// 商品改变
+const goodsChange = (data) => {
+    const changeMsg = douyin.LiveShoppingMessage.decode(data)
+    console.log('goodsChange---', changeMsg)
 }
 
 // 解析礼物消息
