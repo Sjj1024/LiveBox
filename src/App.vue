@@ -49,6 +49,8 @@ const diamond = ref(0)
 const pushUrl = ref('')
 // 选中消息类型
 const checkList = ref<string[]>(['chat', 'gift', 'like'])
+// 录制视频
+const recordVideo = ref<string[]>([])
 
 // 聊天消息盒子
 const liveMsg = ref()
@@ -284,12 +286,12 @@ const handleMessage = (messageList: douyin.Message) => {
             // 点赞数
             case 'WebcastLikeMessage':
                 // console.log('点赞数')
-                checkList.value.includes('like') && likeLive(msg.payload)
+                likeLive(msg.payload)
                 break
             // 成员进入直播间消息
             case 'WebcastMemberMessage':
                 // console.log('成员进入直播间消息')
-                checkList.value.includes('comein') && enterLive(msg.payload)
+                enterLive(msg.payload)
                 break
             // 礼物消息
             case 'WebcastGiftMessage':
@@ -299,12 +301,12 @@ const handleMessage = (messageList: douyin.Message) => {
             // 聊天弹幕消息
             case 'WebcastChatMessage':
                 // console.log('聊天弹幕消息')
-                checkList.value.includes('chat') && decodeChat(msg.payload)
+                decodeChat(msg.payload)
                 break
             // 关注消息
             case 'WebcastSocialMessage':
                 // console.log('联谊会消息')
-                checkList.value.includes('follow') && followLive(msg.payload)
+                followLive(msg.payload)
                 break
             // 更新粉丝票
             case 'WebcastUpdateFanTicketMessage':
@@ -341,7 +343,7 @@ const decodeChat = (data) => {
         name: user.nickName,
         msg: content,
     }
-    messageList.value.push(message)
+    checkList.value.includes('chat') && messageList.value.push(message)
     // console.log('chatMsg---', user.nickName, content)
 }
 // 解析礼物消息
@@ -368,7 +370,7 @@ const enterLive = (data) => {
         name: user.nickName,
         msg: '来了',
     }
-    messageList.value.push(message)
+    checkList.value.includes('comein') && messageList.value.push(message)
     // console.log('enterLive---', enteryMsg)
 }
 
@@ -386,7 +388,7 @@ const likeLive = (data) => {
         ...liveInfo.value,
         totalLike: total,
     }
-    messageList.value.push(message)
+    checkList.value.includes('like') && messageList.value.push(message)
 }
 
 // 关注主播
@@ -402,7 +404,7 @@ const followLive = (data) => {
         ...liveInfo.value,
         fans: followCount,
     }
-    messageList.value.push(message)
+    checkList.value.includes('follow') && messageList.value.push(message)
     // console.log('followLive---', followMsg)
 }
 
@@ -522,11 +524,11 @@ const msgScroll = (event) => {
         title="设置推送地址"
         center
         :show-close="false"
-        width="500"
+        width="540"
     >
         <div class="setBox">
             <el-input v-model="pushUrl" placeholder="请输入推送地址" />
-            <!-- 选择消息 -->
+            <!-- 选择消息类型 -->
             <div class="messageSel">
                 <span>选择消息类型：</span>
                 <el-checkbox-group v-model="checkList">
@@ -535,6 +537,15 @@ const msgScroll = (event) => {
                     <el-checkbox label="点赞" value="like" />
                     <el-checkbox label="关注" value="follow" />
                     <el-checkbox label="进来" value="comein" />
+                </el-checkbox-group>
+            </div>
+            <!-- 添加录制视频和弹幕 -->
+            <div class="messageSel">
+                <span>直播录制配置：</span>
+                <el-checkbox-group v-model="recordVideo">
+                    <el-checkbox label="开启录制" value="open" />
+                    <el-checkbox label="录制弹幕" value="chat" />
+                    <el-checkbox label="录制礼物" value="gift" />
                 </el-checkbox-group>
             </div>
             <div class="tips">
@@ -744,11 +755,7 @@ const msgScroll = (event) => {
 }
 
 .setBox {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 2vh 5vw;
+    margin: 2vh 20px;
 
     .messageSel {
         margin-top: 4px;
