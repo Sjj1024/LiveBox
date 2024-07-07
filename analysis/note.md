@@ -13,6 +13,7 @@ HLS 视频源：
 https://live.douyin.com/470460306559
 
 // action 是 3 就是直播间关闭了：基本上都是下播了，比如主播离开了，违规被 Ban 了啥的，有这个消息，直播间信息必然发生变化
+// action 是 3 就是直播间关闭了：基本上都是下播了，比如主播离开了，违规被 Ban 了啥的，有这个消息，直播间信息必然发生变化
 
 // Known control actions:
 // 3 = Stream terminated by user
