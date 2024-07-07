@@ -13,7 +13,6 @@ import Flv from 'flv.js'
 import pako from 'pako'
 import SocketCli from '@/utils/RustSocket'
 // import SocketCli from '@/utils/WebSocket'
-// 必须使用Uint8Array解析数据，不然解析不出来
 
 // 直播间地址
 const inputUrl = ref(localStorage.getItem('url') || '')
@@ -476,18 +475,6 @@ const msgScroll = (event) => {
                 <!-- 直播结束 -->
                 <div v-if="liveInfo.status === 4" class="over">直播已结束</div>
             </div>
-            <!-- <div class="liveMeg" ref="liveMsg">
-                <div
-                    v-for="item in messageList"
-                    :key="item.id + item.msg"
-                    class="msgBox"
-                >
-                    <div class="msg">
-                        <span class="name">{{ item.name }}：</span>
-                        <span class="msg">{{ item.msg }}</span>
-                    </div>
-                </div>
-            </div> -->
             <!-- 长列表优化 -->
             <DynamicScroller
                 :items="messageList"
