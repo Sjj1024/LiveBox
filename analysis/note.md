@@ -3,6 +3,7 @@
 ![alt text](image-3.png)
 ![alt text](image-4.png)
 ![alt text](image-5.png)
+![alt text](image-6.png)
 
 HLS 视频源：
 学习资料：https://blog.csdn.net/weixin_66948502/article/details/135567409
@@ -10,6 +11,12 @@ HLS 视频源：
 
 2.已停播的房间
 https://live.douyin.com/470460306559
+
+// action 是 3 就是直播间关闭了：基本上都是下播了，比如主播离开了，违规被 Ban 了啥的，有这个消息，直播间信息必然发生变化
+
+// Known control actions:
+// 3 = Stream terminated by user
+// 4 = Stream terminated by platform moderator (ban)
 
 3.抖音直播间使用是的是 flv 格式的
 

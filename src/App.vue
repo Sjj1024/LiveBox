@@ -351,6 +351,7 @@ const decodeChat = (data) => {
 const changeLive = (data) => {
     const changeMsg = douyin.ControlMessage.decode(data)
     console.log('changeMsg ControlMessage---', changeMsg)
+    // action是3就是直播间关闭了
 }
 
 // 商品改变
