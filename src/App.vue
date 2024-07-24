@@ -158,12 +158,8 @@ const creatSokcet = async (roomId: string, uniqueId: string, ttwid: string) => {
     }
     // ping消息
     const pingMsg = douyin.PushFrame.encode({ payloadType: 'hb' }).finish()
-    // 使用rust webscoket
+    // webscoket
     socketClient = new SocketCli(socketUrl, options, onMessage, pingMsg)
-
-    // 使用js的websocket
-    // socketClient = new SocketCli(socketUrl)
-    // socketClient.onMessage = onMessage
 }
 // 加载直播视频
 const loadLive = (videoUrl: string, live: boolean = true) => {
