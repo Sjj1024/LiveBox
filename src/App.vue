@@ -266,6 +266,23 @@ const onMessage = (msg: any) => {
 
 // 遍历消息数组，拿到具体的消息
 const handleMessage = (messageList: douyin.Message) => {
+    //     | WebcastRoomMessage | 直播间房间消息 |
+    // | WebcastLikeMessage | 直播间点赞消息 |
+    // | WebcastMemberMessage | 直播间观众加入消息 |
+    // | WebcastChatMessage | 直播间聊天消息 |
+    // | WebcastGiftMessage | 直播间礼物消息 |
+    // | WebcastSocialMessage | 直播间用户关注消息 |
+    // | WebcastRoomUserSeqMessage | 直播间在线观众排行榜 |
+    // | WebcastUpdateFanTicketMessage | 直播间粉丝团更新消息 |
+    // | WebcastCommonTextMessage | 直播间文本消息 |
+    // | WebcastMatchAgainstScoreMessage | 直播间对战积分消息 |
+    // | WebcastFansclubMessage | 直播间粉丝团消息 |
+    // | TODO: WebcastRanklistHourEntranceMessage | 直播间小时榜消息 |
+    // | TODO: WebcastRoomStatsMessage | 直播间统计消息 |
+    // | TODO: WebcastLiveShoppingMessage | 直播间购物车消息 |
+    // | TODO: WebcastLiveEcomGeneralMessage | 直播间电商消息 |
+    // | TODO: WebcastProductChangeMessage | 直播间商品变更消息 |
+    // | TODO: WebcastRoomStreamAdaptationMessage | 直播间流适配消息 |
     messageList.forEach((msg) => {
         // 判断消息类型
         switch (msg.method) {
@@ -320,11 +337,21 @@ const handleMessage = (messageList: douyin.Message) => {
                 console.log('WebcastControlMessage')
                 changeLive(msg.payload)
                 break
-            // 商品改变
-            // case 'WebcastLiveShoppingMessage':
-            //     console.log('LiveShoppingMessage')
-            //     goodsChange(msg.payload)
-            //     break
+            // 购物车消息
+            case 'WebcastLiveShoppingMessage':
+                console.log('LiveShoppingMessage')
+                goodsChange(msg.payload)
+                break
+            // 直播间电商消息
+            case 'WebcastLiveEcomGeneralMessage':
+                console.log('LiveShoppingMessage')
+                goodsChange(msg.payload)
+                break
+            // 直播间商品变更消息
+            case 'WebcastProductChangeMessage':
+                console.log('LiveShoppingMessage')
+                goodsChange(msg.payload)
+                break
             // 待解析方法
             default:
                 console.log('待解析方法' + msg.method)
