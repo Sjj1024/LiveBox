@@ -266,7 +266,6 @@ const onMessage = (msg: any) => {
     }
     // 解析直播消息
     handleMessage(response.messagesList)
-    // console.log('decodeRes---', liveMsg.value)
 }
 
 // 遍历消息数组，拿到具体的消息
