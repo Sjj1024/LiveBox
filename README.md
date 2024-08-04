@@ -10,6 +10,9 @@
 可以获取直播视频和主播头像和昵称，直播聊天弹幕内容，但是屏蔽刷礼物功能，禁止刷礼物禁止消费，理性看播，看紧口袋。
 windows/mac/linux 下载地址：https://github.com/Sjj1024/LiveBox/releases
 
+下载说明：
+![alt text](./analysis/down.png)
+
 ## 编译操作
 
 打 tag 发布到 github 的 action 打包全平台的安装程序。
