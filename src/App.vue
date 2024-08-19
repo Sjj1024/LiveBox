@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Setting } from '@element-plus/icons-vue'
 import { invoke } from '@tauri-apps/api/tauri'
+import { Body } from '@tauri-apps/api/http'
 import { ref } from 'vue'
+import liveApi from '@/apis/live'
 import { DPlayerImp, LiveInfoImp } from '@/types'
 import Logo from '@/assets/logo.png'
 import { ConnectionConfig } from 'tauri-plugin-websocket-api'
@@ -12,7 +14,6 @@ import Hls from 'hls.js'
 import Flv from 'flv.js'
 import pako from 'pako'
 import SocketCli from '@/utils/RustSocket'
-// import SocketCli from '@/utils/WebSocket'
 
 // 直播间地址
 const inputUrl = ref(localStorage.getItem('url') || '')
@@ -337,7 +338,13 @@ const decodeChat = (data) => {
         name: user.nickName,
         msg: content,
     }
-    checkList.value.includes('chat') && messageList.value.push(message)
+    if (checkList.value.includes('chat')) {
+        messageList.value.push(message)
+        // 推送到服务器
+        const body = Body.json(message)
+        pushUrl.value && liveApi.PushMessage(pushUrl.value, body)
+    }
+
     // console.log('chatMsg---', user.nickName, content)
 }
 // 解析礼物消息
@@ -350,7 +357,12 @@ const decodeGift = (data) => {
         name: user.nickName,
         msg: `送出${gift.name} x${repeatCount}个`,
     }
-    checkList.value.includes('gift') && messageList.value.push(message)
+    if (checkList.value.includes('gift')) {
+        messageList.value.push(message)
+        // 推送到服务器
+        const body = Body.json(message)
+        pushUrl.value && liveApi.PushMessage(pushUrl.value, body)
+    }
     // 计算主播收益
     diamond.value = diamond.value + gift.diamondCount * repeatCount
 }
@@ -364,8 +376,12 @@ const enterLive = (data) => {
         name: user.nickName,
         msg: '来了',
     }
-    checkList.value.includes('comein') && messageList.value.push(message)
-    // console.log('enterLive---', enteryMsg)
+    if (checkList.value.includes('comein')) {
+        messageList.value.push(message)
+        // 推送到服务器
+        const body = Body.json(message)
+        pushUrl.value && liveApi.PushMessage(pushUrl.value, body)
+    }
 }
 
 // 点赞消息
@@ -382,7 +398,12 @@ const likeLive = (data) => {
         ...liveInfo.value,
         totalLike: total,
     }
-    checkList.value.includes('like') && messageList.value.push(message)
+    if (checkList.value.includes('like')) {
+        messageList.value.push(message)
+        // 推送到服务器
+        const body = Body.json(message)
+        pushUrl.value && liveApi.PushMessage(pushUrl.value, body)
+    }
 }
 
 // 关注主播
@@ -398,7 +419,12 @@ const followLive = (data) => {
         ...liveInfo.value,
         fans: followCount,
     }
-    checkList.value.includes('follow') && messageList.value.push(message)
+    if (checkList.value.includes('follow')) {
+        messageList.value.push(message)
+        // 推送到服务器
+        const body = Body.json(message)
+        pushUrl.value && liveApi.PushMessage(pushUrl.value, body)
+    }
     // console.log('followLive---', followMsg)
 }
 

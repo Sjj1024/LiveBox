@@ -8,4 +8,11 @@ export default {
             responseType: ResponseType.Text,
         })
     },
+    PushMessage(url: string, body: any) {
+        return http(url, {
+            method: 'post',
+            body,
+            responseType: ResponseType.JSON,
+        })
+    },
 }
