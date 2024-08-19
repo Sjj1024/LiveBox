@@ -399,7 +399,6 @@ const followLive = (data) => {
         fans: followCount,
     }
     checkList.value.includes('follow') && messageList.value.push(message)
-    // console.log('followLive---', followMsg)
 }
 
 // 直播间统计
@@ -410,7 +409,6 @@ const countLive = (data) => {
         ...liveInfo.value,
         customer: countMsg.onlineUserForAnchor,
     }
-    // messageList.value.push(message)
 }
 
 // 弹幕消息列表：优化
