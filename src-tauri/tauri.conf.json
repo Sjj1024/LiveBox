@@ -14,7 +14,7 @@
             "all": false,
             "http": {
                 "all": true,
-                "scope": ["https://*"]
+                "scope": ["https://*", "http://**"]
             },
             "shell": {
                 "all": false,
