@@ -19,6 +19,10 @@ class SocketCli {
     heartbeatTimer: any
     // 心跳消息：可以自定义
     pingMsg: any
+    // 重连次数
+    reconnectCount: number
+    // 最大连接次数
+    maxReconnectCount: number
 
     // 构造函数
     constructor(
@@ -34,6 +38,8 @@ class SocketCli {
         this.heartbeatInterval = 10000
         this.listeners = {}
         this.pingMsg = pingMsg
+        this.reconnectCount = 0
+        this.maxReconnectCount = 3
         this.init()
     }
 
@@ -69,10 +75,30 @@ class SocketCli {
         }, this.heartbeatInterval)
     }
 
+    // 发送心跳包并处理异常
+    sendHeartbeat() {
+        // 连接异常，尝试重新连接
+        console.log('WebSocket send error:')
+        const timer = setInterval(() => {
+            if (this.reconnectCount < this.maxReconnectCount) {
+                this.reconnectCount++
+                this.init()
+            } else {
+                timer && clearInterval(timer)
+            }
+            console.log('WebSocket reconnecting...')
+        }, 1000)
+    }
+
     // 发送消息
     send(data: any) {
         // console.log('WebSocket is send:', data)
-        this.ws?.send([...data])
+        try {
+            this.ws?.send([...data])
+        } catch (e) {
+            console.log('WebSocket send error:', e)
+            this.sendHeartbeat()
+        }
     }
 
     // 注册某个消息事件，并添加回调函数:可注册多个回调函数

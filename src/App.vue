@@ -241,6 +241,8 @@ const pushMsg = (msg: any) => {
 // 收到websocket消息回调
 const onMessage = (msg: any) => {
     // console.log('收到消息', msg)
+    const pingMsg = douyin.PushFrame.encode({ payloadType: 'hb' }).finish()
+    socketClient?.send(pingMsg)
     // 解析消息
     const decodeMsg = douyin.PushFrame.decode(msg.data)
     // console.log('decodeMsg--', decodeMsg)
