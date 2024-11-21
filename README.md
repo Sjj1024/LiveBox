@@ -32,7 +32,11 @@ git push --delete origin v1.0.0
 
 ## 界面介绍
 
-注意：mac 电脑提示：已损坏,无法打开,你应该将它移到废纸篓，可以按照这篇文章解决：https://zhuanlan.zhihu.com/p/675337069
+注意：mac 电脑提示：已损坏,无法打开,你应该将它移到废纸篓，执行下面这条命名即可解决：
+```
+sudo xattr -r -d com.apple.quarantine /Applications/LiveBox.app
+```
+
 ![alt text](./analysis/image-2.png)
 ![alt text](./analysis/image-6.png)
 ![alt text](./analysis/image-7.png)
