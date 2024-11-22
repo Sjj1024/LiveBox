@@ -1,3 +1,123 @@
+<template>
+    <div class="container">
+        <!-- 顶部输入直播间地址 -->
+        <div class="liveUrl">
+            <input
+                class="urlInput"
+                v-model="inputUrl"
+                placeholder="请输入直播间地址"
+            />
+            <el-button type="primary" class="startListen" @click="startListen">
+                开始采集
+            </el-button>
+
+            <el-button type="primary" class="startListen" @click="openWindow">
+                新窗口
+            </el-button>
+        </div>
+        <!-- 下面直播间:左侧直播，右侧评论 -->
+        <div class="liveBox">
+            <!-- 视频播放容器 -->
+            <div class="liveVideo">
+                <!-- 主播头像信息：固定位置 -->
+                <div class="ownerBox">
+                    <!-- 头像 -->
+                    <img :src="liveInfo.avatar" alt="头像" class="avatar" />
+                    <div class="nickBox">
+                        <span class="nickName">{{ liveInfo.name }}</span>
+                        <span class="fans">
+                            {{ liveInfo.totalLike }}本场点赞
+                        </span>
+                    </div>
+                </div>
+                <!-- 右侧本场点赞等信息 -->
+                <div class="likeInfo">
+                    <div class="fans">主播粉丝：{{ liveInfo.fans }}</div>
+                    <div class="customer">
+                        在线观众：{{ liveInfo.customer }}
+                    </div>
+                    <div class="diamond">主播收益：{{ diamond }}</div>
+                </div>
+                <!-- 视频播放器 -->
+                <div id="dplayer" class="dplayer"></div>
+                <!-- 直播结束 -->
+                <div v-if="liveInfo.status === 4" class="over">直播已结束</div>
+            </div>
+            <!-- 长列表优化 -->
+            <DynamicScroller
+                :items="messageList"
+                :min-item-size="32"
+                class="liveMeg"
+                id="liveMsg"
+                ref="liveMsg"
+                v-if="messageList.length"
+            >
+                <template v-slot="{ item, active }">
+                    <DynamicScrollerItem
+                        :item="item"
+                        :active="active"
+                        class="msgBox"
+                        :size-dependencies="[item.name, item.msg]"
+                        :data-index="item.id"
+                    >
+                        <div class="content">
+                            <span class="name">{{ item.name }}：</span>
+                            <span class="msg">{{ item.msg }}</span>
+                        </div>
+                    </DynamicScrollerItem>
+                </template>
+            </DynamicScroller>
+        </div>
+        <!-- 设置推流地址 -->
+        <el-icon :size="20" class="pushUrl" @click="dialogVisible = true">
+            <Setting />
+        </el-icon>
+    </div>
+    <!-- 设置推流地址 -->
+    <el-dialog
+        v-model="dialogVisible"
+        title="设置推送地址"
+        center
+        :show-close="false"
+        width="540"
+    >
+        <div class="setBox">
+            <el-input v-model="pushUrl" placeholder="请输入推送地址" />
+            <!-- 选择消息类型 -->
+            <div class="messageSel">
+                <span>选择消息类型：</span>
+                <el-checkbox-group v-model="checkList">
+                    <el-checkbox label="聊天" value="chat" />
+                    <el-checkbox label="礼物" value="gift" />
+                    <el-checkbox label="点赞" value="like" />
+                    <el-checkbox label="关注" value="follow" />
+                    <el-checkbox label="进来" value="comein" />
+                </el-checkbox-group>
+            </div>
+            <!-- 添加录制视频和弹幕 -->
+            <div class="messageSel">
+                <span>直播录制配置：</span>
+                <el-checkbox-group v-model="recordVideo">
+                    <el-checkbox label="开启录制" value="open" />
+                    <el-checkbox label="录制弹幕" value="chat" />
+                    <el-checkbox label="录制礼物" value="gift" />
+                </el-checkbox-group>
+            </div>
+            <div class="tips">
+                *推送的消息会以POST请求的形式发送到该地址，请确保该地址能够接收POST请求
+            </div>
+        </div>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button @click="dialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="dialogVisible = false">
+                    确定
+                </el-button>
+            </div>
+        </template>
+    </el-dialog>
+</template>
+
 <script setup lang="ts">
 import { Setting } from '@element-plus/icons-vue'
 import { invoke } from '@tauri-apps/api/tauri'
@@ -56,6 +176,21 @@ const liveMsg = ref()
 
 // 直播播放器
 let dplayer: DPlayerImp | null = null
+let liveNum = 100
+
+// 新窗口
+const openWindow = () => {
+    invoke('open_window', {
+        appUrl: inputUrl.value,
+        appName: '直播盒子' + liveNum++,
+        platform: 'web',
+        userAgent: navigator.userAgent,
+        resize: false,
+        width: 1000,
+        height: 800,
+        jsContent: '',
+    })
+}
 
 // 开始监听
 const startListen = async () => {
@@ -426,122 +561,6 @@ const msgScroll = (event) => {
     lastScrollTop = scrollTop
 }
 </script>
-
-<template>
-    <div class="container">
-        <!-- 顶部输入直播间地址 -->
-        <div class="liveUrl">
-            <input
-                class="urlInput"
-                v-model="inputUrl"
-                placeholder="请输入直播间地址"
-            />
-            <el-button type="primary" class="startListen" @click="startListen">
-                开始采集
-            </el-button>
-        </div>
-        <!-- 下面直播间:左侧直播，右侧评论 -->
-        <div class="liveBox">
-            <!-- 视频播放容器 -->
-            <div class="liveVideo">
-                <!-- 主播头像信息：固定位置 -->
-                <div class="ownerBox">
-                    <!-- 头像 -->
-                    <img :src="liveInfo.avatar" alt="头像" class="avatar" />
-                    <div class="nickBox">
-                        <span class="nickName">{{ liveInfo.name }}</span>
-                        <span class="fans">
-                            {{ liveInfo.totalLike }}本场点赞
-                        </span>
-                    </div>
-                </div>
-                <!-- 右侧本场点赞等信息 -->
-                <div class="likeInfo">
-                    <div class="fans">主播粉丝：{{ liveInfo.fans }}</div>
-                    <div class="customer">
-                        在线观众：{{ liveInfo.customer }}
-                    </div>
-                    <div class="diamond">主播收益：{{ diamond }}</div>
-                </div>
-                <!-- 视频播放器 -->
-                <div id="dplayer" class="dplayer"></div>
-                <!-- 直播结束 -->
-                <div v-if="liveInfo.status === 4" class="over">直播已结束</div>
-            </div>
-            <!-- 长列表优化 -->
-            <DynamicScroller
-                :items="messageList"
-                :min-item-size="32"
-                class="liveMeg"
-                id="liveMsg"
-                ref="liveMsg"
-                v-if="messageList.length"
-            >
-                <template v-slot="{ item, active }">
-                    <DynamicScrollerItem
-                        :item="item"
-                        :active="active"
-                        class="msgBox"
-                        :size-dependencies="[item.name, item.msg]"
-                        :data-index="item.id"
-                    >
-                        <div class="content">
-                            <span class="name">{{ item.name }}：</span>
-                            <span class="msg">{{ item.msg }}</span>
-                        </div>
-                    </DynamicScrollerItem>
-                </template>
-            </DynamicScroller>
-        </div>
-        <!-- 设置推流地址 -->
-        <el-icon :size="20" class="pushUrl" @click="dialogVisible = true">
-            <Setting />
-        </el-icon>
-    </div>
-    <!-- 设置推流地址 -->
-    <el-dialog
-        v-model="dialogVisible"
-        title="设置推送地址"
-        center
-        :show-close="false"
-        width="540"
-    >
-        <div class="setBox">
-            <el-input v-model="pushUrl" placeholder="请输入推送地址" />
-            <!-- 选择消息类型 -->
-            <div class="messageSel">
-                <span>选择消息类型：</span>
-                <el-checkbox-group v-model="checkList">
-                    <el-checkbox label="聊天" value="chat" />
-                    <el-checkbox label="礼物" value="gift" />
-                    <el-checkbox label="点赞" value="like" />
-                    <el-checkbox label="关注" value="follow" />
-                    <el-checkbox label="进来" value="comein" />
-                </el-checkbox-group>
-            </div>
-            <!-- 添加录制视频和弹幕 -->
-            <div class="messageSel">
-                <span>直播录制配置：</span>
-                <el-checkbox-group v-model="recordVideo">
-                    <el-checkbox label="开启录制" value="open" />
-                    <el-checkbox label="录制弹幕" value="chat" />
-                    <el-checkbox label="录制礼物" value="gift" />
-                </el-checkbox-group>
-            </div>
-            <div class="tips">
-                *推送的消息会以POST请求的形式发送到该地址，请确保该地址能够接收POST请求
-            </div>
-        </div>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button @click="dialogVisible = false">取消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">
-                    确定
-                </el-button>
-            </div>
-        </template>
-    </el-dialog>
-</template>
 
 <style scoped lang="scss">
 .container {

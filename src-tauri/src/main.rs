@@ -9,7 +9,8 @@ fn main() {
         .plugin(tauri_plugin_websocket::init())
         .invoke_handler(tauri::generate_handler![
             command::live::get_live_html,
-            command::live::greet_you
+            command::live::greet_you,
+            command::live::open_window
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
