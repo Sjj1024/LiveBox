@@ -48,3 +48,7 @@ git push --delete origin v1.0.0
 
 开源不易, 有了您的赞助, 我们会做的更好~
 ![alt text](./analysis/pay.png)
+
+## TODO
+
+1. 增加登录功能, 一个窗口登录，其他窗口免登录
