@@ -71,7 +71,7 @@ pub async fn open_window(
     if !resize {
         let _window = tauri::WindowBuilder::new(
             &handle,
-            app_name.clone(), /* the unique window label */
+            window_label, /* the unique window label */
             tauri::WindowUrl::External(app_url.parse().unwrap()),
         )
         .title(app_name.clone())

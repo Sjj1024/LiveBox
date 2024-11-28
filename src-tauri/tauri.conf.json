@@ -3,7 +3,8 @@
         "beforeDevCommand": "pnpm dev",
         "beforeBuildCommand": "pnpm build",
         "devPath": "http://localhost:1420",
-        "distDir": "../dist"
+        "distDir": "../dist",
+        "withGlobalTauri": true
     },
     "package": {
         "productName": "LiveBox",
@@ -11,7 +12,7 @@
     },
     "tauri": {
         "allowlist": {
-            "all": false,
+            "all": true,
             "http": {
                 "all": true,
                 "scope": ["https://*"]
@@ -29,7 +30,14 @@
             }
         ],
         "security": {
-            "csp": null
+            "csp": null,
+            "dangerousRemoteDomainIpcAccess": [
+                {
+                    "domain": "live.douyin.com",
+                    "windows": ["previewWeb"],
+                    "enableTauriAPI": true
+                }
+            ]
         },
         "bundle": {
             "active": true,

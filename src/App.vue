@@ -32,7 +32,9 @@
                 </div>
                 <!-- 右侧本场点赞等信息 -->
                 <div class="likeInfo">
-                    <div class="fans">主播粉丝：{{ liveInfo.fans }}</div>
+                    <div class="fans" @click="handlePay">
+                        主播粉丝：{{ liveInfo.fans }}
+                    </div>
                     <div class="customer">
                         在线观众：{{ liveInfo.customer }}
                     </div>
@@ -132,7 +134,7 @@ import Hls from 'hls.js'
 import Flv from 'flv.js'
 import pako from 'pako'
 import SocketCli from '@/utils/RustSocket'
-// import SocketCli from '@/utils/WebSocket'
+import { emit, listen } from '@tauri-apps/api/event'
 
 // 直播间地址
 const inputUrl = ref(localStorage.getItem('url') || '')
@@ -191,6 +193,16 @@ const openWindow = () => {
         jsContent: '',
     })
 }
+
+// call pay
+const handlePay = () => {
+    console.log('emit handlepay')
+    emit('handlepay')
+}
+
+// listen('handlepay', () => {
+//     console.log('Received handlepay:')
+// })
 
 // 开始监听
 const startListen = async () => {
