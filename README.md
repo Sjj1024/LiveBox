@@ -40,7 +40,6 @@ git push --delete origin v1.0.0
 
 ## 界面介绍
 
-![alt text](./analysis/image-2.png)
 ![alt text](./analysis/image-6.png)
 ![alt text](./analysis/image-7.png)
 
